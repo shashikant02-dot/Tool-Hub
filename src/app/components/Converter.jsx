@@ -130,7 +130,7 @@ export default function ToolsGrid() {
                 </div>
 
                 {/* Icon */}
-                <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white shadow-lg">
+                <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-600 via-purple-600 to-pink-500 text-white shadow-lg">
                   <Icon size={30} />
                 </div>
 
