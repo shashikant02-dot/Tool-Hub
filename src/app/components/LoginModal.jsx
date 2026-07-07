@@ -33,6 +33,7 @@ Welcome back! Please sign in to continue
             <FcGoogle size={22} />
             Continue with Google
           </button>
+         
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-5">
@@ -52,6 +53,13 @@ Welcome back! Please sign in to continue
               placeholder="Enter your email address"
               className="w-full h-12 px-5 rounded-2xl border border-gray-300 outline-none focus:border-black"
             />
+             <div className="relative mt-4">
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="w-full h-12 px-5 pr-12 rounded-2xl border border-gray-300 outline-none focus:border-black"
+            />
+            </div>
           </div>
 
           {/* Password */}

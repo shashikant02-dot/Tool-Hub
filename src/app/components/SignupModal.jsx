@@ -39,6 +39,13 @@ export default function SignupModal({ onClose }) {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
+
+ <input
+            type="text"
+            placeholder="Enter Your Name"
+            className="w-full mb-4 h-12 px-5 rounded-2xl border border-gray-300 outline-none focus:border-black"
+          />
+
           <input
             type="email"
             placeholder="Enter your email address"
