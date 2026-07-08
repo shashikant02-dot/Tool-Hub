@@ -12,31 +12,44 @@ export default function LoginModal({ onClose }) {
   const [loading, setLoading] = useState(false);
 
   // --- NEW: submit handler ---
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  setLoading(true);
+  setError("");
 
-      const data = await res.json();
+  try {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-      if (res.ok) {
-        onClose(); // close modal, or e.g. router.push("/dashboard")
-      } else {
-        setError(data.error || "Invalid email or password");
-      }
-    } catch (err) {
-      setError("Network error, please try again");
-    } finally {
-      setLoading(false);
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.error || "Login failed");
+      return;
     }
-  };
+
+    // Save logged in user
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    alert("Login Successful ✅");
+
+    onClose();
+  } catch (err) {
+    console.error(err);
+    setError("Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
