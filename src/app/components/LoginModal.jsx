@@ -4,57 +4,57 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoClose, IoEyeOutline } from "react-icons/io5";
 
-export default function LoginModal({ onClose }) {
+export default function LoginModal({ onClose, openSignup  }) {
   // --- NEW: state for form fields ---
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  
 
   // --- NEW: submit handler ---
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  setLoading(true);
-  setError("");
+    setLoading(true);
+    setError("");
 
-  try {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.error || "Login failed");
-      return;
+      if (!res.ok) {
+        setError(data.error || "Login failed");
+        return;
+      }
+
+      // Save logged in user
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      alert("Login Successful ✅");
+
+      onClose();
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
     }
-
-    // Save logged in user
-    localStorage.setItem("user", JSON.stringify(data.user));
-
-    alert("Login Successful ✅");
-
-    onClose();
-  } catch (err) {
-    console.error(err);
-    setError("Something went wrong");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="relative w-[27vw] max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-[32px] shadow-2xl">
-
         <button
           onClick={onClose}
           className="absolute top-4 right-4 h-10 w-10 rounded-2xl border-2 border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50"
@@ -63,7 +63,6 @@ const handleSubmit = async (e) => {
         </button>
 
         <div className="px-8 pt-8 pb-6">
-
           <h2 className="text-3xl font-bold text-center text-gray-900">
             Sign in to ToolHub
           </h2>
@@ -85,7 +84,6 @@ const handleSubmit = async (e) => {
 
           {/* --- NEW: wrapped everything in a <form>, fixed nesting, connected state --- */}
           <form onSubmit={handleSubmit}>
-
             {/* --- NEW: error message --- */}
             {error && (
               <p className="text-red-500 text-sm text-center mb-3">{error}</p>
@@ -132,20 +130,20 @@ const handleSubmit = async (e) => {
             >
               {loading ? "Please wait..." : "Continue →"}
             </button>
-
           </form>
-
         </div>
 
-        <div className="border-t border-gray-200 py-4">
-          <p className="text-center text-gray-600 text-sm">
-            Don't have an account?{" "}
-            <span className="font-semibold text-black cursor-pointer">
-              Sign up
-            </span>
-          </p>
-        </div>
-
+      <div className="border-t border-gray-200 py-4">
+  <p className="text-center text-gray-600 text-sm">
+    Don't have an account?{" "}
+    <span
+      onClick={openSignup}
+      className="font-semibold text-black cursor-pointer hover:underline"
+    >
+      Sign up
+    </span>
+  </p>
+</div>
       </div>
     </div>
   );

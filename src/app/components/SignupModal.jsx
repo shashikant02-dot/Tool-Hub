@@ -4,8 +4,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoClose, IoEyeOutline } from "react-icons/io5";
 
-export default function SignupModal({ onClose }) {
-  // --- NEW: state for form fields ---
+export default function SignupModal({ onClose, openLogin }) {  // --- NEW: state for form fields ---
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -120,13 +119,15 @@ export default function SignupModal({ onClose }) {
           </form>
 
         </div>
-
-        <div className="border-t border-gray-200 py-4 text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <span className="font-semibold text-black cursor-pointer">
-            Sign in
-          </span>
-        </div>
+<div className="border-t border-gray-200 py-4 text-center text-sm text-gray-600">
+  Already have an account?{" "}
+  <span
+    onClick={openLogin}
+    className="font-semibold text-black cursor-pointer hover:underline"
+  >
+    Log in 
+  </span>
+</div>
 
       </div>
     </div>

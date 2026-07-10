@@ -7,9 +7,9 @@ import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
 
 export default function Header() {
-  const [openLogin, setOpenLogin] = useState(false);
-  const [openSignup, setOpenSignup] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -23,17 +23,13 @@ export default function Header() {
     <>
       {/* HEADER */}
       <nav className="w-full fixed top-0 z-50 border-b border-white/10 bg-gradient-to-r from-black via-slate-900 to-black backdrop-blur-xl shadow-lg">
-
         <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4">
-
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="p-2 rounded-xl bg-white/10 border border-white/10">
               <FaHome className="text-2xl text-indigo-400" />
             </div>
-            <span className="font-bold text-2xl text-white">
-              ToolHub
-            </span>
+            <span className="font-bold text-2xl text-white">ToolHub</span>
           </Link>
 
           {/* Desktop Menu */}
@@ -54,14 +50,14 @@ export default function Header() {
 
             <div className="flex items-center gap-3 ml-10">
               <button
-                onClick={() => setOpenLogin(true)}
+                onClick={() => setShowLogin(true)}
                 className="px-5 py-2 text-white/90 border border-white/20 rounded-full bg-white/5 hover:bg-white/10"
               >
                 Log In
               </button>
 
               <button
-                onClick={() => setOpenSignup(true)}
+                onClick={() => setShowSignup(true)}
                 className="px-5 py-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-600"
               >
                 Sign Up
@@ -76,7 +72,6 @@ export default function Header() {
           >
             <FaBars />
           </button>
-
         </div>
       </nav>
 
@@ -93,7 +88,6 @@ export default function Header() {
         className={`fixed top-0 right-0 h-full w-[70%] sm:w-[50%] bg-slate-950 border-l border-white/10 z-50 transform transition-transform duration-300
         ${mobileMenu ? "translate-x-0" : "translate-x-full"}`}
       >
-
         {/* Top header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <span className="text-white font-bold text-lg">Menu</span>
@@ -108,7 +102,6 @@ export default function Header() {
 
         {/* Nav links */}
         <div className="flex flex-col gap-6 px-6 py-8">
-
           {navItems.map((item, i) => (
             <Link
               key={i}
@@ -119,15 +112,13 @@ export default function Header() {
               {item.name}
             </Link>
           ))}
-
         </div>
 
         {/* Buttons */}
         <div className="absolute bottom-0 w-full p-5 border-t border-white/10 flex flex-col gap-3">
-
           <button
             onClick={() => {
-              setOpenLogin(true);
+              setShowLogin(true);
               setMobileMenu(false);
             }}
             className="py-3 rounded-full border border-white/20 text-white"
@@ -137,21 +128,37 @@ export default function Header() {
 
           <button
             onClick={() => {
-              setOpenSignup(true);
+              setShowSignup(true);
               setMobileMenu(false);
             }}
             className="py-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white"
           >
             Sign Up
           </button>
-
         </div>
-
       </div>
 
       {/* MODALS */}
-      {openLogin && <LoginModal onClose={() => setOpenLogin(false)} />}
-      {openSignup && <SignupModal onClose={() => setOpenSignup(false)} />}
+
+      {showLogin && (
+        <LoginModal
+          onClose={() => setShowLogin(false)}
+          openSignup={() => {
+            setShowLogin(false);
+            setShowSignup(true);
+          }}
+        />
+      )}
+
+      {showSignup && (
+        <SignupModal
+          onClose={() => setShowSignup(false)}
+          openLogin={() => {
+            setShowSignup(false);
+            setShowLogin(true);
+          }}
+        />
+      )}
     </>
   );
 }
