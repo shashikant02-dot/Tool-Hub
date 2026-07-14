@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import {
-  FaHome,
-  FaBars,
-  FaTimes,
-  FaUserCircle,
-
-} from "react-icons/fa";
+import { FaHome, FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
@@ -18,34 +12,46 @@ export default function Header() {
   const [showSignup, setShowSignup] = useState(false);
   const [user, setUser] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
+  const desktopMenuRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
 
-  const menuRef = useRef(null);
- useEffect(() => {
-  const storedUser = localStorage.getItem("user");
-
-  if (storedUser) {
-    setUser(JSON.parse(storedUser));
-  }
-}, []);
-
-useEffect(() => {
-  const handleClick = (e) => {
-    if (menuRef.current && !menuRef.current.contains(e.target)) {
-      setShowProfile(false);
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-  };
+  }, []);
 
-  document.addEventListener("mousedown", handleClick);
+  useEffect(() => {
+    const handleClick = (e) => {
+      const desktop = desktopMenuRef.current?.contains(e.target);
 
-  return () => {
-    document.removeEventListener("mousedown", handleClick);
-  };
-}, []);
+      const mobile = mobileMenuRef.current?.contains(e.target);
+
+      if (!desktop && !mobile) {
+        setShowProfile(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-    setShowProfile(false);
-  };
+
+  console.log("logout clicked");
+
+  localStorage.removeItem("user");
+
+  setUser(null);
+
+  setShowProfile(false);
+
+  setMobileMenu(false);
+
+};
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Tools", path: "/tools" },
@@ -83,7 +89,7 @@ useEffect(() => {
               ))}
             </ul>
 
-            <div className="ml-10 relative" ref={menuRef}>
+            <div className="ml-10 relative" ref={desktopMenuRef}>
               {user ? (
                 <>
                   <button
@@ -95,8 +101,8 @@ useEffect(() => {
                   </button>
 
                   {showProfile && (
-                    <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl overflow-hidden">
-                      <div className="px-4 py-3 border-b">
+<div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl overflow-hidden z-[100]">
+<div className="px-4 py-3 border-b">
                         <h3 className="font-semibold">{user.name}</h3>
                         <p className="text-sm text-gray-500">{user.email}</p>
                       </div>
@@ -143,7 +149,7 @@ useEffect(() => {
       {/* BACKDROP */}
       {mobileMenu && (
         <div
-          className="fixed inset-0 bg-black/60 z-50"
+          className="fixed inset-0 bg-black/60 z-40"
           onClick={() => setMobileMenu(false)}
         />
       )}
@@ -180,87 +186,84 @@ useEffect(() => {
         </div>
 
         {/* Buttons */}
-        <div className="ml-10 relative" ref={menuRef}>
-  {user ? (
-    <>
-      <button
-        onClick={() => setShowProfile(!showProfile)}
-        className="flex items-center gap-3 text-white"
-      >
-        <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold">
-          {user.name?.charAt(0).toUpperCase()}
+        <div 
+className="ml-10 relative"
+ref={mobileMenuRef}
+>
+          {user ? (
+            <>
+              <button
+                onClick={() => setShowProfile(!showProfile)}
+                className="flex items-center gap-3 text-white"
+              >
+                <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold">
+                  {user.name?.charAt(0).toUpperCase()}
+                </div>
+
+                <div className="text-left">
+                  <p className="text-sm font-semibold">{user.name}</p>
+                  <p className="text-xs text-gray-400">{user.email}</p>
+                </div>
+              </button>
+
+              {showProfile && (
+                <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-xl overflow-hidden">
+                  <div className="px-4 py-4 border-b">
+                    <h3 className="font-semibold text-gray-800">{user.name}</h3>
+
+                    <p className="text-sm text-gray-500">{user.email}</p>
+                  </div>
+
+                  <button className="w-full text-left px-4 py-3 hover:bg-gray-100">
+                    Dashboard
+                  </button>
+
+                  <button className="w-full text-left px-4 py-3 hover:bg-gray-100">
+                    Profile
+                  </button>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowLogin(true)}
+                className="px-5 py-2 text-white/90 border border-white/20 rounded-full bg-white/5 hover:bg-white/10"
+              >
+                Log In
+              </button>
+
+              <button
+                onClick={() => setShowSignup(true)}
+                className="px-5 py-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-600"
+              >
+                Sign Up
+              </button>
+            </div>
+          )}
         </div>
-
-        <div className="text-left">
-          <p className="text-sm font-semibold">{user.name}</p>
-          <p className="text-xs text-gray-400">{user.email}</p>
-        </div>
-      </button>
-
-      {showProfile && (
-        <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-xl overflow-hidden">
-
-          <div className="px-4 py-4 border-b">
-            <h3 className="font-semibold text-gray-800">
-              {user.name}
-            </h3>
-
-            <p className="text-sm text-gray-500">
-              {user.email}
-            </p>
-          </div>
-
-          <button className="w-full text-left px-4 py-3 hover:bg-gray-100">
-            Dashboard
-          </button>
-
-          <button className="w-full text-left px-4 py-3 hover:bg-gray-100">
-            Profile
-          </button>
-
-          <button
-            onClick={handleLogout}
-            className="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50"
-          >
-            Logout
-          </button>
-
-        </div>
-      )}
-    </>
-  ) : (
-    <div className="flex items-center gap-3">
-      <button
-        onClick={() => setShowLogin(true)}
-        className="px-5 py-2 text-white/90 border border-white/20 rounded-full bg-white/5 hover:bg-white/10"
-      >
-        Log In
-      </button>
-
-      <button
-        onClick={() => setShowSignup(true)}
-        className="px-5 py-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-600"
-      >
-        Sign Up
-      </button>
-    </div>
-  )}
-</div>
       </div>
 
       {/* MODALS */}
 
       {showLogin && (
         <LoginModal
-  onClose={() => setShowLogin(false)}
-  openSignup={() => {
-    setShowLogin(false);
-    setShowSignup(true);
-  }}
-  onLoginSuccess={(loggedUser) => {
-    setUser(loggedUser);
-  }}
-/>
+          onClose={() => setShowLogin(false)}
+          openSignup={() => {
+            setShowLogin(false);
+            setShowSignup(true);
+          }}
+          onLoginSuccess={(loggedUser) => {
+            setUser(loggedUser);
+          }}
+        />
       )}
 
       {showSignup && (

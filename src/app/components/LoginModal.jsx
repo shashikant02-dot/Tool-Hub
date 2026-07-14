@@ -53,7 +53,20 @@ onLoginSuccess(data.user);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="relative w-[27vw] max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-[32px] shadow-2xl">
+<div
+  className="
+  relative
+  w-full
+  sm:w-[420px]
+  md:w-[450px]
+  max-w-[95%]
+  max-h-[90vh]
+  overflow-y-auto
+  bg-white
+  rounded-[28px]
+  shadow-2xl
+  "
+>
         <button
           onClick={onClose}
           className="absolute top-4 right-4 h-10 w-10 rounded-2xl border-2 border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50"
@@ -71,9 +84,9 @@ onLoginSuccess(data.user);
           </p>
           <a
             href="/api/auth/google"
-            className="flex items-center justify-center gap-2 border rounded-lg py-2 px-4 hover:bg-gray-50"
+            className="flex items-center justify-center gap-2 mt-2 border border-gray-300 rounded-lg py-2 px-4 hover:bg-gray-50"
           >
-            <img src="/google-icon.svg" alt="" className="w-5 h-5" />
+            <FcGoogle className="text-2xl" />
             Continue with Google
           </a>
 

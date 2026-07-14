@@ -4,7 +4,8 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoClose, IoEyeOutline } from "react-icons/io5";
 
-export default function SignupModal({ onClose, openLogin }) {  // --- NEW: state for form fields ---
+export default function SignupModal({ onClose, openLogin }) {
+  // --- NEW: state for form fields ---
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,9 +40,8 @@ export default function SignupModal({ onClose, openLogin }) {  // --- NEW: state
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="relative w-[27vw] max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-[32px] shadow-2xl">
-
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+      <div className="relative w-full max-w-md sm:max-w-md bg-white rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 h-10 w-10 rounded-2xl border-2 border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50"
@@ -49,9 +49,8 @@ export default function SignupModal({ onClose, openLogin }) {  // --- NEW: state
           <IoClose size={22} />
         </button>
 
-        <div className="px-8 pt-8 pb-6">
-
-          <h2 className="text-3xl font-bold text-center text-gray-900">
+        <div className="px-5 sm:px-8 py-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900">
             Create your account
           </h2>
 
@@ -59,11 +58,11 @@ export default function SignupModal({ onClose, openLogin }) {  // --- NEW: state
             Welcome! Please fill in the details to get started.
           </p>
 
-         <a
+          <a
             href="/api/auth/google"
-            className="flex items-center justify-center gap-2 border rounded-lg py-2 px-4 hover:bg-gray-50"
+            className="mt-6 flex items-center justify-center gap-3 h-12 rounded-xl border border-gray-300 hover:bg-gray-50 transition"
           >
-            <img src="/google-icon.svg" alt="" className="w-5 h-5" />
+            <FcGoogle className="text-2xl" />
             Continue with Google
           </a>
 
@@ -75,7 +74,6 @@ export default function SignupModal({ onClose, openLogin }) {  // --- NEW: state
 
           {/* --- NEW: wrapped inputs in a <form> and connected them --- */}
           <form onSubmit={handleSubmit}>
-
             {/* --- NEW: error message --- */}
             {error && (
               <p className="text-red-500 text-sm text-center mb-3">{error}</p>
@@ -118,20 +116,17 @@ export default function SignupModal({ onClose, openLogin }) {  // --- NEW: state
             >
               {loading ? "Please wait..." : "Continue →"}
             </button>
-
           </form>
-
         </div>
-<div className="border-t border-gray-200 py-4 text-center text-sm text-gray-600">
-  Already have an account?{" "}
-  <span
-    onClick={openLogin}
-    className="font-semibold text-black cursor-pointer hover:underline"
-  >
-    Log in 
-  </span>
-</div>
-
+        <div className="border-t border-gray-200 py-4 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <span
+            onClick={openLogin}
+            className="font-semibold text-black cursor-pointer hover:underline"
+          >
+            Log in
+          </span>
+        </div>
       </div>
     </div>
   );
