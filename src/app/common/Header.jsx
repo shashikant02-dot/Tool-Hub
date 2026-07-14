@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { FaHome, FaBars, FaTimes } from "react-icons/fa";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  FaHome,
+  FaBars,
+  FaTimes,
+  FaUserCircle,
+
+} from "react-icons/fa";
 import Link from "next/link";
 import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
@@ -10,7 +16,36 @@ export default function Header() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [user, setUser] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
 
+  const menuRef = useRef(null);
+ useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+
+  if (storedUser) {
+    setUser(JSON.parse(storedUser));
+  }
+}, []);
+
+useEffect(() => {
+  const handleClick = (e) => {
+    if (menuRef.current && !menuRef.current.contains(e.target)) {
+      setShowProfile(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClick);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClick);
+  };
+}, []);
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    setShowProfile(false);
+  };
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Tools", path: "/tools" },
@@ -48,20 +83,50 @@ export default function Header() {
               ))}
             </ul>
 
-            <div className="flex items-center gap-3 ml-10">
-              <button
-                onClick={() => setShowLogin(true)}
-                className="px-5 py-2 text-white/90 border border-white/20 rounded-full bg-white/5 hover:bg-white/10"
-              >
-                Log In
-              </button>
+            <div className="ml-10 relative" ref={menuRef}>
+              {user ? (
+                <>
+                  <button
+                    onClick={() => setShowProfile(!showProfile)}
+                    className="flex items-center gap-2 text-white"
+                  >
+                    <FaUserCircle size={30} />
+                    <span>{user.name}</span>
+                  </button>
 
-              <button
-                onClick={() => setShowSignup(true)}
-                className="px-5 py-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-600"
-              >
-                Sign Up
-              </button>
+                  {showProfile && (
+                    <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl overflow-hidden">
+                      <div className="px-4 py-3 border-b">
+                        <h3 className="font-semibold">{user.name}</h3>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-3 hover:bg-gray-100 text-red-500"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowLogin(true)}
+                    className="px-5 py-2 text-white border border-white/20 rounded-full"
+                  >
+                    Log In
+                  </button>
+
+                  <button
+                    onClick={() => setShowSignup(true)}
+                    className="px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -115,39 +180,87 @@ export default function Header() {
         </div>
 
         {/* Buttons */}
-        <div className="absolute bottom-0 w-full p-5 border-t border-white/10 flex flex-col gap-3">
-          <button
-            onClick={() => {
-              setShowLogin(true);
-              setMobileMenu(false);
-            }}
-            className="py-3 rounded-full border border-white/20 text-white"
-          >
-            Log In
+        <div className="ml-10 relative" ref={menuRef}>
+  {user ? (
+    <>
+      <button
+        onClick={() => setShowProfile(!showProfile)}
+        className="flex items-center gap-3 text-white"
+      >
+        <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold">
+          {user.name?.charAt(0).toUpperCase()}
+        </div>
+
+        <div className="text-left">
+          <p className="text-sm font-semibold">{user.name}</p>
+          <p className="text-xs text-gray-400">{user.email}</p>
+        </div>
+      </button>
+
+      {showProfile && (
+        <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-xl overflow-hidden">
+
+          <div className="px-4 py-4 border-b">
+            <h3 className="font-semibold text-gray-800">
+              {user.name}
+            </h3>
+
+            <p className="text-sm text-gray-500">
+              {user.email}
+            </p>
+          </div>
+
+          <button className="w-full text-left px-4 py-3 hover:bg-gray-100">
+            Dashboard
+          </button>
+
+          <button className="w-full text-left px-4 py-3 hover:bg-gray-100">
+            Profile
           </button>
 
           <button
-            onClick={() => {
-              setShowSignup(true);
-              setMobileMenu(false);
-            }}
-            className="py-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white"
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50"
           >
-            Sign Up
+            Logout
           </button>
+
         </div>
+      )}
+    </>
+  ) : (
+    <div className="flex items-center gap-3">
+      <button
+        onClick={() => setShowLogin(true)}
+        className="px-5 py-2 text-white/90 border border-white/20 rounded-full bg-white/5 hover:bg-white/10"
+      >
+        Log In
+      </button>
+
+      <button
+        onClick={() => setShowSignup(true)}
+        className="px-5 py-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-600"
+      >
+        Sign Up
+      </button>
+    </div>
+  )}
+</div>
       </div>
 
       {/* MODALS */}
 
       {showLogin && (
         <LoginModal
-          onClose={() => setShowLogin(false)}
-          openSignup={() => {
-            setShowLogin(false);
-            setShowSignup(true);
-          }}
-        />
+  onClose={() => setShowLogin(false)}
+  openSignup={() => {
+    setShowLogin(false);
+    setShowSignup(true);
+  }}
+  onLoginSuccess={(loggedUser) => {
+    setUser(loggedUser);
+  }}
+/>
       )}
 
       {showSignup && (

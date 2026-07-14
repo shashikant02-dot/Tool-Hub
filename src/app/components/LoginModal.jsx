@@ -4,13 +4,12 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoClose, IoEyeOutline } from "react-icons/io5";
 
-export default function LoginModal({ onClose, openSignup  }) {
+export default function LoginModal({ onClose, openSignup,onLoginSuccess }) {
   // --- NEW: state for form fields ---
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
 
   // --- NEW: submit handler ---
   const handleSubmit = async (e) => {
@@ -40,7 +39,7 @@ export default function LoginModal({ onClose, openSignup  }) {
 
       // Save logged in user
       localStorage.setItem("user", JSON.stringify(data.user));
-
+onLoginSuccess(data.user);
       alert("Login Successful ✅");
 
       onClose();
@@ -70,11 +69,13 @@ export default function LoginModal({ onClose, openSignup  }) {
           <p className="text-center text-gray-500 mt-2 text-sm">
             Welcome back! Please sign in to continue
           </p>
-
-          <button className="mt-6 w-full h-12 border border-gray-300 rounded-2xl flex items-center justify-center gap-3 text-gray-700 font-medium hover:bg-gray-50 transition">
-            <FcGoogle size={22} />
+          <a
+            href="/api/auth/google"
+            className="flex items-center justify-center gap-2 border rounded-lg py-2 px-4 hover:bg-gray-50"
+          >
+            <img src="/google-icon.svg" alt="" className="w-5 h-5" />
             Continue with Google
-          </button>
+          </a>
 
           <div className="flex items-center gap-4 my-5">
             <div className="flex-1 h-px bg-gray-300"></div>
@@ -133,17 +134,17 @@ export default function LoginModal({ onClose, openSignup  }) {
           </form>
         </div>
 
-      <div className="border-t border-gray-200 py-4">
-  <p className="text-center text-gray-600 text-sm">
-    Don't have an account?{" "}
-    <span
-      onClick={openSignup}
-      className="font-semibold text-black cursor-pointer hover:underline"
-    >
-      Sign up
-    </span>
-  </p>
-</div>
+        <div className="border-t border-gray-200 py-4">
+          <p className="text-center text-gray-600 text-sm">
+            Don't have an account?{" "}
+            <span
+              onClick={openSignup}
+              className="font-semibold text-black cursor-pointer hover:underline"
+            >
+              Sign up
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
