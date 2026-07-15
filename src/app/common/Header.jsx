@@ -15,12 +15,26 @@ export default function Header() {
   const desktopMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+  const loadUser = async () => {
+    try {
+      const res = await fetch("/api/auth/me");
+      const data = await res.json();
+      if (data.user) {
+        setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        return;
+      }
+    } catch (err) {
+      console.error("Failed to load user:", err);
     }
-  }, []);
+
+    // fallback for existing email/password flow
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setUser(JSON.parse(storedUser));
+  };
+
+  loadUser();
+}, []);
 
   useEffect(() => {
     const handleClick = (e) => {
