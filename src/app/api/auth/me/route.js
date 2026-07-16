@@ -4,18 +4,31 @@ import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
 
 export async function GET(request) {
-  const token = request.cookies.get("token")?.value;
-
-  if (!token) {
-    return NextResponse.json({ user: null }, { status: 200 });
-  }
-
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    await connectDB();
-    const user = await User.findById(decoded.userId).select("-password");
+    const token = request.cookies.get("token")?.value;
 
-    if (!user) return NextResponse.json({ user: null }, { status: 200 });
+    if (!token) {
+      return NextResponse.json({ user: null });
+    }
+
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+
+    await connectDB();
+
+
+    const user = await User.findById(decoded.id)
+      .select("-password");
+
+
+    if (!user) {
+      return NextResponse.json({ user: null });
+    }
+
 
     return NextResponse.json({
       user: {
@@ -25,7 +38,14 @@ export async function GET(request) {
         picture: user.picture,
       },
     });
-  } catch (err) {
-    return NextResponse.json({ user: null }, { status: 200 });
+
+
+  } catch (error) {
+
+    console.log("Auth Error:", error.message);
+
+    return NextResponse.json({
+      user: null,
+    });
   }
 }

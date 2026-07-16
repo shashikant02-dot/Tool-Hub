@@ -53,18 +53,19 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClick);
     };
   }, []);
-  const handleLogout = () => {
-
+  const handleLogout = async () => {
   console.log("logout clicked");
 
+  try {
+    await fetch("/api/auth/logout", { method: "POST" });
+  } catch (err) {
+    console.error("Logout failed:", err);
+  }
+
   localStorage.removeItem("user");
-
   setUser(null);
-
   setShowProfile(false);
-
   setMobileMenu(false);
-
 };
   const navItems = [
     { name: "Home", path: "/" },

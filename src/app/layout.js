@@ -3,7 +3,7 @@ import Header from "./common/Header";
 import Footer from "./common/Footer";
 import { FreeUsageProvider } from "./context/FreeUsageContext";
 import PopupProvider from "./components/PopupProvider";
-
+import Script from "next/script";
 export const metadata = {
 
   metadataBase: new URL("https://yourdomain.com"),
@@ -83,6 +83,7 @@ export default function RootLayout({ children }) {
           {children}
         </FreeUsageProvider>
         <Footer />
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       </body>
     </html>
   );

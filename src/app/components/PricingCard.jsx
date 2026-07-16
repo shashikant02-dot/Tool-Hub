@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
 
@@ -8,8 +8,31 @@ export default function PricingCard() {
   const [showAuth, setShowAuth] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [subscribing, setSubscribing] = useState(false);
 
-  // Credits & Pricing
+ const checkAuth = async () => {
+  try {
+    const res = await fetch("/api/auth/me", {
+      credentials: "include",
+      cache: "no-store",
+    });
+
+    const data = await res.json();
+
+    const loggedIn = !!data.user;
+    setIsLoggedIn(loggedIn);
+
+    return loggedIn;
+  } catch (err) {
+    console.error(err);
+    setIsLoggedIn(false);
+    return false;
+  }
+};
+  useEffect(() => {
+    checkAuth();
+  }, []);
   const plans = {
     120: 460,
     250: 899,
@@ -17,41 +40,113 @@ export default function PricingCard() {
   };
 
   const [credits, setCredits] = useState("120");
+const handleUpgradeClick = () => {
+  if (!isLoggedIn) {
+    setShowAuth(true);
+    return;
+  }
 
+  startSubscription();
+};
+  const startSubscription = async () => {
+    setSubscribing(true);
+
+    try {
+      console.log(
+        `Starting subscription for ${credits} credits (₹${plans[credits]})`,
+      );
+
+      const res = await fetch("/api/payment/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: plans[credits],
+        }),
+      });
+
+      const data = await res.json();
+
+      console.log("Order Data:", data);
+
+      if (!data.order) {
+        throw new Error("Order creation failed");
+      }
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+
+        amount: data.order.amount,
+
+        currency: "INR",
+
+        name: "ToolHub",
+
+        description: `${credits} Credits Plan`,
+
+        order_id: data.order.id,
+
+        handler: function (response) {
+          console.log("Payment Success:", response);
+
+          alert("Payment successful");
+        },
+
+        prefill: {
+          name: "ToolHub User",
+          email: "",
+        },
+
+        theme: {
+          color: "#4f46e5",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+
+      razorpay.open();
+    } catch (error) {
+      console.error("Subscription Error:", error);
+    } finally {
+      setSubscribing(false);
+    }
+  };
+  // useEffect(() => {
+  //   checkAuth();
+  // }, []);
   return (
     <>
       <div className="flex items-center justify-center p-6">
         <div className="w-full max-w-lg rounded-[32px] border border-indigo-100 bg-white p-8 sm:p-10 shadow-[0_8px_20px_rgba(99,102,241,0.18)]">
-          
-          {/* Header */}
           <div className="flex items-center justify-between">
             <h3 className="text-3xl font-bold text-black">Pro</h3>
-
             <span className="rounded-full bg-indigo-50 px-3 py-1 text-md font-semibold text-indigo-600">
               Most Popular
             </span>
           </div>
 
-          {/* Dynamic Pricing */}
           <div className="mt-4 flex items-baseline text-black">
             <span className="text-6xl font-bold tracking-tight">
               ₹{plans[credits]}
             </span>
-
             <span className="ml-2 text-lg font-medium text-gray-400">
               per month
             </span>
           </div>
 
-          {/* Upgrade Button */}
           <button
-            onClick={() => setShowAuth(true)}
-            className="mt-6 w-full rounded-3xl bg-indigo-600 py-3 text-center text-base font-semibold text-white shadow-md transition duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+            onClick={handleUpgradeClick}
+            disabled={subscribing}
+            className="mt-6 w-full rounded-3xl bg-indigo-600 py-3 text-center text-base font-semibold text-white shadow-md transition duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:opacity-50"
           >
-            Upgrade
+            {subscribing
+              ? "Processing..."
+              : isLoggedIn
+                ? "Upgrade"
+                : "Login to Upgrade"}
           </button>
 
-          {/* Credits Selector */}
           <div className="relative mt-4">
             <select
               value={credits}
@@ -77,7 +172,6 @@ export default function PricingCard() {
                   d="M4.5 15.75l7.5-7.5 7.5 7.5"
                 />
               </svg>
-
               <svg
                 className="h-2.5 w-2.5"
                 fill="none"
@@ -94,10 +188,8 @@ export default function PricingCard() {
             </div>
           </div>
 
-          {/* Footer Text */}
           <div className="mt-4 text-center text-[13px] text-gray-400">
             <p>Secured payment • UPI, Cards, Net Banking accepted</p>
-
             <button className="mt-1.5 font-medium text-gray-500 underline transition hover:text-gray-700">
               Want to pay in USD?
             </button>
@@ -105,12 +197,10 @@ export default function PricingCard() {
 
           <hr className="my-6 border-gray-100" />
 
-          {/* Features */}
           <div>
             <h4 className="text-md font-bold text-black">
               All features in Free, plus:
             </h4>
-
             <ul className="mt-4 space-y-3.5">
               {[
                 `${credits} monthly credits`,
@@ -138,7 +228,6 @@ export default function PricingCard() {
                       />
                     </svg>
                   </div>
-
                   <span>{feature}</span>
                 </li>
               ))}
@@ -147,18 +236,15 @@ export default function PricingCard() {
         </div>
       </div>
 
-      {/* Auth Choice Modal */}
       {showAuth && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-[32px] bg-white p-8 shadow-2xl">
             <h2 className="text-center text-3xl font-bold text-gray-900">
               Continue to Upgrade
             </h2>
-
             <p className="mt-2 text-center text-gray-500">
               Please sign in or create an account to continue.
             </p>
-
             <div className="mt-8 space-y-3">
               <button
                 onClick={() => {
@@ -169,7 +255,6 @@ export default function PricingCard() {
               >
                 Log In
               </button>
-
               <button
                 onClick={() => {
                   setShowAuth(false);
@@ -180,7 +265,6 @@ export default function PricingCard() {
                 Create Account
               </button>
             </div>
-
             <button
               onClick={() => setShowAuth(false)}
               className="mt-4 w-full text-sm text-gray-500 hover:text-gray-700"
@@ -191,11 +275,34 @@ export default function PricingCard() {
         </div>
       )}
 
-      {/* Login Modal */}
-      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
+      {showLogin && (
+        <LoginModal
+  onClose={() => setShowLogin(false)}
+  onLoginSuccess={async () => {
+    setShowLogin(false);
 
-      {/* Signup Modal */}
-      {showSignup && <SignupModal onClose={() => setShowSignup(false)} />}
+    const loggedIn = await checkAuth();
+
+    if (loggedIn) {
+      startSubscription();
+    }
+  }}
+/>
+      )}
+      {showSignup && (
+        <SignupModal
+  onClose={() => setShowSignup(false)}
+  onSignupSuccess={async () => {
+    setShowSignup(false);
+
+    const loggedIn = await checkAuth();
+
+    if (loggedIn) {
+      startSubscription();
+    }
+  }}
+/>
+      )}
     </>
   );
 }
