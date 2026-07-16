@@ -35,6 +35,17 @@ export default function Header() {
 
   loadUser();
 }, []);
+// ✅ NEW: keep the header in sync when login/signup happens elsewhere on
+  // the site (e.g. from the "free limit reached" popup on a tool page)
+  useEffect(() => {
+    const syncUser = () => {
+      const storedUser = localStorage.getItem("user");
+      setUser(storedUser ? JSON.parse(storedUser) : null);
+    };
+
+    window.addEventListener("authchange", syncUser);
+    return () => window.removeEventListener("authchange", syncUser);
+  }, []);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -66,6 +77,7 @@ export default function Header() {
   setUser(null);
   setShowProfile(false);
   setMobileMenu(false);
+   window.dispatchEvent(new Event("authchange"));
 };
   const navItems = [
     { name: "Home", path: "/" },

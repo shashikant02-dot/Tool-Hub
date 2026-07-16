@@ -23,6 +23,8 @@ export function FreeUsageProvider({ children }) {
 
   const [showPopup, setShowPopup] = useState(false);
   const [mounted, setMounted] = useState(false);
+  // ✅ NEW: tracks whether the visitor is logged in on the site
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
   setMounted(true);
@@ -40,6 +42,8 @@ export function FreeUsageProvider({ children }) {
   } else if (savedUses) {
     setFreeUses(JSON.parse(savedUses));
   }
+
+  setIsLoggedIn(!!localStorage.getItem("user"));
 }, []);
 
   useEffect(() => {
@@ -51,13 +55,38 @@ export function FreeUsageProvider({ children }) {
     localStorage.setItem("freeUsesLastReset", Date.now().toString());
   }
 }, [freeUses, mounted]);
-  // ✅ FIXED: per-tool limit check
+
+  // ✅ NEW: stay in sync with login/signup/logout happening anywhere on the
+  // site (header, the free-limit popup, etc). Everywhere the user logs in
+  // or out, a global "authchange" event is fired.
+  useEffect(() => {
+    const syncAuth = () => {
+      const loggedIn = !!localStorage.getItem("user");
+      setIsLoggedIn(loggedIn);
+
+      // Once someone logs in / signs up, they're no longer limited —
+      // close the "free limit reached" popup automatically.
+      if (loggedIn) setShowPopup(false);
+    };
+
+    window.addEventListener("authchange", syncAuth);
+    window.addEventListener("storage", syncAuth);
+
+    return () => {
+      window.removeEventListener("authchange", syncAuth);
+      window.removeEventListener("storage", syncAuth);
+    };
+  }, []);
+
+  // ✅ FIXED: per-tool limit check — logged-in users are never limited
   const checkLimit = (tool) => {
+    if (isLoggedIn) return false;
     return (freeUses[tool] || 0) >= DEFAULT_LIMIT;
   };
 
-  // ✅ FIXED: safe increment
+  // ✅ FIXED: safe increment — no need to track usage once logged in
   const increaseUsage = (tool) => {
+    if (isLoggedIn) return;
     setFreeUses((prev) => ({
       ...prev,
       [tool]: (prev[tool] || 0) + 1,
@@ -74,6 +103,7 @@ export function FreeUsageProvider({ children }) {
         checkLimit,
         increaseUsage,
         mounted,
+        isLoggedIn,
       }}
     >
       {children}

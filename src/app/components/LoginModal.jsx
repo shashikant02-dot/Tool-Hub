@@ -38,8 +38,14 @@ export default function LoginModal({ onClose, openSignup,onLoginSuccess }) {
       }
 
       // Save logged in user
+    // Save logged in user
       localStorage.setItem("user", JSON.stringify(data.user));
-onLoginSuccess(data.user);
+
+      // 🔔 NEW: tell the rest of the site (Header, free-usage limit, etc)
+      // that the user just logged in, wherever this modal was opened from
+      window.dispatchEvent(new Event("authchange"));
+
+      onLoginSuccess?.(data.user);
       alert("Login Successful ✅");
 
       onClose();
