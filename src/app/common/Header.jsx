@@ -300,6 +300,9 @@ ref={mobileMenuRef}
             setShowSignup(false);
             setShowLogin(true);
           }}
+          onSignupSuccess={(newUser) => {
+            setUser(newUser);
+          }}
         />
       )}
     </>

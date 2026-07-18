@@ -5,9 +5,11 @@ import { X, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
+import { useFreeUsage } from "@/app/context/FreeUsageContext";
 
 export default function SubscriptionPopup({ open, onClose }) {
   const router = useRouter();
+  const { isLoggedIn } = useFreeUsage();
   // "offer" = the free-limit-reached screen, "login"/"signup" = auth forms
   const [view, setView] = useState("offer");
 
@@ -18,9 +20,6 @@ export default function SubscriptionPopup({ open, onClose }) {
     onClose();
   };
 
-  // Called after a successful login OR signup — the user is now logged
-  // in on the site (cookie + localStorage set, header already updated
-  // via the global "authchange" event), so just close everything.
   const handleAuthSuccess = () => {
     setView("offer");
     onClose();
@@ -64,32 +63,41 @@ export default function SubscriptionPopup({ open, onClose }) {
         </h2>
 
         <p className="text-center text-gray-500 mt-4">
-          You've used all your 3 free conversions. Log in or create a free
-          account to keep using this tool.
+          {isLoggedIn
+            ? "You've used all your 3 free conversions. Upgrade to a paid plan for unlimited access."
+            : "You've used all your 3 free conversions. Log in or create a free account, then upgrade for unlimited access."}
         </p>
 
-        <button
-          onClick={() => setView("login")}
-          className="w-full mt-7 bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
-        >
-          Log In
-        </button>
+        {!isLoggedIn && (
+          <>
+            <button
+              onClick={() => setView("login")}
+              className="w-full mt-7 bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
+            >
+              Log In
+            </button>
 
-        <button
-          onClick={() => setView("signup")}
-          className="w-full mt-3 border border-indigo-600 text-indigo-600 py-3 rounded-xl font-semibold hover:bg-indigo-50 transition"
-        >
-          Sign Up 
-        </button>
+            <button
+              onClick={() => setView("signup")}
+              className="w-full mt-3 border border-indigo-600 text-indigo-600 py-3 rounded-xl font-semibold hover:bg-indigo-50 transition"
+            >
+              Sign Up
+            </button>
+          </>
+        )}
 
         <button
           onClick={() => {
             handleClose();
             router.push("/pricing");
           }}
-          className="w-full mt-4 text-sm text-gray-500 underline"
+          className={
+            isLoggedIn
+              ? "w-full mt-7 bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
+              : "w-full mt-4 text-sm text-gray-500 underline"
+          }
         >
-          Or view paid plans
+          {isLoggedIn ? "Upgrade Now" : "Or view paid plans"}
         </button>
       </div>
     </div>

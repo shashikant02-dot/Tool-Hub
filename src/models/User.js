@@ -8,6 +8,11 @@ const UserSchema = new mongoose.Schema(
     googleId: { type: String, unique: true, sparse: true },
     picture: { type: String },
     provider: { type: String, enum: ["credentials", "google"], default: "credentials" },
+
+    // ✅ Payment / Pro access tracking
+    isPro: { type: Boolean, default: false }, // true only after a verified payment
+    credits: { type: Number, default: 0 }, // total credits purchased (informational)
+    proExpiry: { type: Date, default: null }, // plan valid till this date (30 days)
   },
   { timestamps: true }
 );

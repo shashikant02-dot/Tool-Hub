@@ -19,54 +19,79 @@ const DEFAULT_USES = {
   "image-to-code": 0,
 };
 export function FreeUsageProvider({ children }) {
- const [freeUses, setFreeUses] = useState(DEFAULT_USES);
+  const [freeUses, setFreeUses] = useState(DEFAULT_USES);
 
   const [showPopup, setShowPopup] = useState(false);
   const [mounted, setMounted] = useState(false);
-  // ✅ NEW: tracks whether the visitor is logged in on the site
+  // ✅ tracks whether the visitor is logged in on the site
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // ✅ tracks whether the visitor has an ACTIVE paid plan (unlimited use)
+  const [isPro, setIsPro] = useState(false);
+
+  // Ask the server who's actually logged in / paid — localStorage alone
+  // can't be trusted for this and can go stale (e.g. expired plan).
+  const refreshAuthStatus = async () => {
+    try {
+      const res = await fetch("/api/auth/me", {
+        credentials: "include",
+        cache: "no-store",
+      });
+      const data = await res.json();
+
+      const loggedIn = !!data.user;
+      setIsLoggedIn(loggedIn);
+      setIsPro(!!data.user?.isPro);
+
+      if (loggedIn) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+      } else {
+        localStorage.removeItem("user");
+      }
+
+      // Once someone is on an active paid plan, they're unlimited —
+      // close the "free limit reached" popup automatically.
+      if (data.user?.isPro) setShowPopup(false);
+    } catch (err) {
+      console.error("Auth status check failed:", err);
+    }
+  };
 
   useEffect(() => {
-  setMounted(true);
+    setMounted(true);
 
-  const savedUses = localStorage.getItem("freeUses");
-  const lastReset = localStorage.getItem("freeUsesLastReset");
+    const savedUses = localStorage.getItem("freeUses");
+    const lastReset = localStorage.getItem("freeUsesLastReset");
 
-  const now = Date.now();
-  const DAY = 24 * 60 * 60 * 1000;
+    const now = Date.now();
+    const DAY = 24 * 60 * 60 * 1000;
 
-  if (!lastReset || now - Number(lastReset) >= DAY) {
-    localStorage.setItem("freeUses", JSON.stringify(DEFAULT_USES));
-    localStorage.setItem("freeUsesLastReset", now.toString());
-    setFreeUses(DEFAULT_USES);
-  } else if (savedUses) {
-    setFreeUses(JSON.parse(savedUses));
-  }
+    if (!lastReset || now - Number(lastReset) >= DAY) {
+      localStorage.setItem("freeUses", JSON.stringify(DEFAULT_USES));
+      localStorage.setItem("freeUsesLastReset", now.toString());
+      setFreeUses(DEFAULT_USES);
+    } else if (savedUses) {
+      setFreeUses(JSON.parse(savedUses));
+    }
 
-  setIsLoggedIn(!!localStorage.getItem("user"));
-}, []);
+    refreshAuthStatus();
+  }, []);
 
   useEffect(() => {
-  if (!mounted) return;
+    if (!mounted) return;
 
-  localStorage.setItem("freeUses", JSON.stringify(freeUses));
+    localStorage.setItem("freeUses", JSON.stringify(freeUses));
 
-  if (!localStorage.getItem("freeUsesLastReset")) {
-    localStorage.setItem("freeUsesLastReset", Date.now().toString());
-  }
-}, [freeUses, mounted]);
+    if (!localStorage.getItem("freeUsesLastReset")) {
+      localStorage.setItem("freeUsesLastReset", Date.now().toString());
+    }
+  }, [freeUses, mounted]);
 
-  // ✅ NEW: stay in sync with login/signup/logout happening anywhere on the
-  // site (header, the free-limit popup, etc). Everywhere the user logs in
-  // or out, a global "authchange" event is fired.
+  // ✅ stay in sync with login/signup/logout/payment happening anywhere on
+  // the site. Everywhere the user logs in, signs up, or pays, a global
+  // "authchange" event is fired.
   useEffect(() => {
     const syncAuth = () => {
-      const loggedIn = !!localStorage.getItem("user");
-      setIsLoggedIn(loggedIn);
-
-      // Once someone logs in / signs up, they're no longer limited —
-      // close the "free limit reached" popup automatically.
-      if (loggedIn) setShowPopup(false);
+      refreshAuthStatus();
     };
 
     window.addEventListener("authchange", syncAuth);
@@ -78,15 +103,17 @@ export function FreeUsageProvider({ children }) {
     };
   }, []);
 
-  // ✅ FIXED: per-tool limit check — logged-in users are never limited
+  // ✅ Per-tool limit check — ONLY an active paid plan removes the limit.
+  // Being logged in (but not paid) still counts against the free limit,
+  // it just shows an "upgrade" prompt instead of a "login" prompt.
   const checkLimit = (tool) => {
-    if (isLoggedIn) return false;
+    if (isPro) return false;
     return (freeUses[tool] || 0) >= DEFAULT_LIMIT;
   };
 
-  // ✅ FIXED: safe increment — no need to track usage once logged in
+  // ✅ Safe increment — no need to track usage once on an active paid plan
   const increaseUsage = (tool) => {
-    if (isLoggedIn) return;
+    if (isPro) return;
     setFreeUses((prev) => ({
       ...prev,
       [tool]: (prev[tool] || 0) + 1,
@@ -104,6 +131,7 @@ export function FreeUsageProvider({ children }) {
         increaseUsage,
         mounted,
         isLoggedIn,
+        isPro,
       }}
     >
       {children}

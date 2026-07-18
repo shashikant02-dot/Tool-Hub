@@ -11,24 +11,19 @@ export async function GET(request) {
       return NextResponse.json({ user: null });
     }
 
-
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
-
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     await connectDB();
 
-
-    const user = await User.findById(decoded.id)
-      .select("-password");
-
+    const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
       return NextResponse.json({ user: null });
     }
 
+    // Pro is only "active" if it hasn't expired
+    const isProActive =
+      user.isPro && user.proExpiry && new Date(user.proExpiry) > new Date();
 
     return NextResponse.json({
       user: {
@@ -36,12 +31,12 @@ export async function GET(request) {
         name: user.name,
         email: user.email,
         picture: user.picture,
+        isPro: isProActive,
+        credits: user.credits,
+        proExpiry: user.proExpiry,
       },
     });
-
-
   } catch (error) {
-
     console.log("Auth Error:", error.message);
 
     return NextResponse.json({

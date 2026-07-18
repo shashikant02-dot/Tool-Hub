@@ -11,25 +11,25 @@ export default function PricingCard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
 
- const checkAuth = async () => {
-  try {
-    const res = await fetch("/api/auth/me", {
-      credentials: "include",
-      cache: "no-store",
-    });
+  const checkAuth = async () => {
+    try {
+      const res = await fetch("/api/auth/me", {
+        credentials: "include",
+        cache: "no-store",
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    const loggedIn = !!data.user;
-    setIsLoggedIn(loggedIn);
+      const loggedIn = !!data.user;
+      setIsLoggedIn(loggedIn);
 
-    return loggedIn;
-  } catch (err) {
-    console.error(err);
-    setIsLoggedIn(false);
-    return false;
-  }
-};
+      return loggedIn;
+    } catch (err) {
+      console.error(err);
+      setIsLoggedIn(false);
+      return false;
+    }
+  };
   useEffect(() => {
     checkAuth();
   }, []);
@@ -40,14 +40,14 @@ export default function PricingCard() {
   };
 
   const [credits, setCredits] = useState("120");
-const handleUpgradeClick = () => {
-  if (!isLoggedIn) {
-    setShowAuth(true);
-    return;
-  }
+  const handleUpgradeClick = () => {
+    if (!isLoggedIn) {
+      setShowAuth(true);
+      return;
+    }
 
-  startSubscription();
-};
+    startSubscription();
+  };
   const startSubscription = async () => {
     setSubscribing(true);
 
@@ -87,10 +87,39 @@ const handleUpgradeClick = () => {
 
         order_id: data.order.id,
 
-        handler: function (response) {
+        handler: async function (response) {
           console.log("Payment Success:", response);
 
-          alert("Payment successful");
+          try {
+            const verifyRes = await fetch("/api/payment/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                credits: Number(credits),
+              }),
+            });
+
+            const verifyData = await verifyRes.json();
+
+            if (!verifyRes.ok || !verifyData.success) {
+              throw new Error(verifyData.error || "Verification failed");
+            }
+
+            // 🔔 Let the rest of the site (limit popup, header, etc.) know
+            // this user is now Pro / unlimited.
+            window.dispatchEvent(new Event("authchange"));
+
+            alert("Payment successful! You now have unlimited access for 30 days.");
+          } catch (err) {
+            console.error("Verification Error:", err);
+            alert(
+              "Payment received but verification failed. Please contact support with your payment ID: " +
+                response.razorpay_payment_id
+            );
+          }
         },
 
         prefill: {
@@ -112,9 +141,7 @@ const handleUpgradeClick = () => {
       setSubscribing(false);
     }
   };
-  // useEffect(() => {
-  //   checkAuth();
-  // }, []);
+
   return (
     <>
       <div className="flex items-center justify-center p-6">
@@ -277,31 +304,31 @@ const handleUpgradeClick = () => {
 
       {showLogin && (
         <LoginModal
-  onClose={() => setShowLogin(false)}
-  onLoginSuccess={async () => {
-    setShowLogin(false);
+          onClose={() => setShowLogin(false)}
+          onLoginSuccess={async () => {
+            setShowLogin(false);
 
-    const loggedIn = await checkAuth();
+            const loggedIn = await checkAuth();
 
-    if (loggedIn) {
-      startSubscription();
-    }
-  }}
-/>
+            if (loggedIn) {
+              startSubscription();
+            }
+          }}
+        />
       )}
       {showSignup && (
         <SignupModal
-  onClose={() => setShowSignup(false)}
-  onSignupSuccess={async () => {
-    setShowSignup(false);
+          onClose={() => setShowSignup(false)}
+          onSignupSuccess={async () => {
+            setShowSignup(false);
 
-    const loggedIn = await checkAuth();
+            const loggedIn = await checkAuth();
 
-    if (loggedIn) {
-      startSubscription();
-    }
-  }}
-/>
+            if (loggedIn) {
+              startSubscription();
+            }
+          }}
+        />
       )}
     </>
   );

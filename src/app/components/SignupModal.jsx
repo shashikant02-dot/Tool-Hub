@@ -4,15 +4,13 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoClose, IoEyeOutline } from "react-icons/io5";
 
-export default function SignupModal({ onClose, openLogin }) {
-  // --- NEW: state for form fields ---
+export default function SignupModal({ onClose, openLogin, onSignupSuccess }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // --- NEW: submit handler ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -28,7 +26,11 @@ export default function SignupModal({ onClose, openLogin }) {
       const data = await res.json();
 
       if (res.ok) {
-        onClose(); // close modal, or redirect to login/dashboard
+        localStorage.setItem("user", JSON.stringify(data.user));
+        window.dispatchEvent(new Event("authchange"));
+
+        onSignupSuccess?.(data.user);
+        onClose();
       } else {
         setError(data.error || "Something went wrong");
       }
@@ -57,8 +59,8 @@ export default function SignupModal({ onClose, openLogin }) {
           <p className="text-center text-gray-500 mt-2 text-sm">
             Welcome! Please fill in the details to get started.
           </p>
-
-          <a
+<a
+          
             href="/api/auth/google"
             className="mt-6 flex items-center justify-center gap-3 h-12 rounded-xl border border-gray-300 hover:bg-gray-50 transition"
           >
@@ -72,9 +74,7 @@ export default function SignupModal({ onClose, openLogin }) {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          {/* --- NEW: wrapped inputs in a <form> and connected them --- */}
           <form onSubmit={handleSubmit}>
-            {/* --- NEW: error message --- */}
             {error && (
               <p className="text-red-500 text-sm text-center mb-3">{error}</p>
             )}
