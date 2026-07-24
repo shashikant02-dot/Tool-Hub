@@ -4,65 +4,77 @@ const CardInfo3 = ({ heading, subheading, steps = [] }) => {
   const safeSteps = Array.isArray(steps) ? steps : [];
 
   return (
-    <section className="relative bg-gradient-to-b from-slate-50 via-white to-white py-24 px-6 sm:px-12 lg:px-24 overflow-hidden">
+    <section className="relative overflow-hidden py-28 px-6 sm:px-8 lg:px-10">
 
-      {/* soft background glow */}
-      <div className="absolute -top-20 left-1/2 -translate-x-1/2 h-96 w-96 bg-indigo-200 blur-3xl opacity-20 rounded-full" />
+      {/* Background */}
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_50%_15%,rgba(99,102,241,.18),transparent_55%)]" />
+      <div className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-purple-700/10 blur-[160px]" />
 
-      {/* HEADER */}
-      <div className="max-w-6xl mx-auto text-center mb-20 relative z-10">
+      {/* Header */}
+      <div className="mx-auto mb-20 max-w-5xl text-center">
 
-        <span className="inline-flex items-center rounded-full border border-indigo-100 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 mb-5 shadow-sm">
-          Features & Benefits
-        </span>
+        <div className="mb-6 inline-flex items-center rounded-full border border-white/10 bg-white/[0.05] px-5 py-2 backdrop-blur-xl">
+          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-sm font-semibold text-transparent">
+            FEATURES & BENEFITS
+          </span>
+        </div>
 
-        <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+        <h2 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-white">
           {heading}
         </h2>
 
-        <p className="mt-5 text-lg text-slate-600 max-w-3xl mx-auto leading-8">
+        <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-gray-400">
           {subheading}
         </p>
+
       </div>
 
-      {/* CARDS */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+      {/* Cards */}
+      <div className="mx-auto grid max-w-7xl gap-7 md:grid-cols-2 xl:grid-cols-3">
 
         {safeSteps.map((step, index) => (
           <div
             key={index}
             className="
-              group relative
-              rounded-2xl
-              bg-white/80 backdrop-blur-xl
-              border border-slate-200
-              p-7
-              transition-all duration-300
-              hover:-translate-y-2
-              hover:shadow-2xl
-              hover:border-indigo-200
+              group
+              relative
+              overflow-hidden
+              rounded-3xl
+              border
+              border-white/10
+              bg-white/[0.04]
+              backdrop-blur-xl
+              p-8
+              transition-all
+              duration-500
+              hover:-translate-y-3
+              hover:border-indigo-500/40
+              hover:shadow-[0_20px_60px_rgba(99,102,241,.25)]
             "
           >
-            {/* hover glow */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-100 via-transparent to-purple-100 opacity-0 group-hover:opacity-100 transition" />
+            {/* Hover Glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
-            {/* number badge */}
-            <div className="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-lg shadow-lg">
-              {index + 1}
+            {/* Number */}
+            <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-xl font-bold text-white shadow-xl">
+              {String(index + 1).padStart(2, "0")}
             </div>
 
-            {/* title */}
-            <h3 className="relative z-10 text-lg font-semibold text-slate-900 mb-3 group-hover:text-indigo-600 transition">
+            {/* Title */}
+            <h3 className="relative z-10 mt-8 text-2xl font-bold text-white transition group-hover:text-indigo-300">
               {step.title}
             </h3>
 
-            {/* description */}
-            <p className="relative z-10 text-md leading-7 text-slate-600">
+            {/* Description */}
+            <p className="relative z-10 mt-4 leading-8 text-gray-400">
               {step.description}
             </p>
 
-            {/* animated underline */}
-            <div className="relative z-10 mt-6 h-[2px] w-0 bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500 group-hover:w-full" />
+            {/* Bottom Gradient */}
+            <div className="relative z-10 mt-8 h-[3px] w-0 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-500 group-hover:w-full" />
+
+            {/* Corner Glow */}
+            <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
           </div>
         ))}
 

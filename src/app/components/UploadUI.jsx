@@ -23,23 +23,27 @@ export default function UploadUI({
   const [code, setCode] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
 
+  const used = freeUses?.[toolName] || 0;
+
   function openFile() {
-    if ((freeUses[toolName] || 0) >= 3) {
+    if (used >= 3) {
       setShowPopup(true);
       return;
     }
-    fileRef.current.click();
+
+    fileRef.current?.click();
   }
 
   async function uploadFile() {
     if (!file) return alert("Select file first");
 
-    if ((freeUses[toolName] || 0) >= 3) {
+    if (used >= 3) {
       setShowPopup(true);
       return;
     }
 
     const formData = new FormData();
+
     formData.append("file", file);
     formData.append("format", format);
 
@@ -56,7 +60,6 @@ export default function UploadUI({
       });
 
       const data = await res.json();
-      setLoading(false);
 
       if (res.ok && (data.code || data.downloadUrl)) {
         setFreeUses((prev) => ({
@@ -65,104 +68,123 @@ export default function UploadUI({
         }));
       }
 
-      if (data.downloadUrl) {
-        setDownloadUrl(data.downloadUrl);
-      }
-
-      if (data.code) {
-        setCode(data.code);
-      } else {
-        setCode("Error generating result. Please try again.");
-      }
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
+      setDownloadUrl(data.downloadUrl || "");
+      setCode(data.code || "Error generating result.");
+    } catch (err) {
+      console.error(err);
       alert("Something went wrong!");
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="mt-24 flex justify-center px-6 py-10 bg-gradient-to-br from-slate-50 via-white to-indigo-50">
-      <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-6">
+    <section className="relative overflow-hidden mt-24 px-6 py-10">
 
-        {/* LEFT SIDE */}
-        <div className="relative overflow-hidden border border-slate-200 rounded-3xl p-10 flex flex-col items-center justify-center bg-white shadow-sm">
-          <div className="absolute -top-20 -left-20 h-64 w-64 bg-indigo-100 rounded-full blur-3xl opacity-40" />
+      {/* Background */}
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_50%_15%,rgba(99,102,241,.15),transparent_55%)]" />
+      <div className="absolute left-1/2 top-0 -z-10 h-[550px] w-[900px] -translate-x-1/2 rounded-full bg-purple-700/10 blur-[170px]" />
 
-          <div
-            className="relative w-16 h-16 flex items-center justify-center border border-dashed border-indigo-300 text-indigo-600 rounded-full mb-4 cursor-pointer bg-indigo-50"
-            onClick={openFile}
-          >
-            <FaFileImage className="text-2xl" />
-          </div>
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2">
 
-          <h2 className="text-xl font-semibold text-slate-900">
-            Drag and drop or
-          </h2>
+        {/* LEFT */}
 
-          <p className="text-sm text-slate-500 mt-2 font-medium text-center">
-            {fileText}
-          </p>
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-10">
 
-          <input
-            type="file"
-            ref={fileRef}
-            className="hidden"
-            onChange={(e) => {
-              if (e.target.files?.[0]) {
-                setFile(e.target.files[0]);
-                setCode("");
-                setDownloadUrl("");
-              }
-            }}
-          />
+          <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-600/10 blur-[120px]" />
 
-          <button
-            className="mt-6 px-6 py-2 w-[28vw] max-w-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl hover:opacity-90 transition shadow-md flex items-center justify-center gap-2"
-            onClick={openFile}
-          >
-            Upload File
-            <IoIosCloudUpload className="text-2xl" />
-          </button>
+          <div className="relative flex flex-col items-center justify-center text-center">
 
-          <p className="text-slate-400 mt-2 text-sm">
-            or drag and drop your file here
-          </p>
-
-          {file && (
-            <p className="text-green-600 mt-3 font-medium">{file.name}</p>
-          )}
-
-          {file && (
-            <button
-              onClick={uploadFile}
-              disabled={loading || (freeUses[toolName] || 0) >= 3}
-              className="mt-4 bg-slate-900 text-white px-6 py-2 rounded-xl hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            <div
+              onClick={openFile}
+              className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-dashed border-white/20 bg-white/[0.05]"
             >
-              {loading
-                ? "Processing..."
-                : (freeUses[toolName] || 0) >= 3
-                ? "Limit Reached"
-                : "Submit"}
+              <FaFileImage className="text-2xl text-indigo-400" />
+            </div>
+
+            <h2 className="mt-5 text-xl font-semibold text-white">
+              Drag and drop or
+            </h2>
+
+            <p className="mt-2 text-sm font-medium text-gray-400">
+              {fileText}
+            </p>
+
+            <input
+              ref={fileRef}
+              type="file"
+              className="hidden"
+              onChange={(e) => {
+                if (e.target.files?.[0]) {
+                  setFile(e.target.files[0]);
+                  setCode("");
+                  setDownloadUrl("");
+                }
+              }}
+            />
+
+            <button
+              onClick={openFile}
+              className="mt-6 flex w-[28vw] max-w-xs items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-6 py-3 font-semibold text-white transition-all duration-300 hover:scale-105"
+            >
+              Upload File
+              <IoIosCloudUpload className="text-2xl" />
             </button>
-          )}
+
+            <p className="mt-3 text-sm text-gray-500">
+              or drag and drop your file here
+            </p>
+
+            {file && (
+              <div className="mt-4 rounded-xl border border-green-500/20 bg-green-500/10 px-4 py-3 text-green-400">
+                {file.name}
+              </div>
+            )}
+
+                        {file && (
+                <button
+                  onClick={uploadFile}
+                  disabled={loading || used >= 3}
+                  className="mt-4 rounded-2xl bg-white px-6 py-3 font-semibold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {loading
+                    ? "Processing..."
+                    : used >= 3
+                    ? "Limit Reached"
+                    : "Submit"}
+                </button>
+              )}
+          </div>
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="relative overflow-hidden border border-slate-200 rounded-3xl p-6 bg-white flex flex-col h-[450px] shadow-sm">
-          <div className="absolute -bottom-20 -right-20 h-64 w-64 bg-purple-100 rounded-full blur-3xl opacity-40" />
+
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 flex flex-col h-[450px]">
+
+          <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-purple-700/10 blur-[120px]" />
 
           {!code ? (
-            <div className="flex-grow flex flex-col items-center justify-center text-center">
-              <h2 className="text-2xl font-bold text-slate-500">{title}</h2>
-              <p className="text-base text-slate-400 mt-2 max-w-[280px]">
+            <div className="flex flex-grow flex-col items-center justify-center text-center">
+
+              <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]">
+                <FaFileImage className="text-4xl text-indigo-400" />
+              </div>
+
+              <h2 className="text-2xl font-bold text-white">
+                {title}
+              </h2>
+
+              <p className="mt-3 max-w-xs text-base text-gray-400">
                 {subtitle}
               </p>
+
             </div>
           ) : (
-            <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-slate-800">
+            <div className="flex h-full flex-col">
+
+              <div className="mb-4 flex items-center justify-between">
+
+                <h2 className="text-xl font-semibold text-white">
                   Generated Code
                 </h2>
 
@@ -170,20 +192,24 @@ export default function UploadUI({
                   <a
                     href={downloadUrl}
                     download
-                    className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90"
+                    className="rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
                   >
                     Download
                   </a>
                 )}
+
               </div>
 
-              <pre className="bg-slate-900 text-green-400 text-xs p-4 rounded-xl overflow-auto flex-grow font-mono whitespace-pre-wrap">
+              <pre className="flex-grow overflow-auto rounded-2xl border border-white/10 bg-[#0b0b13] p-4 font-mono text-xs whitespace-pre-wrap text-green-400">
                 {code}
               </pre>
+
             </div>
           )}
+
         </div>
+
       </div>
-    </div>
+    </section>
   );
 }

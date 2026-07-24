@@ -7,36 +7,64 @@ export default function Boost() {
   ];
 
   return (
-    <section className="py-18">
-      <div className="max-w-7xl mx-auto px-6">
-        
-      
+    <section className="relative w-full py-24">
+
+      <div className="mx-auto max-w-7xl px-6">
+
+        {/* Section Heading */}
+        <div className="mb-12 text-center">
+
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-purple-400">
+            Built for productivity
+          </p>
+
+          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+            Everything you need.
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              {" "}All in one place.
+            </span>
+          </h2>
+
+        </div>
+
 
         {/* Stats Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
           {stats.map((item, index) => (
+
             <div
               key={index}
-              className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/40 hover:bg-white/[0.08] hover:shadow-2xl hover:shadow-purple-900/20"
             >
-              {/* Gradient Glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-              {/* Content */}
-              <div className="relative z-10">
-                <h3 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
+              {/* Glow */}
+              <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-600/20 opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-100" />
+
+
+              {/* Number */}
+              <h3 className="relative text-4xl font-extrabold tracking-tight sm:text-5xl">
+
+                <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                   {item.value}
-                </h3>
+                </span>
 
-                <p className="mt-4 text-lg font-medium text-slate-600">
-                  {item.label}
-                </p>
-              </div>
+              </h3>
+
+
+              {/* Label */}
+              <p className="relative mt-4 text-sm font-medium text-gray-400">
+                {item.label}
+              </p>
+
             </div>
+
           ))}
+
         </div>
 
       </div>
+
     </section>
   );
 }

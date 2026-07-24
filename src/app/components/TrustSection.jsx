@@ -20,77 +20,111 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section className="relative py-32 overflow-hidden bg-[#f8fafc]">
+    <section className="relative overflow-hidden bg-[#030303] py-32">
 
-      {/* Background Gradient Orbs */}
-      <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-indigo-400/20 blur-[140px]" />
-      <div className="absolute top-1/2 right-0 h-[450px] w-[450px] rounded-full bg-pink-400/20 blur-[140px]" />
-      <div className="absolute bottom-0 left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-purple-400/20 blur-[140px]" />
+      {/* Background Glow */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(50,20,90,0.3),transparent_65%)]" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="pointer-events-none absolute -left-40 top-20 h-[450px] w-[450px] rounded-full bg-purple-700/10 blur-[140px]" />
+
+      <div className="pointer-events-none absolute -right-40 bottom-0 h-[450px] w-[450px] rounded-full bg-blue-700/10 blur-[140px]" />
+
+
+      <div className="relative mx-auto max-w-7xl px-6">
+
 
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto">
+        <div className="mx-auto max-w-3xl text-center">
 
-         
-          <h2 className="mt-6 text-5xl font-extrabold tracking-tight">
-            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
-              How It Works
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-purple-400">
+            Simple Process
+          </p>
+
+          <h2 className="mt-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+
+            How It{" "}
+
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Works
             </span>
+
           </h2>
 
-          <p className="mt-5 text-lg text-slate-600">
-            A clean 3-step process designed for speed, simplicity and modern UX.
+          <p className="mt-5 text-lg leading-relaxed text-gray-400">
+            A simple three-step process designed to make your work faster,
+            easier and more efficient.
           </p>
+
         </div>
 
-        {/* Steps */}
-        <div className="relative mt-24 grid grid-cols-1 md:grid-cols-3 gap-10">
 
-          {/* Animated connecting line */}
-          <div className="hidden md:block absolute top-20 left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 animate-pulse" />
+        {/* Steps */}
+        <div className="relative mt-24 grid grid-cols-1 gap-8 md:grid-cols-3">
+
+
+          {/* Connecting Line */}
+          <div className="absolute left-[18%] right-[18%] top-[80px] hidden h-px bg-gradient-to-r from-indigo-500/20 via-purple-500/70 to-pink-500/20 md:block" />
+
 
           {STEPS.map((step, i) => {
+
             const Icon = step.icon;
 
             return (
+
               <div
                 key={i}
-                className="group relative p-10 rounded-3xl border border-white/40 bg-white/60 backdrop-blur-xl shadow-lg transition-all duration-300 hover:-translate-y-4 hover:shadow-2xl"
+                className="group relative rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl transition-all duration-300 hover:-translate-y-3 hover:border-purple-500/40 hover:bg-white/[0.08] hover:shadow-2xl hover:shadow-purple-900/20"
               >
 
-                {/* Hover Glow Layer */}
-                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10" />
+                {/* Hover Glow */}
+                <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-purple-600/20 opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-100" />
 
-                <div className="relative z-10 text-center">
+
+                <div className="relative z-10">
+
 
                   {/* Icon */}
-                  <div className="mx-auto w-20 h-20 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-400/30">
-                    <Icon className="text-white" size={32} />
+                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 shadow-xl shadow-purple-900/30 transition duration-300 group-hover:scale-110">
+
+                    <Icon
+                      className="text-white"
+                      size={32}
+                      strokeWidth={1.8}
+                    />
+
                   </div>
+
 
                   {/* Step Number */}
-                  <div className="mt-4 text-sm font-semibold text-indigo-600">
-                    STEP {i + 1}
+                  <div className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-purple-400">
+                    Step {i + 1}
                   </div>
 
+
                   {/* Title */}
-                  <h3 className="mt-3 text-2xl font-bold text-slate-900">
+                  <h3 className="mt-3 text-2xl font-bold text-white">
                     {step.title}
                   </h3>
 
+
                   {/* Description */}
-                  <p className="mt-3 text-slate-600 leading-relaxed">
+                  <p className="mt-4 leading-relaxed text-gray-400">
                     {step.desc}
                   </p>
 
                 </div>
+
               </div>
+
             );
+
           })}
+
         </div>
 
       </div>
+
     </section>
   );
 }

@@ -4,16 +4,16 @@ import Footer from "./common/Footer";
 import { FreeUsageProvider } from "./context/FreeUsageContext";
 import PopupProvider from "./components/PopupProvider";
 import Script from "next/script";
-export const metadata = {
 
+export const metadata = {
   metadataBase: new URL("https://yourdomain.com"),
 
-
-title: {
+  title: {
     default: "ToolHub - Free Online Tools",
     template: "%s | ToolHub",
   },
-   description:
+
+  description:
     "Free online PDF, Image, Invoice, Excel and File Conversion tools.",
 
   keywords: [
@@ -22,7 +22,6 @@ title: {
     "Excel Tools",
     "JPG to PDF",
     "Image Converter",
-    
   ],
 
   authors: [{ name: "ToolHub" }],
@@ -46,8 +45,7 @@ title: {
     url: "https://yourdomain.com",
     siteName: "ToolHub",
     title: "ToolHub",
-    description:
-      "Free online file conversion tools.",
+    description: "Free online file conversion tools.",
     images: [
       {
         url: "/og-image.png",
@@ -70,20 +68,25 @@ title: {
   },
 };
 
-
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="min-h-full flex flex-col">
         <Header />
+
         <FreeUsageProvider>
           <PopupProvider />
 
           {children}
         </FreeUsageProvider>
+
         <Footer />
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+        {/* Razorpay Checkout Script */}
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

@@ -35,7 +35,7 @@ export default function ToolPage() {
     localStorage.setItem("freeUsesByTool", JSON.stringify(freeUses));
   }, [freeUses]);
 
-  // ✅ CORE FUNCTION (IMPORTANT)
+  // CORE FUNCTION
   const handleUse = () => {
     const current = freeUses?.[TOOL_NAME] || 0;
 
@@ -56,42 +56,127 @@ export default function ToolPage() {
   }
 
   return (
-    <div className="min-h-screen text-center">
-      {/* HERO */}
-      <div className="mt-28">
-        <h1 className="text-6xl font-bold">Image to Code AI</h1>
-        <p className="text-center text-gray-600  my-12 text-2xl leading-relaxed">
-          Transform <b>screenshots</b> and designs into production-ready{" "}
-          <b>HTML, CSS, React,</b>
-          Tailwind, <br />
-          and Vue code instantly. <b>Free online tool</b> powered by{" "}
-          <b>Google Gemini AI.</b>
-        </p>
+    <main className="relative min-h-screen overflow-hidden bg-[#030303] text-center">
 
-        {/* <div className="mt-6">
-          {used}/3 free uses
-        </div> */}
-      </div>
+      {/* ================= BACKGROUND ================= */}
 
-      {/* TOOL */}
-      <FormatSelector active={format} setActive={setFormat} />
+      {/* Main Radial Background */}
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_50%_10%,#24103d_0%,#090713_35%,#030303_75%)]" />
 
-      <UploadUI
-        format={format}
-        apiEndpoint="/api/upload"
-        toolName={TOOL_NAME}
-        freeUses={freeUses}
-        setFreeUses={setFreeUses}
-        setShowPopup={setShowPopup}
-        onUse={handleUse} // ⭐ MOST IMPORTANT
-      />
+      {/* Purple Glow */}
+      <div className="pointer-events-none absolute left-1/2 top-[-100px] -z-10 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-purple-700/20 blur-[160px]" />
 
-      {/* CONTENT SECTIONS (DATA NOT CHANGED) */}
+      {/* Blue Glow */}
+      <div className="pointer-events-none absolute right-[-200px] top-[40%] -z-10 h-[500px] w-[500px] rounded-full bg-blue-700/10 blur-[150px]" />
+
+      {/* Pink Glow */}
+      <div className="pointer-events-none absolute left-[-200px] top-[55%] -z-10 h-[450px] w-[450px] rounded-full bg-pink-700/10 blur-[150px]" />
+
+
+      {/* ================= HERO ================= */}
+
+      <section className="relative z-10 mt-28 px-6 pb-16">
+
+        <div className="mx-auto max-w-5xl">
+
+          {/* Badge */}
+          <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-sm backdrop-blur-md">
+
+            <span className="rounded-full px-4 py-2 text-sm font-semibold text-gray-200">
+              ✨ AI-Powered Developer Tool
+            </span>
+
+            <span className="border-l border-white/10 px-4 py-2 text-sm text-gray-400">
+              Convert designs instantly
+            </span>
+
+          </div>
+
+
+          {/* Heading */}
+          <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl">
+
+            Image to{" "}
+
+            <span className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+              Code AI
+            </span>
+
+          </h1>
+
+
+          {/* Description */}
+          <p className="mx-auto my-12 max-w-4xl text-center text-xl leading-8 text-gray-400 md:text-2xl">
+
+            Transform <b className="text-gray-200">screenshots</b> and designs
+            into production-ready{" "}
+
+            <b className="text-gray-200">HTML, CSS, React,</b>
+
+            Tailwind,
+
+            <br />
+
+            and Vue code instantly.
+
+            <b className="text-gray-200"> Free online tool</b> powered by{" "}
+
+            <b className="text-gray-200">Google Gemini AI.</b>
+
+          </p>
+
+
+          {/* Trust Points */}
+          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+
+            <span>✓ AI-powered generation</span>
+
+            <span>✓ Multiple frameworks</span>
+
+            <span>✓ Fast & easy to use</span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* ================= TOOL ================= */}
+
+      <section className="relative z-10 px-4 pb-24 sm:px-6">
+
+        <div className="mx-auto max-w-7xl">
+
+          <FormatSelector
+            active={format}
+            setActive={setFormat}
+          />
+
+          <UploadUI
+            format={format}
+            apiEndpoint="/api/upload"
+            toolName={TOOL_NAME}
+            freeUses={freeUses}
+            setFreeUses={setFreeUses}
+            setShowPopup={setShowPopup}
+            onUse={handleUse}
+          />
+
+        </div>
+
+      </section>
+
+
+      {/* ================= CONTENT SECTIONS ================= */}
+
       <CardInfo
         heading={
           <>
             How to Convert Image to Code in{" "}
-            <span className="text-indigo-600">4 Simple Steps</span>
+            <span className="text-indigo-600">
+              4 Simple Steps
+            </span>
           </>
         }
         subheading="Transform any design screenshot into production-ready code in seconds"
@@ -123,11 +208,14 @@ export default function ToolPage() {
         ]}
       />
 
+
       <CardInfo2
         heading={
           <>
             AI Image to Code Generator{" "}
-            <span className="text-indigo-600">Features</span>
+            <span className="text-indigo-600">
+              Features
+            </span>
           </>
         }
         subheading="Everything you need to convert designs to code efficiently"
@@ -189,13 +277,17 @@ export default function ToolPage() {
         ]}
       />
 
+
       <Formatconvert />
+
 
       <CardInfo3
         heading={
           <>
             Perfect For Every{" "}
-            <span className="text-indigo-600">Development Workflow</span>
+            <span className="text-indigo-600">
+              Development Workflow
+            </span>
           </>
         }
         subheading="Whether you're a developer, designer, or entrepreneur, our tool fits your needs"
@@ -238,7 +330,17 @@ export default function ToolPage() {
           },
         ]}
       />
-      <SubscriptionPopup open={showPopup} onClose={() => setShowPopup(false)} />
-    </div>
+
+
+      {/* Bottom Glow */}
+      <div className="pointer-events-none absolute bottom-0 left-1/2 h-64 w-[700px] -translate-x-1/2 rounded-full bg-purple-700/10 blur-[140px]" />
+
+
+      <SubscriptionPopup
+        open={showPopup}
+        onClose={() => setShowPopup(false)}
+      />
+
+    </main>
   );
 }
