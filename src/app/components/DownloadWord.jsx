@@ -15,8 +15,14 @@ import {
   BorderStyle,
 } from "docx";
 
-export default function DownloadWord({ data }) {
+export default function DownloadWord({ data, onUse, isPro }) {
   const downloadWord = async () => {
+    // ✅ Same gate as DownloadPdf — shares the same "invoice-generator"
+    // counter, so PDF + Word together count toward the same limit.
+    if (onUse && !onUse()) {
+      return;
+    }
+
     const {
       company,
       customer,
@@ -245,25 +251,6 @@ export default function DownloadWord({ data }) {
             new Table({
               width: { size: 50, type: WidthType.PERCENTAGE },
               alignment: AlignmentType.RIGHT,
-              rows: [
-                ["Subtotal", subtotal],
-                ["Tax", taxAmount],
-                ["Shipping", shippingAmount],
-              ].map(
-                ([label, value]) =>
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph(label)],
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(`₹${value}`)],
-                      }),
-                    ],
-                  })
-              ),
-
-              // GRAND TOTAL
               rows: [
                 ...[
                   ["Subtotal", subtotal],

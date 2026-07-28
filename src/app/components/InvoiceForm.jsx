@@ -10,6 +10,8 @@ export default function InvoiceForm({
   invoiceData,
   setInvoiceData,
   previewInvoice,
+  onGeneratePdf,
+  isPro,
 }) {
   const { company, customer, invoice } = invoiceData;
 
@@ -727,14 +729,12 @@ export default function InvoiceForm({
         {/* Download */}
         {/* ================= Action Bar ================= */}
 
-        <div className=" bottom-5 z-50 mt-10">
-            <div className="flex flex-col gap-5 md:flex-row md:items-center  px-8 py-5">
-              {/* Right */}
-              <DownloadPdf data={pdfData} />
-                <DownloadWord data={invoiceData} />
-
-            </div>
-          </div>
+      <div className=" bottom-5 z-50 mt-10">
+    <div className="flex flex-col gap-5 md:flex-row md:items-center  px-8 py-5">
+      <DownloadPdf data={pdfData} onUse={onGeneratePdf} isPro={isPro} />
+      <DownloadWord data={invoiceData} onUse={onGeneratePdf} isPro={isPro} />
+    </div>
+  </div>
         </div>
         </div>
       </>

@@ -17,6 +17,7 @@ const DEFAULT_USES = {
   "handwriting-to-text": 0,
   "image-excel": 0,
   "image-to-code": 0,
+  "invoice-generator": 0, 
 };
 export function FreeUsageProvider({ children }) {
   const [freeUses, setFreeUses] = useState(DEFAULT_USES);

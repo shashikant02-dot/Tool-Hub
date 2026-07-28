@@ -3,9 +3,14 @@
 import { pdf } from "@react-pdf/renderer";
 import InvoicePDF from "./InvoicePDF";
 
-export default function DownloadPdf({ data }) {
+export default function DownloadPdf({ data, onUse, isPro }) {
 
   const downloadPDF = async () => {
+    // ✅ Gate the actual generation — free users get checked/counted here,
+    // Pro users (isPro) always pass through checkLimit inside onUse.
+    if (onUse && !onUse()) {
+      return;
+    }
 
     const blob = await pdf(
       <InvoicePDF data={data}/>
