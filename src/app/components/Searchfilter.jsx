@@ -34,19 +34,7 @@ export default function SearchFilter() {
     <section className="mx-auto max-w-6xl px-4">
 
       {/* Main Glass Container */}
-      <div className="
-        relative
-        overflow-hidden
-        rounded-3xl
-        border
-        border-white/10
-        bg-white/[0.04]
-        p-5
-        shadow-2xl
-        shadow-purple-900/20
-        backdrop-blur-xl
-        sm:p-6
-      ">
+      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-2xl shadow-purple-900/20 backdrop-blur-xl sm:p-6">
 
         {/* Background Glow */}
         <div className="
@@ -81,15 +69,7 @@ export default function SearchFilter() {
           <div className="relative">
 
             <Search
-              className="
-                absolute
-                left-5
-                top-1/2
-                h-5
-                w-5
-                -translate-y-1/2
-                text-gray-500
-              "
+              className="absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500"
             />
 
             <input
@@ -98,26 +78,7 @@ export default function SearchFilter() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="
-                h-14
-                w-full
-                rounded-2xl
-                border
-                border-white/10
-                bg-black/40
-                pl-14
-                pr-5
-                text-sm
-                text-white
-                outline-none
-                transition
-                placeholder:text-gray-600
-                focus:border-purple-500/60
-                focus:bg-black/60
-                focus:ring-2
-                focus:ring-purple-500/10
-                sm:text-base
-              "
+             className="h-14 w-full rounded-2xl border border-white/10 bg-black/40 pl-14 pr-5 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-purple-500/60 focus:bg-black/60 focus:ring-2 focus:ring-purple-500/10 sm:text-base"
             />
 
 
@@ -154,21 +115,7 @@ export default function SearchFilter() {
                         onClick={() =>
                           router.push(`/tools/${tool.slug}`)
                         }
-                        className="
-                          group
-                          flex
-                          w-full
-                          items-center
-                          gap-4
-                          border-b
-                          border-white/5
-                          px-5
-                          py-4
-                          text-left
-                          transition
-                          last:border-0
-                          hover:bg-white/[0.06]
-                        "
+                        className="group flex w-full items-center gap-4 border-b border-white/5 px-5 py-4 text-left transition last:border-0 hover:bg-white/[0.06]"
                       >
 
                         {/* Icon */}

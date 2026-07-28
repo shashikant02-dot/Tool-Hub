@@ -193,42 +193,46 @@ const convertImagesToPdf = async () => {
 };
 
   return (
-    <div className="  py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased text-gray-900">
+    <div className="py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased text-white">
       <div className="mx-auto max-w-[64vw] space-y-6 mt-12">
         
         {/* STATE A: Initial Empty Screen Dropzones */}
         {images.length === 0 && (
           <div className="space-y-6">
             <div className="space-y-2.5">
-              <h2 className="text-[24px] font-semibold text-gray-800 pl-0.5">Add your images</h2>
+              <h2 className="text-[24px] font-semibold text-white pl-0.5">Add your images</h2>
               <div 
                 onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}
                 onClick={() => fileInputRef.current.click()}
-                className={`flex flex-col items-center justify-center rounded-xl border border-dashed p-12 transition-all cursor-pointer bg-white shadow-sm
-                  ${isDragging ? 'border-blue-500 bg-blue-50/10' : 'border-gray-200 hover:border-gray-300'}`}
+                className={`group relative overflow-hidden flex flex-col items-center justify-center rounded-xl border border-dashed p-12 transition-all duration-500 cursor-pointer backdrop-blur-xl shadow-sm
+                  ${isDragging ? 'border-indigo-500/60 bg-indigo-500/10' : 'border-white/15 bg-white/[0.04] hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.25)] hover:-translate-y-1'}`}
               >
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
                 <input type="file" ref={fileInputRef} onChange={(e) => handleFileChange(e.target.files, fileInputRef)} className="hidden" accept=".jpg,.jpeg,.png,.webp" multiple />
-                <div className="mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                <div className="relative z-10 mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl">
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
                 </div>
-                <p className="text-[18px] font-semibold text-gray-800">Drag and drop files or click to browse</p>
-                <p className="mt-1 text-[13px] text-gray-400 font-medium">JPG, JPEG, PNG, WEBP · Up to 50 MB per file</p>
+                <p className="relative z-10 text-[18px] font-semibold text-white transition group-hover:text-indigo-300">Drag and drop files or click to browse</p>
+                <p className="relative z-10 mt-1 text-[13px] text-gray-400 font-medium">JPG, JPEG, PNG, WEBP · Up to 50 MB per file</p>
+                <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
               </div>
             </div>
 
             <div 
               onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}
               onClick={() => secondaryInputRef.current.click()}
-              className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 p-12 transition-all cursor-pointer bg-white shadow-sm hover:border-gray-300"
+              className="group relative overflow-hidden flex flex-col items-center justify-center rounded-xl border border-dashed border-white/15 p-12 transition-all duration-500 cursor-pointer backdrop-blur-xl bg-white/[0.04] shadow-sm hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.25)] hover:-translate-y-1"
             >
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
               <input type="file" ref={secondaryInputRef} onChange={(e) => handleFileChange(e.target.files, secondaryInputRef)} className="hidden" accept=".jpg,.jpeg,.png,.webp" multiple />
-              <div className="mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+              <div className="relative z-10 mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl">
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
               </div>
-              <p className="text-[18px] font-semibold text-gray-800">Add images to build your PDF</p>
-              <p className="mt-1 text-[13px] text-gray-400 font-medium text-center max-w-md px-4">
+              <p className="relative z-10 text-[18px] font-semibold text-white transition group-hover:text-indigo-300">Add images to build your PDF</p>
+              <p className="relative z-10 mt-1 text-[13px] text-gray-400 font-medium text-center max-w-md px-4">
                 Drag and drop JPG, PNG, or WEBP images here or click to browse.
               </p>
+              <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
             </div>
           </div>
         )}
@@ -237,41 +241,43 @@ const convertImagesToPdf = async () => {
         {images.length > 0 && (
           <>
             <div className="flex items-center justify-between px-0.5">
-              <span className="text-[16px] font-semibold text-gray-600 tracking-tight">{images.length} {images.length === 1 ? 'file' : 'files'}</span>
-              <button onClick={clearAll} className="flex items-center gap-1 text-[15px] font-medium text-gray-400 hover:text-gray-600 transition-colors">
+              <span className="text-[16px] font-semibold text-gray-300 tracking-tight">{images.length} {images.length === 1 ? 'file' : 'files'}</span>
+              <button onClick={clearAll} className="flex items-center gap-1 text-[15px] font-medium text-gray-500 hover:text-indigo-300 transition-colors">
                 <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 Clear all
               </button>
             </div>
 
             {/* Document Profile Strip Row */}
-            <div className="flex items-center justify-between rounded-xl border border-gray-200/60 bg-white p-3.5 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+            <div className="group relative overflow-hidden flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-3.5 shadow-sm transition-all duration-500 hover:border-indigo-500/40">
+              <div className="relative z-10 flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg">
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
                 </div>
                 <div>
-                  <h4 className="text-[17px] font-semibold text-gray-800 tracking-tight">
+                  <h4 className="text-[17px] font-semibold text-white tracking-tight">
                     {filename.trim() ? `${filename.trim()}.pdf` : 'converted_document.pdf'}
                   </h4>
                   <p className="text-[14px] text-gray-400 font-medium mt-0.5">{totalSize} MB · {images.length} {images.length === 1 ? 'page' : 'pages'}</p>
                 </div>
               </div>
-              <button onClick={clearAll} className="text-gray-400 hover:text-gray-500 transition-colors p-1">
+              <button onClick={clearAll} className="relative z-10 text-gray-500 hover:text-indigo-300 transition-colors p-1">
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
 
             {/* Workspace Settings Controls Panel */}
-            <div className="rounded-xl border border-gray-200/60 bg-white p-5 space-y-5 shadow-sm">
-              <div className="space-y-2">
-                <label className="text-[16px]  font-bold text-gray-800 tracking-tight ">Page size</label>
+            <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 space-y-5 shadow-sm transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
+              <div className="relative z-10 space-y-2">
+                <label className="text-[16px] font-bold text-white tracking-tight">Page size</label>
                 <div className="flex flex-wrap gap-1.5">
                   {['Fit to image', 'A4', 'Letter', 'A3', 'A5', 'Legal', 'Tabloid'].map((size) => (
                     <button
                       key={size} type="button" onClick={() => setPageSize(size)}
-                      className={`rounded-md px-3.5 py-1.5 text-[16px] mt-4 font-medium tracking-tight transition-all
-                        ${pageSize === size ? 'bg-blue-600 text-white shadow-sm' : 'border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+                      className={`rounded-md px-3.5 py-1.5 text-[16px] mt-4 font-medium tracking-tight transition-all duration-300
+                        ${pageSize === size ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg' : 'border border-white/10 text-gray-300 bg-white/[0.03] hover:bg-white/[0.08] hover:border-indigo-500/30'}`}
                     >
                       {size}
                     </button>
@@ -284,48 +290,52 @@ const convertImagesToPdf = async () => {
                 </p>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[16px] font-bold text-gray-800 tracking-tight">Output filename</label>
+              <div className="relative z-10 space-y-1.5">
+                <label className="text-[16px] font-bold text-white tracking-tight">Output filename</label>
                 <input
                   type="text" placeholder="Enter a custom filename" value={filename}
                   onChange={(e) => setFilename(e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-[15px] text-gray-800 outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 placeholder:text-gray-400"
+                  className="w-full rounded-lg border border-white/10 px-3 py-2 text-[15px] text-white outline-none transition-all focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 bg-white/[0.03] focus:bg-white/[0.06] placeholder:text-gray-500"
                 />
               </div>
 
-              <div className="flex gap-3 pt-1">
+              <div className="relative z-10 flex gap-3 pt-1">
                 {/* FIXED TRIGGER: Passing the fileInputRef here safely cleans current cache states */}
                 <button 
                   onClick={() => fileInputRef.current.click()}
-                  className="px-4 py-2 border border-gray-200 hover:bg-gray-50 rounded-lg text-[16px] font-semibold text-gray-700 bg-white transition-colors"
+                  className="px-4 py-2 border border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.06] rounded-lg text-[16px] font-semibold text-gray-200 bg-white/[0.03] transition-all duration-300"
                 >
                   Add More Images
                 </button>
                 <button 
                   onClick={convertImagesToPdf} disabled={isProcessing}
-                  className=" bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-2 px-8 rounded-lg shadow-sm text-[13px] tracking-tight transition-colors text-center "
+                  className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 disabled:opacity-50 text-white font-semibold py-2 px-8 rounded-lg shadow-xl text-[13px] tracking-tight transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(99,102,241,.35)] text-center"
                 >
                   {isProcessing ? 'Processing Dimensions & Compiling...' : 'Convert to PDF'}
                 </button>
               </div>
               <input type="file" ref={fileInputRef} onChange={(e) => handleFileChange(e.target.files, fileInputRef)} className="hidden" accept=".jpg,.jpeg,.png,.webp" multiple />
+
+              <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
             </div>
 
             {/* Previews Grid Rendering */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 pt-2">
               {images.map((img, index) => (
-                <div key={index} className="flex flex-col items-center rounded-xl border border-gray-200/60 bg-white p-3 shadow-sm relative group hover:border-gray-300 transition-all">
+                <div key={index} className="group relative overflow-hidden flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-3 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
                   <button 
                     onClick={() => removeImage(index)}
-                    className="absolute top-5 right-5 h-5 w-5 flex items-center justify-center bg-gray-900/80 hover:bg-gray-900 text-white rounded-full transition-colors z-10 shadow-sm"
+                    className="absolute top-5 right-5 h-5 w-5 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-10 shadow-sm"
                   >
                     <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                   </button>
 
-                  <div className="flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-lg bg-gray-50/50 border border-gray-100">
-                    <img src={img.url} alt={`Page ${index + 1}`} className="h-full w-full object-contain object-center bg-white" />
+                  <div className="relative z-10 flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-lg bg-white/[0.02] border border-white/10">
+                    <img src={img.url} alt={`Page ${index + 1}`} className="h-full w-full object-contain object-center" />
                   </div>
-                  <span className="mt-3 text-[12px] font-bold text-gray-500">{index + 1}</span>
+                  <span className="relative z-10 mt-3 text-[12px] font-bold text-gray-400">{index + 1}</span>
+
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
                 </div>
               ))}
             </div>

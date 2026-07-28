@@ -40,15 +40,15 @@ export default function HowItWorks() {
       <section className="max-w-7xl mx-auto px-6 py-20">
         {/* Heading */}
         <div className="text-center mb-16">
-          <span className="inline-flex rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-600">
+          <span className="inline-flex rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-semibold text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text backdrop-blur-xl">
             Easy Process
           </span>
 
-          <h2 className="mt-5 text-5xl font-extrabold text-slate-900">
+          <h2 className="mt-5 text-5xl font-extrabold text-white">
             How It Works
           </h2>
 
-          <p className="mt-5 max-w-3xl mx-auto text-xl text-slate-600 leading-relaxed">
+          <p className="mt-5 max-w-3xl mx-auto text-xl text-gray-400 leading-relaxed">
             Merge your PDF documents in just a few clicks without uploading your
             files to external servers.
           </p>
@@ -59,22 +59,46 @@ export default function HowItWorks() {
           {steps.map((step) => (
             <div
               key={step.number}
-              className="group rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-indigo-200 hover:shadow-2xl"
+              className="
+                group
+                relative
+                overflow-hidden
+                rounded-3xl
+                border
+                border-white/10
+                bg-white/[0.04]
+                backdrop-blur-xl
+                p-8
+                transition-all
+                duration-500
+                hover:-translate-y-3
+                hover:border-indigo-500/40
+                hover:shadow-[0_20px_60px_rgba(99,102,241,.25)]
+              "
             >
+              {/* Hover Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
               {/* Number */}
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-xl font-bold text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
+              <div className="relative z-10 mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-xl font-bold text-white shadow-xl transition-transform duration-300 group-hover:scale-110">
                 {step.number}
               </div>
 
               {/* Title */}
-              <h3 className="mb-4 text-2xl font-bold text-slate-900">
+              <h3 className="relative z-10 mb-4 text-2xl font-bold text-white transition group-hover:text-indigo-300">
                 {step.title}
               </h3>
 
               {/* Description */}
-              <p className="leading-8 text-[17px] text-slate-600">
+              <p className="relative z-10 leading-8 text-[17px] text-gray-400">
                 {step.description}
               </p>
+
+              {/* Bottom Line */}
+              <div className="relative z-10 mt-6 h-[3px] w-0 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-500 group-hover:w-full" />
+
+              {/* Corner Glow */}
+              <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
             </div>
           ))}
         </div>

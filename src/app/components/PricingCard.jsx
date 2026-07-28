@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
+import Swal from "sweetalert2";
 
 export default function PricingCard() {
   const [showAuth, setShowAuth] = useState(false);
@@ -118,16 +119,52 @@ export default function PricingCard() {
 
             window.dispatchEvent(new Event("authchange"));
 
-            alert(
-              "Payment successful! You now have unlimited access for 30 days.",
-            );
+   await Swal.fire({
+  icon: "success",
+  title: "🎉 Payment Successful",
+  html: `
+    <div class="payment-popup">
+      <h3>Welcome to ToolHub Pro</h3>
+
+      <p>Your Premium plan has been activated successfully.</p>
+
+      <div class="payment-box">
+         Unlimited access for <b>30 Days</b>
+      </div>
+    </div>
+  `,
+  confirmButtonText: "Start Using",
+  confirmButtonColor: "#2563EB",
+
+  width: "90%",
+  padding: "2rem",
+
+  customClass: {
+    popup: "toolhub-popup",
+    title: "toolhub-title",
+    confirmButton: "toolhub-btn",
+  },
+});
           } catch (err) {
             console.error("Verification Error:", err);
 
-            alert(
-              "Payment received but verification failed. Please contact support with your payment ID: " +
-                response.razorpay_payment_id,
-            );
+           await Swal.fire({
+  icon: "error",
+  title: "Verification Failed",
+  html: `
+    <p>Your payment was received but verification failed.</p>
+
+    <br>
+
+    <strong>Payment ID</strong>
+
+    <br>
+
+    <code>${response.razorpay_payment_id}</code>
+  `,
+  confirmButtonColor: "#EF4444",
+  confirmButtonText: "OK",
+});
           }
         },
 

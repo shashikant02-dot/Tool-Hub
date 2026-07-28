@@ -137,12 +137,12 @@ const processPdfSplit = async () => {
 };
 
   return (
-    <div className=" bg-neutral-50/60 py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased text-neutral-900">
+    <div className="py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased text-white">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* State A: Dropzone View */}
         {!file && (
           <div className="space-y-2.5">
-            <h2 className="text-[24px] font-semibold text-neutral-800 tracking-tight pl-0.5">
+            <h2 className="text-[24px] font-semibold text-white tracking-tight pl-0.5">
               Upload your PDF
             </h2>
             <div
@@ -150,9 +150,12 @@ const processPdfSplit = async () => {
               onDragLeave={onDragLeave}
               onDrop={onDrop}
               onClick={() => fileInputRef.current.click()}
-              className={`flex flex-col items-center justify-center rounded-xl border border-dashed p-14 transition-all duration-200 cursor-pointer bg-white shadow-sm
-                ${isDragging ? "border-blue-500 bg-blue-50/20 scale-[0.995]" : "border-neutral-200 hover:border-neutral-300 "}`}
+              className={`group relative overflow-hidden flex flex-col items-center justify-center rounded-xl border border-dashed p-14 transition-all duration-500 cursor-pointer backdrop-blur-xl shadow-sm
+                ${isDragging ? "border-indigo-500/60 bg-indigo-500/10 scale-[0.995]" : "border-white/15 bg-white/[0.04] hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.25)] hover:-translate-y-1"}`}
             >
+              {/* Hover Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
               <input
                 type="file"
                 ref={fileInputRef}
@@ -160,7 +163,7 @@ const processPdfSplit = async () => {
                 className="hidden"
                 accept=".pdf"
               />
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+              <div className="relative z-10 mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl">
                 <svg
                   className="h-5 w-5"
                   fill="none"
@@ -175,12 +178,15 @@ const processPdfSplit = async () => {
                   />
                 </svg>
               </div>
-              <p className="text-[18px] font-medium text-neutral-800">
+              <p className="relative z-10 text-[18px] font-medium text-white transition group-hover:text-indigo-300">
                 Drag and drop a file or click to browse
               </p>
-              <p className="mt-1 text-[14px] text-neutral-400 font-medium">
+              <p className="relative z-10 mt-1 text-[14px] text-gray-400 font-medium">
                 PDF · Up to 100 MB per file · Max 1 files
               </p>
+
+              {/* Corner Glow */}
+              <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
             </div>
           </div>
         )}
@@ -190,12 +196,12 @@ const processPdfSplit = async () => {
           <>
             {/* Minimal Sub-header Meta */}
             <div className="flex items-center justify-between px-0.5">
-              <span className="text-[15px] font-medium text-neutral-500 tracking-tight">
+              <span className="text-[15px] font-medium text-gray-400 tracking-tight">
                 1 file
               </span>
               <button
                 onClick={clearAll}
-                className="flex items-center gap-1 text-[15px] font-medium text-neutral-400 hover:text-neutral-600 transition-colors"
+                className="flex items-center gap-1 text-[15px] font-medium text-gray-500 hover:text-indigo-300 transition-colors"
               >
                 <svg
                   className="h-3.5 w-3.5"
@@ -215,9 +221,9 @@ const processPdfSplit = async () => {
             </div>
 
             {/* Selected File Profile Strip */}
-            <div className="flex items-center justify-between rounded-xl border border-neutral-200/70 bg-white p-3.5 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+            <div className="group relative overflow-hidden flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-3.5 shadow-sm transition-all duration-500 hover:border-indigo-500/40">
+              <div className="relative z-10 flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg">
                   <svg
                     className="h-4 w-4"
                     fill="none"
@@ -233,10 +239,10 @@ const processPdfSplit = async () => {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="text-[14px] font-semibold text-neutral-800 tracking-tight truncate max-w-md">
+                  <h4 className="text-[14px] font-semibold text-white tracking-tight truncate max-w-md">
                     {file.name}
                   </h4>
-                  <p className="text-[14px] text-neutral-400 font-medium mt-0.5">
+                  <p className="text-[14px] text-gray-400 font-medium mt-0.5">
                     {file.size} MB ·{" "}
                     {loadingPages
                       ? "Processing contents..."
@@ -246,7 +252,7 @@ const processPdfSplit = async () => {
               </div>
               <button
                 onClick={clearAll}
-                className="text-neutral-400 hover:text-neutral-500 transition-colors p-1"
+                className="relative z-10 text-gray-500 hover:text-indigo-300 transition-colors p-1"
               >
                 <svg
                   className="h-4 w-4"
@@ -265,9 +271,12 @@ const processPdfSplit = async () => {
             </div>
 
             {/* Split Strategy Control Hub */}
-            <div className="rounded-xl border border-neutral-200/70  bg-white p-5 space-y-5 shadow-sm">
+            <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 space-y-5 shadow-sm transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+              {/* Hover Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
               {/* Tab Selector pills */}
-              <div className="flex flex-wrap gap-1.5 border-b border-neutral-100 pb-4 ">
+              <div className="relative z-10 flex flex-wrap gap-1.5 border-b border-white/10 pb-4 ">
                 {[
                   "Custom ranges",
                   
@@ -277,11 +286,11 @@ const processPdfSplit = async () => {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`rounded-lg px-3.5 py-1.5 text-[16px] font-medium tracking-tight transition-all duration-150
+                    className={`rounded-lg px-3.5 py-1.5 text-[16px] font-medium tracking-tight transition-all duration-300
                       ${
                         activeTab === tab
-                          ? "bg-blue-600 text-white shadow-sm"
-                          : "text-neutral-600 bg-neutral-50 hover:bg-neutral-100"
+                          ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg"
+                          : "text-gray-300 bg-white/[0.03] hover:bg-white/[0.08] hover:border-indigo-500/30"
                       }`}
                   >
                     {tab}
@@ -290,8 +299,8 @@ const processPdfSplit = async () => {
               </div>
 
               {/* Range Parser Inputs */}
-              <div className="space-y-1.5">
-                <label className="text-[15px] font-bold text-neutral-800 tracking-tight">
+              <div className="relative z-10 space-y-1.5">
+                <label className="text-[15px] font-bold text-white tracking-tight">
                   Page ranges
                 </label>
                 <input
@@ -299,17 +308,17 @@ const processPdfSplit = async () => {
                   placeholder="e.g. 1-3, 5, 8-10"
                   value={pageRanges}
                   onChange={(e) => setPageRanges(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-[15px] text-neutral-800 outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 bg-neutral-50/50 focus:bg-white placeholder:text-neutral-400"
+                  className="w-full rounded-lg border border-white/10 px-3 py-2 text-[15px] text-white outline-none transition-all focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 bg-white/[0.03] focus:bg-white/[0.06] placeholder:text-gray-500"
                 />
-                <p className="text-[13px] text-neutral-400 font-medium">
+                <p className="text-[13px] text-gray-500 font-medium">
                   Each range becomes a separate PDF. Total: {thumbnails.length}{" "}
                   pages.
                 </p>
               </div>
 
               {/* Dynamic Name Assignment */}
-              <div className="space-y-1.5">
-                <label className="text-[14px] font-bold text-neutral-800 tracking-tight">
+              <div className="relative z-10 space-y-1.5">
+                <label className="text-[14px] font-bold text-white tracking-tight">
                   Output filename
                 </label>
                 <input
@@ -317,9 +326,9 @@ const processPdfSplit = async () => {
                   placeholder="Enter a custom filename"
                   value={filename}
                   onChange={(e) => setFilename(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-[14px] text-neutral-800 outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 bg-neutral-50/50 focus:bg-white placeholder:text-neutral-400"
+                  className="w-full rounded-lg border border-white/10 px-3 py-2 text-[14px] text-white outline-none transition-all focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 bg-white/[0.03] focus:bg-white/[0.06] placeholder:text-gray-500"
                 />
-                <p className="text-[13px] text-neutral-400 font-medium">
+                <p className="text-[13px] text-gray-500 font-medium">
                   Leave blank to use a descriptive default name.
                 </p>
               </div>
@@ -327,43 +336,14 @@ const processPdfSplit = async () => {
               {/* Action Trigger */}
               <button
                 onClick={processPdfSplit}
-                className="mt-8 px-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors text-[17px] tracking-tight"
+                className="relative z-10 mt-8 px-12 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold py-2 px-4 rounded-lg shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(99,102,241,.35)] text-[17px] tracking-tight"
               >
                 Split PDF
               </button>
-            </div>
 
-            {/* PDF Live Page Thumbnail Rendering Grid */}
-            {/* <div className="pt-2">
-              {loadingPages ? (
-                <div className="flex flex-col items-center justify-center py-16 text-neutral-400 space-y-2">
-                  <div className="h-5 w-5 border-2 border-neutral-300 border-t-blue-600 rounded-full animate-spin" />
-                  <span className="text-[12px] font-medium tracking-tight">
-                    Loading live PDF pages preview...
-                  </span>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  {thumbnails.map((url, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center rounded-xl border border-neutral-200/60 bg-white p-2.5 shadow-sm group hover:border-neutral-300 transition-all"
-                    >
-                      <div className="flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-lg bg-neutral-50 border border-neutral-100">
-                        <img
-                          src={url}
-                          alt={`Page ${index + 1}`}
-                          className="h-full w-full object-contain object-top shadow-[0_1px_2px_rgba(0,0,0,0.04)] bg-white"
-                        />
-                      </div>
-                      <span className="mt-2.5 text-[11px] font-bold text-neutral-400 group-hover:text-neutral-600 transition-colors">
-                        {index + 1}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div> */}
+              {/* Corner Glow */}
+              <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
+            </div>
           </>
         )}
       </div>

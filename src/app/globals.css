@@ -28,3 +28,76 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+/* SweetAlert Responsive */
+
+.toolhub-popup {
+  max-width: 500px !important;
+  border-radius: 24px !important;
+  padding: 24px !important;
+}
+
+.toolhub-title {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+}
+
+.toolhub-btn {
+  border-radius: 14px !important;
+  padding: 12px 30px !important;
+  font-size: 16px !important;
+}
+
+.payment-popup h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.payment-popup p {
+  color: #6b7280;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.payment-box {
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 16px;
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+/* Mobile */
+
+@media (max-width: 640px) {
+  .toolhub-popup {
+    width: 95% !important;
+    padding: 18px !important;
+    border-radius: 18px !important;
+  }
+
+  .toolhub-title {
+    font-size: 22px !important;
+  }
+
+  .payment-popup h3 {
+    font-size: 18px;
+  }
+
+  .payment-popup p {
+    font-size: 14px;
+  }
+
+  .payment-box {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .toolhub-btn {
+    width: 100% !important;
+    font-size: 15px !important;
+    padding: 12px !important;
+  }
+}

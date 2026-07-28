@@ -61,22 +61,57 @@ export default function page() {
     },
   ];
   return (
-    <>
-      <section className="mt-28 flex justify-center">
-        <div className="flex flex-col items-center text-center max-w-5xl mx-auto px-4 py-10">
-          <h1 className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-6xl lg:text-7xl">
-            JPG to PDF
+    <main className="relative min-h-screen overflow-hidden bg-[#030303] text-center">
+
+      {/* ================= BACKGROUND (same as Image-to-Code) ================= */}
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_50%_10%,#24103d_0%,#090713_35%,#030303_75%)]" />
+      <div className="pointer-events-none absolute left-1/2 top-[-100px] -z-10 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-purple-700/20 blur-[160px]" />
+      <div className="pointer-events-none absolute right-[-200px] top-[40%] -z-10 h-[500px] w-[500px] rounded-full bg-blue-700/10 blur-[150px]" />
+      <div className="pointer-events-none absolute left-[-200px] top-[55%] -z-10 h-[450px] w-[450px] rounded-full bg-pink-700/10 blur-[150px]" />
+
+      <section className="relative z-10 mt-28 flex justify-center px-6">
+        <div className="flex flex-col items-center text-center max-w-5xl mx-auto py-10">
+
+          {/* Badge */}
+          <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-sm backdrop-blur-md">
+            <span className="rounded-full px-4 py-2 text-sm font-semibold text-gray-200">
+              🖼️ Free Image Tool
+            </span>
+            <span className="border-l border-white/10 px-4 py-2 text-sm text-gray-400">
+              Combine instantly, no upload
+            </span>
+          </div>
+
+          <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl">
+            JPG to{" "}
+            <span className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+              PDF
+            </span>
           </h1>
 
-          <p className="mt-8 max-w-4xl text-lg leading-relaxed text-slate-600 md:text-xl lg:text-2xl">
-            Combine JPG, PNG, and WEBP images into one tidy PDF. Drag the
-            pictures into the order you want, choose the orientation, page size,
-            margins, and how each image fits the page, then download — all
-            without leaving your browser.
+          <p className="mt-8 max-w-4xl text-lg leading-relaxed text-gray-400 md:text-xl lg:text-2xl">
+            Combine <b className="text-gray-200">JPG, PNG, and WEBP</b> images
+            into one tidy PDF. Drag the pictures into the order you want,
+            choose the orientation, page size, margins, and how each image
+            fits the page, then download —{" "}
+            <b className="text-gray-200">all in your browser.</b>
           </p>
+
+          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+            <span>✓ JPG, PNG, WEBP support</span>
+            <span>✓ Drag to reorder</span>
+            <span>✓ Runs in your browser</span>
+          </div>
+
         </div>
       </section>
-      <JpgToPdfConverter />
+
+      <section className="relative z-10 px-4 pb-4 sm:px-6">
+        <div className="mx-auto max-w-7xl">
+          <JpgToPdfConverter />
+        </div>
+      </section>
+
       <PdfBio
         title="Bind a pile of images into one shareable PDF"
         para1="Photos and scans rarely travel well as loose files. A folder of twenty receipts, a set of phone snaps of a signed form, or a handful of design mockups is awkward to email, easy to lose, and impossible to flip through in order. Toolghar's JPG to PDF tool gathers those images into a single document: drop them in, arrange them, decide how each one should sit on the page, and download one PDF that opens the same way on every device."
@@ -125,6 +160,10 @@ export default function page() {
         para2="People also ask about image quality. The tool embeds your images rather than recompressing them aggressively, so a page is only as sharp as the picture you supply. For crisp text in a scanned document, start from the highest-resolution scan you have; an image that already looks soft on screen will look the same in the PDF."
         para3="Another frequent question is about transparency. PNG images with transparent backgrounds are supported, and where a page area is not covered by the image it appears against the page itself. If you need a guaranteed solid background, place the image on a standard page size rather than fit-to-image so the surrounding page area is predictable."
       />
-    </>
+
+      {/* Bottom Glow */}
+      <div className="pointer-events-none absolute bottom-0 left-1/2 h-64 w-[700px] -translate-x-1/2 rounded-full bg-purple-700/10 blur-[140px]" />
+
+    </main>
   );
 }

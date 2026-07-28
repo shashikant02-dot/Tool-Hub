@@ -6,7 +6,8 @@ import Boost from "./components/Boost";
 import CTASection from "./components/CtaSection";
 import FeaturesSection from "./components/FeatuesSections";
 import TrustSection from "./components/TrustSection";
-
+import Link from "next/link";
+import SearchTools from "./components/SearchTools";
 export default function Home() {
   return (
     <>
@@ -46,56 +47,60 @@ export default function Home() {
 
           {/* LEFT SIDE TOOLS */}
 
-          <FloatingTool
-            className="left-[3%] top-[8%]"
-            icon="📄"
-            title="Merge PDF"
-            color="red"
-            delay={0}
-          />
-
-          <FloatingTool
-            className="left-[0%] top-[42%]"
-            icon="🖼️"
-            title="Compress Image"
-            color="blue"
-            delay={1}
-          />
-
-          <FloatingTool
-            className="left-[6%] top-[76%]"
-            icon="💻"
-            title="Image to Code"
-            color="green"
-            delay={2}
-          />
+<FloatingTool
+  className="left-[6%] top-[76%]"
+  icon="💻"
+  title="Image to Code"
+  color="green"
+  delay={2}
+  href="/tools/image-to-code"
+/>
+<FloatingTool
+  className="left-[0%] top-[42%]"
+  icon="🖼️"
+  title="Compress Image"
+  color="blue"
+  delay={1}
+  href="/tools/image-compresor"
+/>
 
 
-          {/* RIGHT SIDE TOOLS */}
 
-          <FloatingTool
-            className="right-[3%] top-[8%]"
-            icon="🔄"
-            title="Convert Image"
-            color="cyan"
-            delay={0.5}
-          />
+         <FloatingTool
+  className="left-[3%] top-[8%]"
+  icon="📄"
+  title="Merge PDF"
+  color="red"
+  delay={0}
+  href="/tools/merge-pdf"
+/>
 
-          <FloatingTool
-            className="right-[0%] top-[42%]"
-            icon="📊"
-            title="Excel to JSON"
-            color="purple"
-            delay={1.5}
-          />
+<FloatingTool
+  className="right-[3%] top-[8%]"
+  icon="🔄"
+  title="Convert Image"
+  color="cyan"
+  delay={0.5}
+  href="/tools/image-converter"
+/>
 
-          <FloatingTool
-            className="right-[6%] top-[76%]"
-            icon="✍️"
-            title="Handwriting to Text"
-            color="pink"
-            delay={2.5}
-          />
+<FloatingTool
+  className="right-[0%] top-[42%]"
+  icon="📊"
+  title="Excel to JSON"
+  color="purple"
+  delay={1.5}
+  href="/tools/excel-json"
+/>
+
+<FloatingTool
+  className="right-[6%] top-[76%]"
+  icon="🧾"
+  title="Invoice Generator"
+  color="pink"
+  delay={2.5}
+  href="/tools/invoice-generator"
+/>
 
 
           {/* CENTER CONTENT */}
@@ -125,22 +130,7 @@ export default function Home() {
 
 
             {/* Search Bar */}
-            <div className="mx-auto mt-10 flex max-w-2xl items-center rounded-full border border-white/15 bg-white/[0.08] p-1.5 shadow-2xl shadow-purple-900/20 backdrop-blur-xl">
-
-              <input
-                type="text"
-                placeholder="Search from 138+ free online tools..."
-                className="min-w-0 flex-1 bg-transparent px-5 py-3 text-sm text-white outline-none placeholder:text-gray-500 sm:text-base"
-              />
-
-              <button
-                type="button"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-xl shadow-lg shadow-purple-500/30 transition hover:scale-105"
-              >
-                🔍
-              </button>
-
-            </div>
+            <SearchTools/>
 
 
             {/* CTA Links */}
@@ -222,6 +212,7 @@ function FloatingTool({
   className,
   color,
   delay = 0,
+  href,
 }) {
   const colorStyles = {
     red: "border-red-500/70 shadow-red-500/30",
@@ -233,58 +224,58 @@ function FloatingTool({
   };
 
   return (
-    <motion.div
-      className={`absolute hidden w-36 flex-col items-center gap-3 md:flex ${className}`}
-
-      animate={{
-        y: [8, -8, 8],
-      }}
-
-      transition={{
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut",
-        delay,
-      }}
+    <Link
+      href={href}
+      className={`absolute hidden md:flex w-36 flex-col items-center gap-3 cursor-pointer ${className}`}
     >
-
-      {/* Animated Circle */}
       <motion.div
         animate={{
-          scale: [0.75, 1, 0.75],
+          y: [8, -8, 8],
         }}
-
         transition={{
           duration: 4,
           repeat: Infinity,
           ease: "easeInOut",
           delay,
         }}
-
-        whileHover={{
-          scale: 1.15,
-        }}
-
-        className={`
-          flex h-24 w-24 items-center justify-center
-          rounded-full
-          border-2
-          bg-black/60
-          text-4xl
-          shadow-2xl
-          backdrop-blur-md
-          ${colorStyles[color]}
-        `}
       >
-        {icon}
+        <motion.div
+          animate={{
+            scale: [0.75, 1, 0.75],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay,
+          }}
+          whileHover={{
+            scale: 1.15,
+            rotate: 5,
+          }}
+          whileTap={{
+            scale: 0.95,
+          }}
+          className={`
+            flex h-24 w-24 items-center justify-center
+            rounded-full
+            border-2
+            bg-black/60
+            text-4xl
+            shadow-2xl
+            backdrop-blur-md
+            transition-all duration-300
+            hover:bg-black/80
+            ${colorStyles[color]}
+          `}
+        >
+          {icon}
+        </motion.div>
+
+        <span className="max-w-[140px] text-center text-sm font-semibold text-gray-300">
+          {title}
+        </span>
       </motion.div>
-
-
-      {/* Tool Name */}
-      <span className="max-w-[140px] text-sm font-semibold text-gray-300">
-        {title}
-      </span>
-
-    </motion.div>
+    </Link>
   );
 }

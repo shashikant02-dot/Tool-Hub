@@ -119,7 +119,7 @@ const TOOL_NAME = "merge-pdf";
   }, [pdfUrl]);
   return (
     <div className="max-w-6xl mx-auto px-6 py-10">
-      <h2 className="text-[20px] font-semibold mb-4">Add your Images</h2>
+      <h2 className="text-[20px] font-semibold mb-4 text-white">Add your Images</h2>
 
       {/* Hidden Input */}
       <input
@@ -134,12 +134,15 @@ const TOOL_NAME = "merge-pdf";
       {/* Upload Box */}
       <div
         onClick={openFilePicker}
-        className="border border-dashed border-gray-300 rounded-3xl h-[260px] flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition"
+        className="group relative overflow-hidden rounded-3xl border border-dashed border-white/15 bg-white/[0.04] backdrop-blur-xl h-[260px] flex flex-col items-center justify-center cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.25)]"
       >
-        <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-5">
+        {/* Hover Glow */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
+        <div className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center mb-5 shadow-xl">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-8 h-8 text-indigo-600"
+            className="w-8 h-8 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -153,19 +156,25 @@ const TOOL_NAME = "merge-pdf";
           </svg>
         </div>
 
-        <h3 className="text-[20px] font-semibold">
+        <h3 className="relative z-10 text-[20px] font-semibold text-white transition group-hover:text-indigo-300">
           Drag and drop images or click to browse
         </h3>
 
-        <p className="text-gray-500 text-[17px] mt-3">JPG · PNG · WEBP</p>
+        <p className="relative z-10 text-gray-400 text-[17px] mt-3">JPG · PNG · WEBP</p>
 
         {files.length > 0 && (
-          <p className="mt-4 text-green-600 font-medium">
+          <p className="relative z-10 mt-4 text-green-400 font-medium">
             {files.length} files selected
           </p>
         )}
 
-        {error && <p className="mt-3 text-red-500">{error}</p>}
+        {error && <p className="relative z-10 mt-3 text-red-400">{error}</p>}
+
+        {/* Bottom Line */}
+        <div className="relative z-10 mt-6 h-[3px] w-0 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-500 group-hover:w-1/3" />
+
+        {/* Corner Glow */}
+        <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
       </div>
 
       {/* Convert Button */}
@@ -174,7 +183,7 @@ const TOOL_NAME = "merge-pdf";
           <button
             onClick={convertToPdf}
             disabled={loading}
-            className="bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-700 transition"
+            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white px-8 py-3 rounded-xl shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(99,102,241,.35)] disabled:opacity-60"
           >
             {loading ? "Creating PDF..." : "Convert to PDF"}
           </button>
@@ -182,14 +191,16 @@ const TOOL_NAME = "merge-pdf";
       )}
 
       {/* Preview Box */}
-      {/* Preview Box */}
-      <div className="border border-dashed border-gray-300 rounded-3xl min-h-[300px] mt-8 overflow-hidden">
+      <div className="group relative overflow-hidden rounded-3xl border border-dashed border-white/15 bg-white/[0.04] backdrop-blur-xl min-h-[300px] mt-8 transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+        {/* Hover Glow */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
         {!pdfUrl ? (
-          <div className="h-[300px] flex flex-col items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-5">
+          <div className="relative z-10 h-[300px] flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center mb-5 shadow-xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-8 h-8 text-indigo-600"
+                className="w-8 h-8 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -203,33 +214,36 @@ const TOOL_NAME = "merge-pdf";
               </svg>
             </div>
 
-            <h3 className="text-[20px] font-semibold">
+            <h3 className="text-[20px] font-semibold text-white">
               Add at least two images
             </h3>
 
-            <p className="text-center text-gray-500 text-[17px] w-[28vw] mt-4">
+            <p className="text-center text-gray-400 text-[17px] w-[28vw] mt-4">
               Select 2 or more images and convert them into a single PDF.
             </p>
           </div>
         ) : (
-          <div className="flex flex-col">
+          <div className="relative z-10 flex flex-col">
             <iframe
               src={pdfUrl}
               className="w-full h-[500px]"
               title="PDF Preview"
             />
 
-            <div className="flex justify-center py-5 border-t bg-white">
+            <div className="flex justify-center py-5 border-t border-white/10 bg-white/[0.02]">
               <a
                 href={pdfUrl}
                 download="converted.pdf"
-                className="bg-green-600 text-white px-8 py-3 rounded-xl hover:bg-green-700 transition"
+                className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white px-8 py-3 rounded-xl shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(99,102,241,.35)]"
               >
                 Download PDF
               </a>
             </div>
           </div>
         )}
+
+        {/* Corner Glow */}
+        <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
       </div>
     </div>
   );

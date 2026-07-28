@@ -34,22 +34,7 @@ const CardInfo = ({ heading, subheading, steps }) => {
                 {safeSteps.map((step, index) => (
           <div
             key={index}
-            className="
-              group
-              relative
-              overflow-hidden
-              rounded-3xl
-              border
-              border-white/10
-              bg-white/[0.04]
-              backdrop-blur-xl
-              p-8
-              transition-all
-              duration-500
-              hover:-translate-y-3
-              hover:border-indigo-500/40
-              hover:shadow-[0_20px_60px_rgba(99,102,241,.25)]
-            "
+           className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-8 transition-all duration-500 hover:-translate-y-3 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.25)]"
           >
             {/* Hover Glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />

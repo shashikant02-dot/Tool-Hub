@@ -80,19 +80,23 @@ export default function CompressImageUI() {
       <div className="max-w-5xl mx-auto">
 
         {/* TOP CARD */}
-        <div className="bg-white rounded-[28px] border border-gray-200 shadow-xl p-8">
-          <div className="grid lg:grid-cols-[2fr_1fr] gap-8">
+        <div className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] backdrop-blur-xl shadow-xl p-8 transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.25)]">
+
+          {/* Hover Glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
+          <div className="relative z-10 grid lg:grid-cols-[2fr_1fr] gap-8">
 
             {/* LEFT */}
-            <div className="border-2 border-dashed border-gray-300 rounded-[24px] flex flex-col items-center justify-center py-11 px-8">
+            <div className="border-2 border-dashed border-white/15 rounded-[24px] flex flex-col items-center justify-center py-11 px-8">
 
               {!preview ? (
                 <>
-                  <ImageIcon size={60} className="text-gray-300 mb-5" />
-                  <h2 className="text-4xl font-bold text-gray-900">
+                  <ImageIcon size={60} className="text-gray-500 mb-5" />
+                  <h2 className="text-4xl font-bold text-white">
                     Upload your image
                   </h2>
-                  <p className="text-gray-500 mt-3 text-lg">
+                  <p className="text-gray-400 mt-3 text-lg">
                     Drag and drop an image here
                   </p>
                 </>
@@ -103,10 +107,10 @@ export default function CompressImageUI() {
                     alt="preview"
                     className="max-h-[210px] object-contain mb-5 rounded-lg"
                   />
-                  <h3 className="font-bold text-2xl text-center">
+                  <h3 className="font-bold text-2xl text-center text-white">
                     {file?.name}
                   </h3>
-                  <p className="text-gray-500 text-lg mt-1">
+                  <p className="text-gray-400 text-lg mt-1">
                     {(file?.size / 1024).toFixed(1)} KB
                   </p>
                 </>
@@ -122,7 +126,7 @@ export default function CompressImageUI() {
 
               <button
                 onClick={openFile}
-                className="mt-8 bg-[#15151d] hover:bg-black text-white px-10 py-4 rounded-2xl text-xl font-semibold"
+                className="mt-8 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white px-10 py-4 rounded-2xl text-xl font-semibold shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(99,102,241,.35)]"
               >
                 Browse Files
               </button>
@@ -131,8 +135,8 @@ export default function CompressImageUI() {
             {/* RIGHT */}
             <div className="flex flex-col gap-5">
 
-              <div className="border border-gray-200 rounded-[24px] p-6">
-                <h3 className="text-2xl font-bold text-gray-800">
+              <div className="border border-white/10 bg-white/[0.02] rounded-[24px] p-6">
+                <h3 className="text-2xl font-bold text-white">
                   Quality: {quality}%
                 </h3>
 
@@ -145,7 +149,7 @@ export default function CompressImageUI() {
                   className="w-full mt-5 accent-pink-500"
                 />
 
-                <p className="text-gray-500 mt-5 text-lg leading-relaxed">
+                <p className="text-gray-400 mt-5 text-lg leading-relaxed">
                   Lower quality = smaller file. {quality}% is a great balance.
                 </p>
               </div>
@@ -154,47 +158,52 @@ export default function CompressImageUI() {
               <button
 disabled={!file || loading}
                 onClick={compressImage}
-                className={`rounded-[20px] py-6 text-xl font-bold transition ${
+                className={`rounded-[20px] py-6 text-xl font-bold transition-all duration-500 ${
                   file && !blocked
-                    ? "bg-pink-600 hover:bg-pink-700 text-white"
-                    : "bg-gray-200 text-gray-500"
+                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(99,102,241,.35)]"
+                    : "bg-white/[0.05] text-gray-500"
                 }`}
               >
                {loading ? "Compressing..." : "Compress Image"}
               </button>
             </div>
           </div>
+
+          {/* Corner Glow */}
+          <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
         </div>
 
         {/* RESULT */}
         {downloadUrl && (
           <>
-            <div className="mt-10 bg-white rounded-[24px] border border-gray-200 p-5">
-              <div className="grid md:grid-cols-3 text-center gap-6">
+            <div className="group relative overflow-hidden mt-10 rounded-[24px] border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
+              <div className="relative z-10 grid md:grid-cols-3 text-center gap-6">
 
                 <div>
-                  <p className="uppercase text-gray-400 font-bold">
+                  <p className="uppercase text-gray-500 font-bold">
                     Original
                   </p>
-                  <h3 className="text-3xl font-bold mt-2">
+                  <h3 className="text-3xl font-bold mt-2 text-white">
                     {(originalSize / 1024).toFixed(1)} KB
                   </h3>
                 </div>
 
                 <div>
-                  <p className="uppercase text-gray-400 font-bold">
+                  <p className="uppercase text-gray-500 font-bold">
                     Compressed
                   </p>
-                  <h3 className="text-3xl font-bold mt-2 text-pink-600">
+                  <h3 className="text-3xl font-bold mt-2 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
                     {(compressedSize / 1024).toFixed(1)} KB
                   </h3>
                 </div>
 
                 <div>
-                  <p className="uppercase text-gray-400 font-bold">
+                  <p className="uppercase text-gray-500 font-bold">
                     Reduced
                   </p>
-                  <h3 className="text-3xl font-bold mt-2 text-pink-600">
+                  <h3 className="text-3xl font-bold mt-2 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
                     {reducedPercent}%
                   </h3>
                 </div>
@@ -202,7 +211,7 @@ disabled={!file || loading}
               </div>
             </div>
 
-            <div className="mt-6 bg-black rounded-[28px] p-5 flex justify-between items-center">
+            <div className="mt-6 rounded-[28px] border border-white/10 bg-white/[0.06] backdrop-blur-xl p-5 flex justify-between items-center">
               <div>
                 <div className="flex items-center gap-3">
                   <CheckCircle className="text-emerald-400" />
@@ -211,11 +220,11 @@ disabled={!file || loading}
                   </h2>
                 </div>
               </div>
-
-              <a
+<a
+              
                 href={downloadUrl}
                 download="compressed-image.jpg"
-                className="bg-pink-600 hover:bg-pink-700 text-white px-10 py-4 rounded-2xl text-xl font-bold flex items-center gap-3"
+                className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white px-10 py-4 rounded-2xl text-xl font-bold flex items-center gap-3 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(99,102,241,.35)]"
               >
                 <Download size={22} />
                 Download

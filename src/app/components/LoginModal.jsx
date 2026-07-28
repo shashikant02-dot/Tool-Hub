@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoClose, IoEyeOutline } from "react-icons/io5";
+import Swal from "sweetalert2";
 
 export default function LoginModal({ onClose, openSignup,onLoginSuccess }) {
   // --- NEW: state for form fields ---
@@ -45,10 +46,29 @@ export default function LoginModal({ onClose, openSignup,onLoginSuccess }) {
       // that the user just logged in, wherever this modal was opened from
       window.dispatchEvent(new Event("authchange"));
 
-      onLoginSuccess?.(data.user);
-      alert("Login Successful ✅");
+     onLoginSuccess?.(data.user);
 
-      onClose();
+await Swal.fire({
+  icon: "success",
+  title: "Login Successful",
+  html: `
+    <p style="font-size:16px;color:#6b7280">
+      Welcome back to <b>ToolHub</b>.
+    </p>
+  `,
+  confirmButtonText: "Continue",
+  confirmButtonColor: "#2563EB",
+  background: "#fff",
+  backdrop: "rgba(0,0,0,.65)",
+  showClass: {
+    popup: "animate__animated animate__zoomIn",
+  },
+  hideClass: {
+    popup: "animate__animated animate__zoomOut",
+  },
+});
+
+onClose();
     } catch (err) {
       console.error(err);
       setError("Something went wrong");
