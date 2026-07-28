@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 import FormatSelector from "@/app/components/Formatselector";
@@ -10,40 +9,38 @@ import CardInfo2 from "@/app/components/CardInfo2";
 import Formatconvert from "@/app/components/Formatconvert";
 import CardInfo3 from "@/app/components/cardInfo3";
 import SubscriptionPopup from "@/app/components/SubscriptionPopup";
+import { useFreeUsage } from "@/app/context/FreeUsageContext";
+import { useState } from "react";
 
 export default function ToolPage() {
   const params = useParams();
   const slug = params.slug;
 
   const TOOL_NAME = slug || "image-to-code";
-  const LIMIT = 3;
 
   const [format, setFormat] = useState("HTML + CSS");
-  const [freeUses, setFreeUses] = useState({});
-  const [showPopup, setShowPopup] = useState(false);
 
-  const used = freeUses?.[TOOL_NAME] || 0;
-
-  // load
-  useEffect(() => {
-    const data = localStorage.getItem("freeUsesByTool");
-    if (data) setFreeUses(JSON.parse(data));
-  }, []);
-
-  // save
-  useEffect(() => {
-    localStorage.setItem("freeUsesByTool", JSON.stringify(freeUses));
-  }, [freeUses]);
+  // ✅ Global usage/pro state — shared with every other tool + the pricing
+  // page, instead of this page's own separate localStorage counter.
+  const {
+    freeUses,
+    setFreeUses,
+    checkLimit,
+    increaseUsage,
+    showPopup,
+    setShowPopup,
+    isPro,
+  } = useFreeUsage();
 
   // CORE FUNCTION
+  // ✅ Now checks isPro (via checkLimit) before ever blocking the user.
   const handleUse = () => {
-    const current = freeUses?.[TOOL_NAME] || 0;
-
-    if (current >= LIMIT) {
+    if (checkLimit(TOOL_NAME)) {
       setShowPopup(true);
       return false;
     }
 
+    increaseUsage(TOOL_NAME);
     return true;
   };
 
@@ -153,15 +150,16 @@ export default function ToolPage() {
             setActive={setFormat}
           />
 
-          <UploadUI
-            format={format}
-            apiEndpoint="/api/upload"
-            toolName={TOOL_NAME}
-            freeUses={freeUses}
-            setFreeUses={setFreeUses}
-            setShowPopup={setShowPopup}
-            onUse={handleUse}
-          />
+         <UploadUI
+  format={format}
+  apiEndpoint="/api/upload"
+  toolName={TOOL_NAME}
+  freeUses={freeUses}
+  setFreeUses={setFreeUses}
+  setShowPopup={setShowPopup}
+  onUse={handleUse}
+  isPro={isPro}   // ✅ ye line add karo
+/>
 
         </div>
 

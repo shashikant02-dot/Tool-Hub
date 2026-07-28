@@ -15,6 +15,8 @@ export default function UploadUI({
   freeUses,
   setFreeUses,
   setShowPopup,
+  onUse,
+  isPro,
 }) {
   const fileRef = useRef(null);
 
@@ -25,20 +27,21 @@ export default function UploadUI({
 
   const used = freeUses?.[toolName] || 0;
 
+  // ✅ Single source of truth for whether the user is currently blocked —
+  // Pro users are never blocked, regardless of their usage count.
+  const isBlocked = !isPro && used >= 3;
+
   function openFile() {
-    if (used >= 3) {
-      setShowPopup(true);
+    if (onUse && !onUse()) {
       return;
     }
-
     fileRef.current?.click();
   }
 
   async function uploadFile() {
     if (!file) return alert("Select file first");
 
-    if (used >= 3) {
-      setShowPopup(true);
+    if (onUse && !onUse()) {
       return;
     }
 
@@ -61,7 +64,14 @@ export default function UploadUI({
 
       const data = await res.json();
 
-      if (res.ok && (data.code || data.downloadUrl)) {
+      // ✅ Server explicitly told us something went wrong (429/503/500 etc.)
+      // — show that message instead of silently rendering a generic one.
+      if (!res.ok) {
+        alert(data.error || "Something went wrong. Please try again.");
+        return;
+      }
+
+      if (data.code || data.downloadUrl) {
         setFreeUses((prev) => ({
           ...prev,
           [toolName]: (prev[toolName] || 0) + 1,
@@ -72,7 +82,7 @@ export default function UploadUI({
       setCode(data.code || "Error generating result.");
     } catch (err) {
       console.error(err);
-      alert("Something went wrong!");
+      alert("Network error. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -141,19 +151,19 @@ export default function UploadUI({
               </div>
             )}
 
-                        {file && (
-                <button
-                  onClick={uploadFile}
-                  disabled={loading || used >= 3}
-                  className="mt-4 rounded-2xl bg-white px-6 py-3 font-semibold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {loading
-                    ? "Processing..."
-                    : used >= 3
-                    ? "Limit Reached"
-                    : "Submit"}
-                </button>
-              )}
+            {file && (
+              <button
+                onClick={uploadFile}
+                disabled={loading || isBlocked}
+                className="mt-4 rounded-2xl bg-white px-6 py-3 font-semibold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loading
+                  ? "Processing..."
+                  : isBlocked
+                  ? "Limit Reached"
+                  : "Submit"}
+              </button>
+            )}
           </div>
         </div>
 
