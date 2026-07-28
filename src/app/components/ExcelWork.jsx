@@ -7,37 +7,35 @@ export default function ExcelWork() {
       title: "1. Upload File",
       description:
         "Upload any picture of a spreadsheet, scanned document, or screenshot to excel.",
-      color: "text-blue-600",
+      color: "text-blue-400",
     },
     {
       icon: Loader,
       title: "2. Processing",
       description:
         "Our AI excel converter engine will extract table from image and format it.",
-      color: "text-purple-600",
+      color: "text-purple-400",
     },
     {
       icon: Download,
       title: "3. Download XLSX",
-      description:
-        "Download excel image data as a ready-to-use .xlsx file.",
-      color: "text-green-600",
+      description: "Download excel image data as a ready-to-use .xlsx file.",
+      color: "text-green-400",
     },
   ];
 
   return (
-    <section className="py-20 px-6">
-      <div className="max-w-7xl mx-auto bg-[#f8fafc] border border-gray-200 rounded-[40px] p-12 md:p-20">
-        
+    <section className="relative py-20 px-6">
+      <div className="max-w-7xl mx-auto rounded-[40px] border border-white/10 bg-white/[0.03] backdrop-blur-sm p-12 md:p-20">
         {/* Heading */}
         <div className="text-center">
-          <h2 className="text-4xl font-bold text-slate-900">
+          <h2 className="text-4xl font-bold text-white">
             How to Convert Image to Excel?
           </h2>
 
-          <p className="mt-6 text-[22px] text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Follow these steps for <b>jpg to excel conversion</b> or to
-            <b> convert scanned PDF to excel</b>.
+          <p className="mt-6 text-[22px] text-gray-400 max-w-3xl mx-auto leading-relaxed">
+            Follow these steps for <b className="text-gray-200">jpg to excel conversion</b> or to
+            <b className="text-gray-200"> convert scanned PDF to excel</b>.
           </p>
         </div>
 
@@ -51,15 +49,15 @@ export default function ExcelWork() {
                 key={index}
                 className="flex flex-col items-center text-center"
               >
-                <div className="w-28 h-28 bg-white rounded-3xl shadow-lg flex items-center justify-center mb-8">
+                <div className="w-28 h-28 bg-white/[0.06] border border-white/10 rounded-3xl shadow-lg flex items-center justify-center mb-8">
                   <Icon className={`w-12 h-12 ${step.color}`} />
                 </div>
 
-                <h3 className="text-2xl font-bold text-slate-900 mb-4">
+                <h3 className="text-2xl font-bold text-white mb-4">
                   {step.title}
                 </h3>
 
-                <p className="text-lg text-slate-600 leading-relaxed max-w-xs">
+                <p className="text-lg text-gray-400 leading-relaxed max-w-xs">
                   {step.description}
                 </p>
               </div>

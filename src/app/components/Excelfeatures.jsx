@@ -14,50 +14,49 @@ const features = [
     icon: FileText,
     title: "Universal Format Support",
     desc: "We support every major format. Convert png to excel, jpg to xlsx, tiff to excel, or even pdf table to excel online free. Our tool acts as a jpeg to excel converter and can even convert gif to excel or webp to excel.",
-
-    bg: "bg-blue-50",
-    color: "text-blue-600",
+    bg: "bg-blue-500/10",
+    color: "text-blue-400",
   },
   {
     icon: Loader,
     title: "Advanced OCR Extraction",
     desc: "Our image to excel OCR technology is best-in-class. Extract table from image and perform massive data entry automatically.",
-    bg: "bg-green-50",
-    color: "text-green-600",
+    bg: "bg-green-500/10",
+    color: "text-green-400",
   },
   {
     icon: Shield,
     title: "Professional Business Tools",
     desc: "Ideal for professionals. Use as a business card scanner to excel, barcode scanner to excel spreadsheet, or scan invoices into excel. Perfect for inventory with barcode scanner excel workflows..",
-    bg: "bg-purple-50",
-    color: "text-purple-600",
+    bg: "bg-purple-500/10",
+    color: "text-purple-400",
   },
   {
     icon: Monitor,
-    title:"CrossPlatform Compatibility",
+    title: "CrossPlatform Compatibility",
     desc: "Works everywhere. Scan to excel android, iphone scan to spreadsheet, or desktop. It's the ultimate mobile barcode scanner to excel and camscanner to excel alternative",
-    bg: "bg-orange-50",
-    color: "text-orange-600",
+    bg: "bg-orange-500/10",
+    color: "text-orange-400",
   },
   {
     icon: Globe,
     title: "Cloud & Online Access",
     desc: "Access image to excel online free from anywhere. No software needed. Convert jpg to excel online, handle google image to excel tasks, or convert image url to table instantly.",
-    bg: "bg-cyan-50",
-    color: "text-cyan-600",
+    bg: "bg-cyan-500/10",
+    color: "text-cyan-400",
   },
   {
     icon: Pencil,
     title: "Editable & Secure Output",
     desc: "Get fully editable ms excel files. Convert picture to excel table with formatting preserved. Securely extract data from image to excel without storing your data.",
-    bg: "bg-pink-50",
-    color: "text-pink-600",
+    bg: "bg-pink-500/10",
+    color: "text-pink-400",
   },
 ];
 
 export default function Excelfeatures() {
   return (
-    <section className="py-20 px-6 mt-16 ">
+    <section className="relative py-20 px-6 mt-16">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((item, index) => {
@@ -66,7 +65,7 @@ export default function Excelfeatures() {
             return (
               <div
                 key={index}
-                className="bg-white rounded-3xl border border-gray-200 p-10 shadow-sm hover:shadow-xl transition-all duration-300"
+                className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-10 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl"
               >
                 <div
                   className={`w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center mb-8`}
@@ -74,11 +73,11 @@ export default function Excelfeatures() {
                   <Icon className={`w-8 h-8 ${item.color}`} />
                 </div>
 
-                <h3 className="text-2xl font-bold text-slate-900 mb-5">
+                <h3 className="text-2xl font-bold text-white mb-5">
                   {item.title}
                 </h3>
 
-                <p className="text-lg leading-7 font-semibold text-slate-500">
+                <p className="text-lg leading-7 font-semibold text-gray-400">
                   {item.desc}
                 </p>
               </div>

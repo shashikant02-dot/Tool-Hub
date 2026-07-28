@@ -3,43 +3,66 @@ import React from "react";
 const cards = [
   {
     title: "For Business & Finance",
-    description:
-      (<>Professionals love our <b>business card scanner to excel and invoice to excel</b> features. Easily <b>scan bank statements into excel, scan invoices into excel,</b> or perform <b>inventory with barcode scanner excel</b> tasks. It's the ideal <b>app to scan business cards into excel</b> and <b>scan bill to excel.</b></>)
+    description: (
+      <>
+        Professionals love our <b className="text-gray-200">business card scanner to excel and invoice to excel</b> features. Easily{" "}
+        <b className="text-gray-200">scan bank statements into excel, scan invoices into excel,</b> or perform{" "}
+        <b className="text-gray-200">inventory with barcode scanner excel</b> tasks. It's the ideal{" "}
+        <b className="text-gray-200">app to scan business cards into excel</b> and <b className="text-gray-200">scan bill to excel.</b>
+      </>
+    ),
   },
   {
     title: "Data Entry & Automation",
-    description:(<>Automate your workflow. <b>Extract tabular data from images </b>instantly. Whether it's <b>data entry images in excel, copy data from picture to excel,</b> or <b>convert hard copy to excel,</b> our <b>fastest image to excel converter</b> saves hours. Perfect for <b>scanning documents into excel spreadsheet</b> tasks.</>)
+    description: (
+      <>
+        Automate your workflow. <b className="text-gray-200">Extract tabular data from images</b> instantly. Whether it's{" "}
+        <b className="text-gray-200">data entry images in excel, copy data from picture to excel,</b> or{" "}
+        <b className="text-gray-200">convert hard copy to excel,</b> our <b className="text-gray-200">fastest image to excel converter</b> saves hours. Perfect for{" "}
+        <b className="text-gray-200">scanning documents into excel spreadsheet</b> tasks.
+      </>
+    ),
   },
   {
     title: "Mobile & Scanning",
-    description:
-     (<>Use your phone as a scanner. <b>Scan to excel android </b> and <b>iphone photo to excel</b> compatible. Convert <b>camscanner pdf to excel, scan paper to excel</b>, or <b>scan handwriting to excel.</b> We are the best<b> mobile barcode scanner to excel</b> solution online.
-
-</>)
+    description: (
+      <>
+        Use your phone as a scanner. <b className="text-gray-200">Scan to excel android</b> and{" "}
+        <b className="text-gray-200">iphone photo to excel</b> compatible. Convert{" "}
+        <b className="text-gray-200">camscanner pdf to excel, scan paper to excel</b>, or{" "}
+        <b className="text-gray-200">scan handwriting to excel.</b> We are the best <b className="text-gray-200">mobile barcode scanner to excel</b> solution online.
+      </>
+    ),
   },
   {
     title: "Advanced OCR Features",
-    description:(<>Our <b>ocr image to excel</b> engine can<b> read text from image to excel, convert handwritten table to excel</b>, and <b>extract table from scanned pdf to excel</b>. It handles <b>blurred images, low light photos</b>, and complex <b>graph image to data excel</b> conversions.
-
-</>)
+    description: (
+      <>
+        Our <b className="text-gray-200">ocr image to excel</b> engine can{" "}
+        <b className="text-gray-200">read text from image to excel, convert handwritten table to excel</b>, and{" "}
+        <b className="text-gray-200">extract table from scanned pdf to excel</b>. It handles{" "}
+        <b className="text-gray-200">blurred images, low light photos</b>, and complex{" "}
+        <b className="text-gray-200">graph image to data excel</b> conversions.
+      </>
+    ),
   },
 ];
 
 export default function ExcelCards() {
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="relative py-20 px-6">
       <div className="max-w-9xl w-[79vw] mx-auto">
-        <div className="grid md:grid-cols-2 gap-10 ">
+        <div className="grid md:grid-cols-2 gap-10">
           {cards.map((card, index) => (
             <div
               key={index}
-              className="bg-white border border-gray-200 rounded-[30px] p-10 hover:shadow-lg transition duration-300"
+              className="rounded-[30px] border border-white/10 bg-white/[0.03] backdrop-blur-sm p-10 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl"
             >
-              <h3 className="text-[24px] font-bold text-[#0B1736] mb-6">
+              <h3 className="text-[24px] font-bold text-white mb-6">
                 {card.title}
               </h3>
 
-              <p className="text-[18px] leading-relaxed text-[#5B6B84]">
+              <p className="text-[18px] leading-relaxed text-gray-400">
                 {card.description}
               </p>
             </div>
