@@ -93,6 +93,13 @@ const tools = [
     icon: FileText,
     category: "Business",
   },
+  {
+    title: "Label printing",
+    desc: "Create professional invoices quickly and easily.",
+    slug: "label-printing",
+    icon: FileText,
+    category: "Business",
+  },
 ];
 
 export default function ToolsGrid() {
