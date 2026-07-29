@@ -1,36 +1,66 @@
-import { useState } from 'react';
+"use client";
 
-export default function ImageConverter() {
-  const [extractedText, setExtractedText] = useState('');
+import { useState } from "react";
+import { UploadCloud, FileText, Copy, Check } from "lucide-react";
+import { useFreeUsage } from "../context/FreeUsageContext";
+
+const TOOL_NAME = "handwriting-to-text";
+
+export default function HandwritingsUI() {
+  const { checkLimit, increaseUsage, setShowPopup, freeUses } = useFreeUsage();
+  const [file, setFile] = useState(null);
+  const [extractedText, setExtractedText] = useState("");
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const processFile = async (file) => {
-    if (!file || !file.type.startsWith("image/")) {
+  const usedCount = freeUses?.[TOOL_NAME] || 0;
+  const isBlocked = checkLimit(TOOL_NAME);
+
+  // Just stages the file — does NOT upload yet
+  const selectFile = (selected) => {
+    if (!selected || !selected.type.startsWith("image/")) {
       setExtractedText("Please upload a valid image file.");
+      return;
+    }
+    setFile(selected);
+    setExtractedText("");
+    setCopied(false);
+  };
+
+  // Actual upload/extraction — only runs when Apply is clicked
+  const submitFile = async () => {
+    if (!file) return;
+
+    // 🚨 LIMIT CHECK
+    if (checkLimit(TOOL_NAME)) {
+      setShowPopup(true);
       return;
     }
 
     setLoading(true);
-    setExtractedText('Extracting text...');
+    setCopied(false);
+    setExtractedText("Extracting text...");
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-     const response = await fetch("/api/handwriting", {
-  method: "POST",
-  body: formData,
-});
+      const response = await fetch("/api/handwriting", {
+        method: "POST",
+        body: formData,
+      });
 
-const data = await response.json();
+      const data = await response.json();
 
-if (!response.ok) {
-  setExtractedText(data.error || "Something went wrong");
-  return;
-}
+      if (!response.ok) {
+        setExtractedText(data.error || "Something went wrong");
+        return;
+      }
 
-setExtractedText(data.text || "No text found.");
+      setExtractedText(data.text || "No text found.");
+      // ✅ Increase usage only on a successful extraction
+      increaseUsage(TOOL_NAME);
     } catch (error) {
       console.error("Frontend Error:", error);
       setExtractedText("Failed to connect to the server.");
@@ -40,8 +70,10 @@ setExtractedText(data.text || "No text found.");
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) processFile(file);
+    const selected = e.target.files?.[0];
+    if (selected) selectFile(selected);
+    // reset the input so re-selecting the same file still fires onChange
+    e.target.value = "";
   };
 
   // Drag and Drop Handlers
@@ -59,92 +91,142 @@ setExtractedText(data.text || "No text found.");
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file) processFile(file);
+    const selected = e.dataTransfer.files?.[0];
+    if (selected) selectFile(selected);
+  };
+
+  const handleCopy = async () => {
+    if (!extractedText || loading) return;
+    try {
+      await navigator.clipboard.writeText(extractedText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Copy failed:", err);
+    }
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto my-10 px-5 font-sans select-none">
-      {/* Top Free Uses Badge */}
-      <div className="flex justify-center mb-5">
-        <span className="bg-gray-100 text-gray-700 px-4 py-1.5 rounded-full text-sm font-medium">
-          🎁 0/2 free uses
+    <section className="relative overflow-hidden mt-6 px-6 py-10">
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_50%_15%,rgba(99,102,241,.15),transparent_55%)]" />
+      <div className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[550px] w-[900px] -translate-x-1/2 rounded-full bg-purple-700/10 blur-[170px]" />
+
+      <div className="relative z-10 flex justify-center mb-6">
+        <span className="bg-white/[0.05] border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-md">
+          🎁 {usedCount}/3 free uses
         </span>
       </div>
 
-      {/* Main Layout Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        {/* Left Side: Upload Panel */}
-        <div 
+      <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2">
+        {/* LEFT: Upload Panel */}
+        <div
           onDragEnter={handleDrag}
           onDragOver={handleDrag}
           onDragLeave={handleDrag}
           onDrop={handleDrop}
-          className={`border-2 rounded-2xl p-10 min-h-[400px] flex flex-col justify-center items-center transition-all ${
-            dragActive ? "border-blue-500 bg-blue-50/50" : "border-gray-200 bg-white"
+          className={`relative overflow-hidden rounded-3xl border backdrop-blur-xl p-10 h-[420px] flex flex-col justify-center transition-all duration-300 ${
+            dragActive
+              ? "border-indigo-400/40 bg-indigo-500/10"
+              : "border-white/10 bg-white/[0.04] hover:border-indigo-500/30"
           }`}
         >
-          <div className="flex flex-col items-center text-center w-full">
-            <div className="w-14 h-14 border border-dashed border-blue-200 rounded-full flex items-center justify-center mb-5">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-              </svg>
+          <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-600/10 blur-[120px]" />
+
+          <div className="relative flex flex-col items-center justify-center text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full border border-dashed border-white/20 bg-white/[0.05]">
+              <UploadCloud size={24} className="text-indigo-400" strokeWidth={1.75} />
             </div>
-            
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">Drag & drop, paste or</h3>
-            <p className="text-sm text-gray-400 mb-6 max-w-[320px] leading-relaxed">
+
+            <h3 className="mt-5 text-xl font-semibold text-white">
+              Drag & drop, paste or
+            </h3>
+            <p className="mt-2 text-sm font-medium text-gray-400 max-w-[320px] leading-relaxed">
               PNG, JPEG, JPG, WEBP, BMP, GIF, HEIC, HEIF, PDF up to 10 MB
             </p>
-            
-            <label className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-8 py-3 rounded-xl font-medium cursor-pointer inline-flex items-center gap-2 transition-colors">
-              {loading ? 'Processing...' : 'Upload File'}
-             <input
-  type="file"
-  accept="image/png,image/jpeg,image/jpg,image/webp"
-  onChange={handleFileChange}
-  className="hidden"
-/>
+
+            <label className="mt-6 flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-8 py-3 font-semibold text-white cursor-pointer transition-all duration-300 hover:scale-105">
+              Upload File
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/jpg,image/webp"
+                onChange={handleFileChange}
+                className="hidden"
+              />
             </label>
-            
-            <p className="text-xs text-gray-400 mt-4 mb-0">
+
+            <p className="mt-3 text-sm text-gray-500">
               or drag & drop your file here
             </p>
-          </div>
-        </div>
 
-        {/* Right Side: Result Panel */}
-        <div className="border border-gray-200 rounded-2xl p-10 bg-white min-h-[400px] flex flex-col justify-center items-center">
-          <div className="w-full h-full flex flex-col justify-center items-center">
-            {extractedText ? (
-              <div className="w-full text-left flex flex-col h-full justify-between">
-                <div>
-                  <h4 className="font-semibold text-gray-700 mb-2">Extracted Text:</h4>
-                  <div className="bg-gray-50 border rounded-xl p-5 whitespace-pre-wrap overflow-y-auto min-h-[300px] max-h-[420px] font-mono text-[15px] leading-7">
-    {extractedText}
-</div>
-                </div>
+            {file && (
+              <div className="mt-4 rounded-xl border border-green-500/20 bg-green-500/10 px-4 py-2 text-sm text-green-400 max-w-[280px] truncate">
+                {file.name}
               </div>
-            ) : (
-              <div className="flex flex-col items-center text-center w-full">
-                <div className="mb-4 bg-gray-50 p-3 rounded-xl">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                  </svg>
-                </div>
-                <h3 className="text-xl text-gray-400 font-semibold mb-2">Ready to convert</h3>
-                <p className="text-sm text-gray-400 max-w-[320px] leading-relaxed">
-                  Upload your handwriting to see the extracted text
-                </p>
-              </div>
+            )}
+
+            {file && (
+              <button
+                onClick={submitFile}
+                disabled={loading || isBlocked}
+                className="mt-4 rounded-xl bg-white px-8 py-2.5 font-semibold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loading
+                  ? "Processing..."
+                  : isBlocked
+                  ? "Limit Reached"
+                  : "Apply"}
+              </button>
             )}
           </div>
         </div>
 
+        {/* RIGHT: Result Panel */}
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 h-[420px] flex flex-col">
+          <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-purple-700/10 blur-[120px]" />
+
+          {extractedText ? (
+            <div className="relative flex h-full flex-col">
+              <div className="mb-4 flex items-center justify-between">
+                <h4 className="text-xl font-semibold text-white">Extracted Text</h4>
+                <button
+                  onClick={handleCopy}
+                  disabled={loading}
+                  className={`inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg border transition-all duration-300 ${
+                    copied
+                      ? "border-green-500/20 bg-green-500/10 text-green-400"
+                      : "border-white/10 bg-white/[0.05] text-gray-300 hover:bg-white/[0.08] hover:border-indigo-500/30"
+                  }`}
+                >
+                  {copied ? (
+                    <>
+                      <Check size={15} />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={15} />
+                      Copy
+                    </>
+                  )}
+                </button>
+              </div>
+              <div className="flex-grow overflow-y-auto rounded-2xl border border-white/10 bg-[#0b0b13] p-5 whitespace-pre-wrap font-mono text-[15px] leading-7 text-gray-200">
+                {extractedText}
+              </div>
+            </div>
+          ) : (
+            <div className="relative flex flex-grow flex-col items-center justify-center text-center">
+              <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]">
+                <FileText size={32} className="text-indigo-400" strokeWidth={1.5} />
+              </div>
+              <h2 className="text-2xl font-bold text-white">Ready to convert</h2>
+              <p className="mt-3 max-w-xs text-base text-gray-400">
+                Upload your handwriting to see the extracted text
+              </p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

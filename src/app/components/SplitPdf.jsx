@@ -20,12 +20,7 @@ export default function NextPdfSplitter() {
 
   const handleFileChange = async (uploadedFile) => {
     if (!uploadedFile || uploadedFile.type !== "application/pdf") return;
-if (checkLimit("toolName")) {
-  setShowPopup(true);
-  return;
-}
 
-increaseUsage("toolName");
     setFile({
       name: uploadedFile.name,
       size: (uploadedFile.size / (1024 * 1024)).toFixed(1),
@@ -35,7 +30,13 @@ increaseUsage("toolName");
 
     try {
      const pdfjsLib = await import("pdfjs-dist");
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+     // pdfjs-dist v6 is ESM-only, so the worker file is .mjs, not .min.js —
+     // bundling it locally (instead of pointing at a CDN URL) avoids the
+     // "Setting up fake worker failed" error and any CDN/CORS flakiness.
+     pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+       "pdfjs-dist/build/pdf.worker.min.mjs",
+       import.meta.url
+     ).toString();
 
       const fileReader = new FileReader();
       fileReader.onload = async function () {

@@ -21,6 +21,13 @@ const tools = [
     icon: Code2,
     category: "Converter",
   },
+  {
+    title: "Handwriting to text",
+    desc: "Convert handwritten notes and documents to editable text.",
+    slug: "handwriting-to-text",
+    icon: FileText,
+    category: "Converter",
+  },
 
   {
     title: "Image to Excel",

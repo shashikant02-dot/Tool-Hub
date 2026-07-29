@@ -9,25 +9,7 @@ export default function PdfBio({
   return (
     <div className="mt-22 flex justify-center px-4 sm:px-10 md:px-20 lg:px-32">
       <div
-        className="
-          group
-          relative
-          w-full
-          max-w-4xl
-          overflow-hidden
-          rounded-3xl
-          border
-          border-white/10
-          bg-white/[0.04]
-          backdrop-blur-xl
-          p-8
-          sm:p-10
-          transition-all
-          duration-500
-          hover:-translate-y-2
-          hover:border-indigo-500/40
-          hover:shadow-[0_20px_60px_rgba(99,102,241,.25)]
-        "
+        className="group relative w-full max-w-4xl overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.25)]"
       >
         {/* Hover Glow */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />

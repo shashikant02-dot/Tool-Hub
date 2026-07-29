@@ -8,43 +8,41 @@ import SubscriptionPopup from "@/app/components/SubscriptionPopup";
 import HandwritingsUI from "@/app/components/HandwritingsUI";
 
 export default function HandwritingToText() {
- 
-
-  const {  showPopup, setShowPopup } = useFreeUsage();
+  const { showPopup, setShowPopup } = useFreeUsage();
 
   return (
-    <>
-      <section className="mt-14">
-        <div className="flex flex-col text-center mt-22">
-          <h1 className="text-5xl font-bold">
+    <main className="relative min-h-screen overflow-hidden bg-[#030303]">
+      {/* ================= BACKGROUND ================= */}
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_50%_10%,#24103d_0%,#090713_35%,#030303_75%)]" />
+      <div className="pointer-events-none absolute left-1/2 top-[-100px] -z-10 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-purple-700/20 blur-[160px]" />
+      <div className="pointer-events-none absolute right-[-200px] top-[40%] -z-10 h-[500px] w-[500px] rounded-full bg-blue-700/10 blur-[150px]" />
+      <div className="pointer-events-none absolute left-[-200px] top-[55%] -z-10 h-[450px] w-[450px] rounded-full bg-pink-700/10 blur-[150px]" />
+
+      {/* ================= HERO ================= */}
+      <section className="relative z-10 mt-28 px-6 pb-16 text-center">
+        <div className="mx-auto max-w-5xl">
+          <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl">
             Free Online{" "}
-            <span className="text-indigo-600">Handwriting to Text</span>{" "}
+            <span className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+              Handwriting to Text
+            </span>{" "}
             Converter
           </h1>
 
-          <p className="text-2xl text-gray-600 max-w-4xl mx-auto mt-6">
+          <p className="mx-auto mt-6 max-w-4xl text-xl leading-8 text-gray-400 md:text-2xl">
             Convert handwriting into digital text using AI OCR.
           </p>
         </div>
       </section>
 
-      {/* TOOL
-      <UploadUI
-        apiEndpoint="/api/handwriting"
-        format="OCR"
-        title="Ready to convert"
-        subtitle="Upload your handwriting to see the extracted text."
-        fileText="PNG, JPEG, JPG, WEBP, BMP, GIF, HEIC, HEIF, PDF up to 10 MB"
-        toolName={TOOL_NAME}
-        freeUses={freeUses}
-        setFreeUses={setFreeUses}
-        setShowPopup={setShowPopup}
-      /> */}
-      <HandwritingsUI/>
+      {/* ================= TOOL ================= */}
+      <HandwritingsUI />
+
+      {/* ================= CONTENT SECTIONS ================= */}
       <CardInfo
         heading={
           <>
-            How <span className="text-indigo-600">Handwriting to Text</span>{" "}
+            How <span className="text-indigo-400">Handwriting to Text</span>{" "}
             Works
           </>
         }
@@ -108,7 +106,7 @@ export default function HandwritingToText() {
           <>
             <div className="text-5xl">
               The Best{" "}
-              <span className="text-indigo-600">Handwriting to Text</span> AI
+              <span className="text-indigo-400">Handwriting to Text</span> AI
               Online
             </div>
           </>
@@ -199,11 +197,11 @@ export default function HandwritingToText() {
         heading={
           <>
             <div className="flex justify-center">
-              <p className="text-indigo-500 mb-10 p-2 font-bold text-xl w-[33vw] flex  justify-center bg-indigo-50 rounded-2xl">
+              <p className="text-indigo-300 mb-10 p-2 font-bold text-xl w-[33vw] flex justify-center bg-white/[0.05] border border-white/10 rounded-2xl">
                 #1 Rated Free Online Handwriting to Text Converter & AI OCR
               </p>
             </div>
-            Elite <span className="text-indigo-600"> Handwriting to Text</span>{" "}
+            Elite <span className="text-indigo-400"> Handwriting to Text</span>{" "}
             Features
           </>
         }
@@ -282,7 +280,8 @@ export default function HandwritingToText() {
           },
         ]}
       />
+
       <SubscriptionPopup open={showPopup} onClose={() => setShowPopup(false)} />
-    </>
+    </main>
   );
 }
