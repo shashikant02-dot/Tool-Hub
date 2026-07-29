@@ -68,13 +68,13 @@ export default function InvoiceForm({
   function Input({ label, className = "", ...props }) {
   return (
     <div className="grid grid-cols-[120px_1fr] items-center gap-4">
-      <label className="text-sm font-medium text-slate-700">
+      <label className="text-sm font-medium text-gray-300">
         {label}
       </label>
 
       <input
         {...props}
-        className={`w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${className}`}
+        className={`w-full rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/10 focus:bg-white/[0.06] placeholder:text-gray-500 ${className}`}
       />
     </div>
   );
@@ -82,11 +82,11 @@ export default function InvoiceForm({
 
   return (
     <>
-<div className="mt-12 flex items-center justify-center px-6  via-white to-blue-50 relative overflow-hidden">
+<div className="mt-12 flex items-center justify-center px-6 relative overflow-hidden">
 
   {/* Background Blobs */}
-  <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-blue-200/30 rounded-full blur-3xl"></div>
-  <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-purple-200/30 rounded-full blur-3xl"></div>
+  <div className="pointer-events-none absolute -top-40 -left-40 w-[500px] h-[500px] bg-indigo-700/20 rounded-full blur-3xl"></div>
+  <div className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-purple-700/20 rounded-full blur-3xl"></div>
 
   <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-16 items-center z-10">
 
@@ -94,12 +94,12 @@ export default function InvoiceForm({
     <div>
       
 
-      <h1 className="mt-5 text-5xl lg:text-6xl font-bold text-slate-900 leading-tight tracking-tight">
-        Create <span className="text-blue-600">Professional</span><br />
+      <h1 className="mt-5 text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
+        Create <span className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">Professional</span><br />
         Invoices in Seconds
       </h1>
 
-      <p className="mt-6 text-lg text-slate-600 max-w-lg leading-relaxed">
+      <p className="mt-6 text-lg text-gray-400 max-w-lg leading-relaxed">
         Generate beautiful invoices with automatic calculations, branding support,
         and instant PDF export — no complexity, just speed.
       </p>
@@ -114,7 +114,7 @@ export default function InvoiceForm({
         ].map((item, i) => (
           <span
             key={i}
-            className="px-4 py-2 bg-white/70 backdrop-blur border border-slate-200 rounded-full text-sm text-slate-700 shadow-sm hover:shadow transition"
+            className="px-4 py-2 bg-white/[0.04] backdrop-blur border border-white/10 rounded-full text-sm text-gray-300 shadow-sm transition-all duration-300 hover:border-indigo-500/40 hover:bg-white/[0.08]"
           >
             {item}
           </span>
@@ -129,32 +129,25 @@ export default function InvoiceForm({
   </div>
 </div>
 
-     {/* <h1 className="text-4xl mt-12 lg:text-5xl font-semibold text-center tracking-tight text-slate-900">
-  Invoices made{" "}
-  <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 text-transparent bg-clip-text">
-    simple
-  </span>
-</h1>
-
-<p className="mt-4 text-center text-slate-500 text-lg">
-  Fast, clean and professional invoice generation tool
-</p> */}
     <div className="max-w-6xl mx-auto mt-12">
 
       <div className="space-y-8">
         {/* Company */}
         {/* ================= Company Details ================= */}
 
-       <div className="rounded-2xl border border-slate-200 bg-white p-8">
+       <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-8 transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+
+  {/* Hover Glow */}
+  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
   {/* Top */}
 
-  <div className="flex flex-col lg:flex-row justify-between gap-10">
+  <div className="relative z-10 flex flex-col lg:flex-row justify-between gap-10">
 
     <div className="flex-1">
       <input
         placeholder="Invoice"
-        className="w-full max-w-md text-4xl font-semibold border border-slate-300 rounded-xl px-5 py-4 outline-none focus:border-blue-500"
+        className="w-full max-w-md text-4xl font-semibold border border-white/10 bg-white/[0.03] text-white rounded-xl px-5 py-4 outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
       />
     </div>
 
@@ -167,17 +160,17 @@ export default function InvoiceForm({
 
   </div>
 
-  <div className="my-10 border-t border-slate-200"></div>
+  <div className="relative z-10 my-10 border-t border-white/10"></div>
 
   {/* From + Bill To */}
 
-  <div className="grid lg:grid-cols-2 gap-12">
+  <div className="relative z-10 grid lg:grid-cols-2 gap-12">
 
     {/* FROM */}
 
     <div>
 
-      <h2 className="text-3xl font-semibold mb-8">
+      <h2 className="text-3xl font-semibold mb-8 text-white">
         From
       </h2>
 
@@ -226,7 +219,7 @@ export default function InvoiceForm({
 
     <div>
 
-      <h2 className="text-3xl font-semibold mb-8">
+      <h2 className="text-3xl font-semibold mb-8 text-white">
         Bill To
       </h2>
 
@@ -266,77 +259,17 @@ export default function InvoiceForm({
 
   </div>
 
+  {/* Corner Glow */}
+  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
+
 </div>
-
-        {/* Customer */}
-        {/* ================= Customer Details ================= */}
-
-        {/* <div className="rounded-3xl border border-slate-200 bg-white shadow-sm">
-
-          <div className="p-8">
-            <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">
-                  Customer Name
-                </label>
-
-                <input
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3.5 text-slate-700 outline-none transition-all duration-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-                  placeholder="John Doe"
-                  value={customer.name}
-                  onChange={(e) => updateCustomer("name", e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">
-                  Email Address
-                </label>
-
-                <input
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3.5 text-slate-700 outline-none transition-all duration-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-                  placeholder="customer@email.com"
-                  value={customer.email}
-                  onChange={(e) => updateCustomer("email", e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700">
-                  Phone Number
-                </label>
-
-                <input
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3.5 text-slate-700 outline-none transition-all duration-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-                  placeholder="+91 9876543210"
-                  value={customer.phone}
-                  onChange={(e) => updateCustomer("phone", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <label className="mb-2 block text-sm font-medium text-slate-700">
-                Customer Address
-              </label>
-
-              <textarea
-                rows={5}
-                className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3.5 text-slate-700 outline-none resize-none transition-all duration-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-                placeholder="Enter complete customer address..."
-                value={customer.address}
-                onChange={(e) => updateCustomer("address", e.target.value)}
-              />
-            </div>
-          </div>
-        </div> */}
 
         {/* Invoice */}
         {/* ================= Invoice Details ================= */}
 
-       <div className="mt-10 border-t border-slate-200 pt-10">
+       <div className="mt-10 border-t border-white/10 pt-10">
 
-  <h2 className="mb-8 text-3xl font-semibold text-slate-800">
+  <h2 className="mb-8 text-3xl font-semibold text-white">
     Invoice Details
   </h2>
 
@@ -347,7 +280,7 @@ export default function InvoiceForm({
     <div className="space-y-5">
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
-        <label className="font-medium text-slate-700">
+        <label className="font-medium text-gray-300">
           Number
         </label>
 
@@ -356,12 +289,12 @@ export default function InvoiceForm({
           placeholder="INV0001"
           value={invoice.number}
           onChange={(e) => updateInvoice("number", e.target.value)}
-          className="rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
         />
       </div>
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
-        <label className="font-medium text-slate-700">
+        <label className="font-medium text-gray-300">
           Date
         </label>
 
@@ -369,12 +302,12 @@ export default function InvoiceForm({
           type="date"
           value={invoice.date}
           onChange={(e) => updateInvoice("date", e.target.value)}
-          className="rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60 [color-scheme:dark]"
         />
       </div>
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
-        <label className="font-medium text-slate-700">
+        <label className="font-medium text-gray-300">
           Due Date
         </label>
 
@@ -382,7 +315,7 @@ export default function InvoiceForm({
           type="date"
           value={invoice.dueDate}
           onChange={(e) => updateInvoice("dueDate", e.target.value)}
-          className="rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60 [color-scheme:dark]"
         />
       </div>
 
@@ -393,7 +326,7 @@ export default function InvoiceForm({
     <div className="space-y-5">
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
-        <label className="font-medium text-slate-700">
+        <label className="font-medium text-gray-300">
           Payment Terms
         </label>
 
@@ -403,12 +336,12 @@ export default function InvoiceForm({
           onChange={(e) =>
             updateInvoice("paymentTerms", e.target.value)
           }
-          className="rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
         />
       </div>
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
-        <label className="font-medium text-slate-700">
+        <label className="font-medium text-gray-300">
           PO Number
         </label>
 
@@ -418,12 +351,12 @@ export default function InvoiceForm({
           onChange={(e) =>
             updateInvoice("poNumber", e.target.value)
           }
-          className="rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
         />
       </div>
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
-        <label className="font-medium text-slate-700">
+        <label className="font-medium text-gray-300">
           Currency
         </label>
 
@@ -432,11 +365,11 @@ export default function InvoiceForm({
           onChange={(e) =>
             updateInvoice("currency", e.target.value)
           }
-          className="rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60"
         >
-          <option>INR</option>
-          <option>USD</option>
-          <option>EUR</option>
+          <option className="bg-[#0a0a0a]">INR</option>
+          <option className="bg-[#0a0a0a]">USD</option>
+          <option className="bg-[#0a0a0a]">EUR</option>
         </select>
       </div>
 
@@ -448,35 +381,39 @@ export default function InvoiceForm({
         {/* Invoice Items */}
         {/* ================= Invoice Items ================= */}
 
-      <div className="rounded-3xl w-full  border border-slate-200 bg-white  overflow-hidden">
-  <InvoiceItems
-    invoiceData={invoiceData}
-    setInvoiceData={setInvoiceData}
-  />
+      <div className="group relative overflow-hidden rounded-3xl w-full border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100 pointer-events-none" />
+  <div className="relative z-10">
+    <InvoiceItems
+      invoiceData={invoiceData}
+      setInvoiceData={setInvoiceData}
+    />
+  </div>
 </div>
 
         {/* ================= Invoice Summary ================= */}
 
-        <div className="rounded-3xl  bg-white  overflow-hidden">
+        <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
   {/* Header */}
-  <div className="flex items-center justify-between border-b border-slate-200 px-8 py-5">
+  <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-8 py-5">
     <div>
-      <h2 className="text-2xl font-semibold text-slate-800">
+      <h2 className="text-2xl font-semibold text-white">
         Charges & Adjustments
       </h2>
-      <p className="text-sm text-slate-500">
+      <p className="text-sm text-gray-400">
         Tax, discount and shipping charges
       </p>
     </div>
   </div>
 
   {/* Content */}
-  <div className="grid gap-6 p-8 md:grid-cols-3">
+  <div className="relative z-10 grid gap-6 p-8 md:grid-cols-3">
 
     {/* Tax */}
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-      <label className="mb-3 block text-sm font-medium text-slate-700">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+      <label className="mb-3 block text-sm font-medium text-gray-300">
         Tax (%)
       </label>
 
@@ -491,23 +428,23 @@ export default function InvoiceForm({
               tax: e.target.value,
             })
           }
-          className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-4 pr-10 outline-none transition focus:border-blue-500"
+          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-4 pr-10 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
         />
 
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
           %
         </span>
       </div>
     </div>
 
     {/* Discount */}
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-      <label className="mb-3 block text-sm font-medium text-slate-700">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+      <label className="mb-3 block text-sm font-medium text-gray-300">
         Discount
       </label>
 
       <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
           ₹
         </span>
 
@@ -521,19 +458,19 @@ export default function InvoiceForm({
               discount: e.target.value,
             })
           }
-          className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-9 pr-4 outline-none transition focus:border-blue-500"
+          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-9 pr-4 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
         />
       </div>
     </div>
 
     {/* Shipping */}
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-      <label className="mb-3 block text-sm font-medium text-slate-700">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+      <label className="mb-3 block text-sm font-medium text-gray-300">
         Shipping
       </label>
 
       <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
           ₹
         </span>
 
@@ -547,12 +484,15 @@ export default function InvoiceForm({
               shipping: e.target.value,
             })
           }
-          className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-9 pr-4 outline-none transition focus:border-blue-500"
+          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-9 pr-4 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
         />
       </div>
     </div>
 
   </div>
+
+  {/* Corner Glow */}
+  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
 
 </div>
 
@@ -560,38 +500,31 @@ export default function InvoiceForm({
 
         {/* ================= Payment Information ================= */}
 
-       <div className="rounded-2xl bg-white border border-slate-200  overflow-hidden">
+       <div className="group relative overflow-hidden rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
   {/* Header */}
-  <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-8 py-6">
+  <div className="relative z-10 flex items-center justify-between border-b border-white/10 bg-white/[0.02] px-8 py-6">
     <div className="flex items-center gap-4">
-      {/* <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-2xl">
-        🏦
-      </div> */}
-
       <div>
-        <h2 className="text-2xl font-semibold text-slate-800">
+        <h2 className="text-2xl font-semibold text-white">
           Payment Information
         </h2>
-
-        {/* <p className="text-sm text-slate-500">
-          Bank details for receiving payments
-        </p> */}
       </div>
     </div>
 
-    <span className="rounded-full bg-blue-100 px-4 py-1 text-sm font-medium text-blue-700">
+    <span className="rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-1 text-sm font-medium text-white shadow-lg">
       Optional
     </span>
   </div>
 
   {/* Form */}
-  <div className="p-8">
+  <div className="relative z-10 p-8">
     <div className="grid gap-6 md:grid-cols-2">
 
       {/* Bank Name */}
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">
+        <label className="mb-2 block text-sm font-medium text-gray-300">
           Bank Name
         </label>
 
@@ -600,13 +533,13 @@ export default function InvoiceForm({
           placeholder="State Bank of India"
           value={invoiceData.company.bankName}
           onChange={(e) => updateCompany("bankName", e.target.value)}
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 placeholder:text-gray-500"
         />
       </div>
 
       {/* Account Holder */}
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">
+        <label className="mb-2 block text-sm font-medium text-gray-300">
           Account Holder
         </label>
 
@@ -615,13 +548,13 @@ export default function InvoiceForm({
           placeholder="John Doe"
           value={invoiceData.company.accountName}
           onChange={(e) => updateCompany("accountName", e.target.value)}
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 placeholder:text-gray-500"
         />
       </div>
 
       {/* Account Number */}
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">
+        <label className="mb-2 block text-sm font-medium text-gray-300">
           Account Number
         </label>
 
@@ -633,13 +566,13 @@ export default function InvoiceForm({
           onChange={(e) =>
             updateCompany("accountNumber", e.target.value)
           }
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 placeholder:text-gray-500"
         />
       </div>
 
       {/* IFSC */}
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">
+        <label className="mb-2 block text-sm font-medium text-gray-300">
           IFSC Code
         </label>
 
@@ -648,13 +581,13 @@ export default function InvoiceForm({
           placeholder="SBIN0001234"
           value={invoiceData.company.ifsc}
           onChange={(e) => updateCompany("ifsc", e.target.value)}
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 uppercase outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white px-4 py-3 uppercase outline-none transition focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 placeholder:text-gray-500"
         />
       </div>
 
       {/* UPI */}
       <div className="md:col-span-2">
-        <label className="mb-2 block text-sm font-medium text-slate-700">
+        <label className="mb-2 block text-sm font-medium text-gray-300">
           UPI ID
         </label>
 
@@ -663,36 +596,38 @@ export default function InvoiceForm({
           placeholder="yourname@upi"
           value={invoiceData.company.upi}
           onChange={(e) => updateCompany("upi", e.target.value)}
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition focus:border-indigo-500/60 focus:ring-4 focus:ring-indigo-500/10 placeholder:text-gray-500"
         />
       </div>
 
     </div>
 
-   
-
   </div>
+
+  {/* Corner Glow */}
+  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
 
 </div>
         {/* Signature */}
         {/* ================= Signature ================= */}
 
-      <div className="rounded-2xl border border-slate-200 bg-white  overflow-hidden">
+      <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
   {/* Header */}
-  <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+  <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-6 py-4">
 
     <div className="flex items-center gap-3">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg">
         ✍️
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold text-slate-800">
+        <h2 className="text-lg font-semibold text-white">
           Signature
         </h2>
 
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-gray-400">
           Optional
         </p>
       </div>
@@ -701,16 +636,16 @@ export default function InvoiceForm({
   </div>
 
   {/* Upload */}
-  <div className="p-6">
+  <div className="relative z-10 p-6">
 
-    <div className="flex items-center justify-between rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5">
+    <div className="flex items-center justify-between rounded-xl border border-dashed border-white/15 bg-white/[0.02] p-5">
 
       <div>
-        <p className="font-medium text-slate-700">
+        <p className="font-medium text-gray-200">
           Upload Signature
         </p>
 
-        <p className="text-xs text-slate-500 mt-1">
+        <p className="text-xs text-gray-500 mt-1">
           PNG/JPG recommended
         </p>
       </div>
@@ -724,13 +659,16 @@ export default function InvoiceForm({
 
   </div>
 
+  {/* Corner Glow */}
+  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
+
 </div>
 
         {/* Download */}
         {/* ================= Action Bar ================= */}
 
       <div className=" bottom-5 z-50 mt-10">
-    <div className="flex flex-col gap-5 md:flex-row md:items-center  px-8 py-5">
+    <div className="flex flex-col gap-5 md:flex-row md:items-center px-8 py-5">
       <DownloadPdf data={pdfData} onUse={onGeneratePdf} isPro={isPro} />
       <DownloadWord data={invoiceData} onUse={onGeneratePdf} isPro={isPro} />
     </div>

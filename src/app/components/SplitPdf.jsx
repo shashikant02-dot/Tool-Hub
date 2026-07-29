@@ -34,8 +34,8 @@ increaseUsage("toolName");
     setLoadingPages(true);
 
     try {
-      const pdfjsLib = await import("pdfjs-dist");
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js`;
+     const pdfjsLib = await import("pdfjs-dist");
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
       const fileReader = new FileReader();
       fileReader.onload = async function () {
