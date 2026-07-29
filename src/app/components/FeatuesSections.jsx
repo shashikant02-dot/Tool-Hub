@@ -50,7 +50,7 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-    <section className="relative overflow-hidden bg-[#030303] py-32">
+    <section className="relative overflow-hidden bg-[#030303] py-16 sm:py-24 md:py-32">
 
       {/* Background Glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_20%,rgba(45,20,80,0.3),transparent_65%)]" />
@@ -60,17 +60,17 @@ export default function FeaturesSection() {
       <div className="pointer-events-none absolute -right-40 bottom-20 h-[450px] w-[450px] rounded-full bg-blue-700/10 blur-[140px]" />
 
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
 
 
         {/* Header */}
-        <div className="mx-auto mb-20 max-w-3xl text-center">
+        <div className="mx-auto mb-12 sm:mb-16 md:mb-20 max-w-3xl text-center">
 
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-purple-400">
+          <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-purple-400">
             Why ToolHub
           </p>
 
-          <h2 className="mt-5 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          <h2 className="mt-4 sm:mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
 
             Built for the way
 
@@ -80,7 +80,7 @@ export default function FeaturesSection() {
 
           </h2>
 
-          <p className="mt-6 text-lg leading-relaxed text-gray-400">
+          <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-gray-400">
             Fast, secure and beautifully simple tools designed to help
             you get work done in seconds.
           </p>
@@ -89,7 +89,7 @@ export default function FeaturesSection() {
 
 
         {/* Features */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
 
           {features.map((item, i) => {
 
@@ -99,7 +99,7 @@ export default function FeaturesSection() {
 
               <div
                 key={i}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/40 hover:bg-white/[0.08] hover:shadow-2xl hover:shadow-purple-900/20"
+                className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-white/[0.04] p-6 sm:p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/40 hover:bg-white/[0.08] hover:shadow-2xl hover:shadow-purple-900/20"
               >
 
                 {/* Hover Glow */}
@@ -111,30 +111,30 @@ export default function FeaturesSection() {
 
                   {/* Icon */}
                   <div
-                    className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.gradient} shadow-lg transition duration-300 group-hover:scale-110`}
+                    className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.gradient} shadow-lg transition duration-300 group-hover:scale-110`}
                   >
                     <Icon
                       className="text-white"
-                      size={26}
+                      size={22}
                       strokeWidth={1.8}
                     />
                   </div>
 
 
                   {/* Title */}
-                  <h3 className="mt-6 text-2xl font-bold text-white">
+                  <h3 className="mt-5 sm:mt-6 text-xl sm:text-2xl font-bold text-white">
                     {item.title}
                   </h3>
 
 
                   {/* Description */}
-                  <p className="mt-4 leading-7 text-gray-400">
+                  <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-6 sm:leading-7 text-gray-400">
                     {item.desc}
                   </p>
 
 
                   {/* Learn More */}
-                  <div className="mt-6 flex items-center font-medium text-purple-400 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                  <div className="mt-5 sm:mt-6 flex items-center text-sm sm:text-base font-medium text-purple-400 opacity-0 transition-all duration-300 group-hover:opacity-100">
 
                     Learn more
 

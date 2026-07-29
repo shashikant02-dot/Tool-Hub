@@ -20,7 +20,7 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section className="relative overflow-hidden bg-[#030303] py-32">
+    <section className="relative overflow-hidden bg-[#030303] py-16 sm:py-24 md:py-32">
 
       {/* Background Glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(50,20,90,0.3),transparent_65%)]" />
@@ -30,17 +30,17 @@ export default function HowItWorks() {
       <div className="pointer-events-none absolute -right-40 bottom-0 h-[450px] w-[450px] rounded-full bg-blue-700/10 blur-[140px]" />
 
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
 
 
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
 
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-purple-400">
+          <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-purple-400">
             Simple Process
           </p>
 
-          <h2 className="mt-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+          <h2 className="mt-4 sm:mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl">
 
             How It{" "}
 
@@ -50,7 +50,7 @@ export default function HowItWorks() {
 
           </h2>
 
-          <p className="mt-5 text-lg leading-relaxed text-gray-400">
+          <p className="mt-4 sm:mt-5 text-base sm:text-lg leading-relaxed text-gray-400">
             A simple three-step process designed to make your work faster,
             easier and more efficient.
           </p>
@@ -59,7 +59,7 @@ export default function HowItWorks() {
 
 
         {/* Steps */}
-        <div className="relative mt-24 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="relative mt-12 sm:mt-16 md:mt-24 grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
 
 
           {/* Connecting Line */}
@@ -74,7 +74,7 @@ export default function HowItWorks() {
 
               <div
                 key={i}
-                className="group relative rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl transition-all duration-300 hover:-translate-y-3 hover:border-purple-500/40 hover:bg-white/[0.08] hover:shadow-2xl hover:shadow-purple-900/20"
+                className="group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-white/[0.04] p-6 sm:p-8 md:p-10 text-center backdrop-blur-xl transition-all duration-300 hover:-translate-y-3 hover:border-purple-500/40 hover:bg-white/[0.08] hover:shadow-2xl hover:shadow-purple-900/20"
               >
 
                 {/* Hover Glow */}
@@ -85,11 +85,11 @@ export default function HowItWorks() {
 
 
                   {/* Icon */}
-                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 shadow-xl shadow-purple-900/30 transition duration-300 group-hover:scale-110">
+                  <div className="mx-auto flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 shadow-xl shadow-purple-900/30 transition duration-300 group-hover:scale-110">
 
                     <Icon
                       className="text-white"
-                      size={32}
+                      size={28}
                       strokeWidth={1.8}
                     />
 
@@ -97,19 +97,19 @@ export default function HowItWorks() {
 
 
                   {/* Step Number */}
-                  <div className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-purple-400">
+                  <div className="mt-5 sm:mt-6 text-xs font-bold uppercase tracking-[0.2em] text-purple-400">
                     Step {i + 1}
                   </div>
 
 
                   {/* Title */}
-                  <h3 className="mt-3 text-2xl font-bold text-white">
+                  <h3 className="mt-3 text-xl sm:text-2xl font-bold text-white">
                     {step.title}
                   </h3>
 
 
                   {/* Description */}
-                  <p className="mt-4 leading-relaxed text-gray-400">
+                  <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-gray-400">
                     {step.desc}
                   </p>
 

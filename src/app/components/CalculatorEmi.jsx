@@ -45,37 +45,37 @@ export default function CalculatorEmi() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-6xl">
 
           {/* HEADER */}
-          <div className="text-center mb-10">
-            <h1 className="text-4xl font-bold tracking-tight text-white">
+          <div className="text-center mb-8 sm:mb-10">
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white">
               EMI Calculator
             </h1>
 
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-xs sm:text-sm text-gray-400">
               Plan your loan with accurate monthly breakdown
             </p>
           </div>
 
           {/* MAIN GRID */}
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
 
             {/* LEFT */}
-            <div className="space-y-6 lg:col-span-2">
+            <div className="space-y-4 sm:space-y-6 lg:col-span-2">
 
               {/* INPUT CARD */}
-              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl space-y-8">
+              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/[0.04] p-4 sm:p-6 shadow-2xl backdrop-blur-xl space-y-6 sm:space-y-8">
 
                 {/* Amount */}
                 <div>
-                  <div className="mb-3 flex justify-between">
-                    <span className="text-sm text-gray-400">
+                  <div className="mb-3 flex flex-wrap justify-between gap-1">
+                    <span className="text-xs sm:text-sm text-gray-400">
                       Loan Amount
                     </span>
 
-                    <span className="font-semibold text-white">
+                    <span className="text-sm sm:text-base font-semibold text-white">
                       ₹{formatINR(amount)}
                     </span>
                   </div>
@@ -96,12 +96,12 @@ export default function CalculatorEmi() {
 
                 {/* Rate */}
                 <div>
-                  <div className="mb-3 flex justify-between">
-                    <span className="text-sm text-gray-400">
+                  <div className="mb-3 flex flex-wrap justify-between gap-1">
+                    <span className="text-xs sm:text-sm text-gray-400">
                       Interest Rate
                     </span>
 
-                    <span className="font-semibold text-white">
+                    <span className="text-sm sm:text-base font-semibold text-white">
                       {rate}% p.a.
                     </span>
                   </div>
@@ -122,12 +122,12 @@ export default function CalculatorEmi() {
 
                 {/* Tenure */}
                 <div>
-                  <div className="mb-3 flex justify-between">
-                    <span className="text-sm text-gray-400">
+                  <div className="mb-3 flex flex-wrap justify-between gap-1">
+                    <span className="text-xs sm:text-sm text-gray-400">
                       Loan Tenure
                     </span>
 
-                    <span className="font-semibold text-white">
+                    <span className="text-sm sm:text-base font-semibold text-white">
                       {tenure} Years
                     </span>
                   </div>
@@ -147,9 +147,9 @@ export default function CalculatorEmi() {
               </div>
 
               {/* BREAKDOWN */}
-              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl">
+              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/[0.04] p-4 sm:p-6 shadow-2xl backdrop-blur-xl">
 
-                <h3 className="mb-5 text-sm font-medium text-gray-300">
+                <h3 className="mb-4 sm:mb-5 text-xs sm:text-sm font-medium text-gray-300">
                   Payment Breakdown
                 </h3>
 
@@ -165,7 +165,7 @@ export default function CalculatorEmi() {
                   <div className="flex-1 bg-white/10" />
                 </div>
 
-                <div className="mt-7 flex justify-between text-sm">
+                <div className="mt-6 sm:mt-7 flex justify-between text-xs sm:text-sm">
                   <span className="text-gray-400">
                     Principal
                   </span>
@@ -175,7 +175,7 @@ export default function CalculatorEmi() {
                   </span>
                 </div>
 
-                <div className="mt-5 flex justify-between text-sm">
+                <div className="mt-4 sm:mt-5 flex justify-between text-xs sm:text-sm">
                   <span className="text-gray-400">
                     Interest
                   </span>
@@ -188,52 +188,52 @@ export default function CalculatorEmi() {
             </div>
 
             {/* RIGHT */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
 
               {/* EMI CARD */}
-              <div className="rounded-3xl border border-orange-500/20 bg-gradient-to-br from-orange-500/10 via-pink-500/10 to-purple-500/10 p-6 shadow-2xl backdrop-blur-xl">
+              <div className="rounded-2xl sm:rounded-3xl border border-orange-500/20 bg-gradient-to-br from-orange-500/10 via-pink-500/10 to-purple-500/10 p-4 sm:p-6 shadow-2xl backdrop-blur-xl">
 
-                <p className="text-sm text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-400">
                   Monthly EMI
                 </p>
 
-                <h2 className="mt-2 text-4xl font-bold text-white">
+                <h2 className="mt-2 text-2xl sm:text-4xl font-bold text-white break-words">
                   ₹{formatINR(emiData.emi)}
                 </h2>
               </div>
 
               {/* INTEREST */}
-              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl">
+              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/[0.04] p-4 sm:p-6 shadow-2xl backdrop-blur-xl">
 
-                <p className="text-sm text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-400">
                   Total Interest
                 </p>
 
-                <h2 className="mt-2 text-2xl font-semibold text-white">
+                <h2 className="mt-2 text-lg sm:text-2xl font-semibold text-white break-words">
                   ₹{formatINR(emiData.totalInterest)}
                 </h2>
               </div>
 
               {/* TOTAL */}
-              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl">
+              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/[0.04] p-4 sm:p-6 shadow-2xl backdrop-blur-xl">
 
-                <p className="text-sm text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-400">
                   Total Payment
                 </p>
 
-                <h2 className="mt-2 text-2xl font-semibold text-white">
+                <h2 className="mt-2 text-lg sm:text-2xl font-semibold text-white break-words">
                   ₹{formatINR(emiData.totalPayment)}
                 </h2>
               </div>
 
               {/* INFO BOX */}
-              <div className="rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-600/20 to-blue-600/10 p-6 text-white">
+              <div className="rounded-2xl sm:rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-600/20 to-blue-600/10 p-4 sm:p-6 text-white">
 
-                <p className="text-sm text-gray-300">
+                <p className="text-xs sm:text-sm text-gray-300">
                   Insight
                 </p>
 
-                <p className="mt-2 text-sm leading-relaxed text-gray-300">
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-gray-300">
                   Higher tenure reduces EMI but increases total interest.
                   Adjust sliders to optimize repayment.
                 </p>
@@ -244,18 +244,18 @@ export default function CalculatorEmi() {
       </div>
 
       {/* SHARE */}
-      <div className="my-1 mb-22 flex flex-wrap items-center justify-center gap-4 text-white">
+      <div className="my-1 mb-16 sm:mb-22 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-white px-4">
 
-        <div className="flex items-center gap-2 whitespace-nowrap text-xl font-semibold">
-          <AiOutlineShareAlt className="text-2xl" />
+        <div className="flex items-center gap-2 whitespace-nowrap text-base sm:text-xl font-semibold">
+          <AiOutlineShareAlt className="text-xl sm:text-2xl" />
           <span>Share this calculator</span>
         </div>
 
-        <FaFacebook className="cursor-pointer text-2xl text-gray-400 transition hover:text-blue-500" />
-        <FaXTwitter className="cursor-pointer text-2xl text-gray-400 transition hover:text-white" />
-        <FaLinkedinIn className="cursor-pointer text-2xl text-gray-400 transition hover:text-blue-500" />
-        <FaWhatsapp className="cursor-pointer text-2xl text-gray-400 transition hover:text-green-500" />
-        <FaRegCopy className="cursor-pointer text-2xl text-gray-400 transition hover:text-white" />
+        <FaFacebook className="cursor-pointer text-xl sm:text-2xl text-gray-400 transition hover:text-blue-500" />
+        <FaXTwitter className="cursor-pointer text-xl sm:text-2xl text-gray-400 transition hover:text-white" />
+        <FaLinkedinIn className="cursor-pointer text-xl sm:text-2xl text-gray-400 transition hover:text-blue-500" />
+        <FaWhatsapp className="cursor-pointer text-xl sm:text-2xl text-gray-400 transition hover:text-green-500" />
+        <FaRegCopy className="cursor-pointer text-xl sm:text-2xl text-gray-400 transition hover:text-white" />
       </div>
 
       {/* PROCESS GUIDE */}

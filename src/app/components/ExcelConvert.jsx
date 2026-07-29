@@ -136,35 +136,37 @@ export default function ImageToExcel() {
           </div>
         ) : (
           <>
-            <table className="w-full overflow-hidden rounded-xl border border-white/10 shadow-sm">
-              <thead>
-                <tr>
-                  {Object.keys(tableData[0]).map((key) => (
-                    <th
-                      key={key}
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-3 border border-white/10"
-                    >
-                      {key}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-
-              <tbody>
-                {tableData.map((row, i) => (
-                  <tr key={i}>
-                    {Object.values(row).map((val, j) => (
-                      <td
-                        key={j}
-                        className="border border-white/10 px-4 py-3 text-gray-300"
+            <div className="w-full overflow-x-auto rounded-xl border border-white/10 shadow-sm">
+              <table className="w-full min-w-[600px] border-collapse">
+                <thead>
+                  <tr>
+                    {Object.keys(tableData[0]).map((key) => (
+                      <th
+                        key={key}
+                        className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-3 border border-white/10 whitespace-nowrap"
                       >
-                        {val}
-                      </td>
+                        {key}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody>
+                  {tableData.map((row, i) => (
+                    <tr key={i}>
+                      {Object.values(row).map((val, j) => (
+                        <td
+                          key={j}
+                          className="border border-white/10 px-4 py-3 text-gray-300 whitespace-nowrap"
+                        >
+                          {val}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
             <button
               onClick={downloadExcel}

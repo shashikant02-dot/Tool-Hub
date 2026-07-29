@@ -11,7 +11,7 @@ import SearchTools from "./components/SearchTools";
 export default function Home() {
   return (
     <>
-      <main className="relative overflow-hidden bg-[#030303] px-4 pt-24 text-center">
+      <main className="relative overflow-hidden bg-[#030303] px-4 pt-20 sm:pt-24 text-center">
 
         {/* Background */}
         <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_50%_35%,#24103d_0%,#090713_35%,#030303_75%)]" />
@@ -24,15 +24,15 @@ export default function Home() {
 
 
         {/* Top Badge */}
-        <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-sm backdrop-blur-md">
+        <div className="mb-6 sm:mb-8 inline-flex flex-wrap items-center justify-center rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-sm backdrop-blur-md">
 
-          <span className="rounded-full px-4 py-2 text-sm font-semibold text-gray-200">
+          <span className="rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-gray-200">
             ✨ Introducing ToolHub
           </span>
-
-          <a
+<a
+          
             href="#features"
-            className="flex items-center gap-1 border-l border-white/10 px-4 py-2 text-sm font-medium text-gray-400 transition hover:text-white"
+            className="flex items-center gap-1 border-l border-white/10 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-400 transition hover:text-white"
           >
             Explore tools
             <span>→</span>
@@ -42,7 +42,7 @@ export default function Home() {
 
 
         {/* HERO SECTION */}
-        <section className="relative mx-auto flex min-h-[680px] max-w-7xl items-center justify-center">
+        <section className="relative mx-auto flex min-h-[420px] sm:min-h-[560px] md:min-h-[680px] max-w-7xl items-center justify-center">
 
 
           {/* LEFT SIDE TOOLS */}
@@ -107,7 +107,7 @@ export default function Home() {
           <div className="relative z-10 mx-auto max-w-4xl">
 
             {/* Heading */}
-            <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[82px]">
+            <h1 className="text-3xl sm:text-5xl font-extrabold leading-[1.1] sm:leading-[1.05] tracking-tight text-white md:text-7xl lg:text-[82px]">
 
               Powerful tools.
 
@@ -121,7 +121,7 @@ export default function Home() {
 
 
             {/* Description */}
-            <p className="mx-auto mt-7 max-w-2xl text-base leading-8 text-gray-400 sm:text-lg md:text-xl">
+            <p className="mx-auto mt-5 sm:mt-7 max-w-2xl text-sm sm:text-base leading-6 sm:leading-8 text-gray-400 md:text-xl">
 
               All the free tools you need for your daily tasks in one powerful
               place — simple, fast, secure, and easy to use.
@@ -134,7 +134,7 @@ export default function Home() {
 
 
             {/* CTA Links */}
-            <div className="mt-8 flex flex-col items-center justify-center gap-5 text-sm sm:flex-row sm:gap-10">
+            <div className="mt-6 sm:mt-8 flex flex-col items-center justify-center gap-3 sm:gap-5 text-sm sm:flex-row sm:gap-10">
 
               <a
                 href="#features"
@@ -165,7 +165,7 @@ export default function Home() {
 
 
             {/* Trust Text */}
-            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+            <div className="mt-6 sm:mt-8 flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-500">
 
               <span>✓ Free to use</span>
 

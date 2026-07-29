@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
 import Swal from "sweetalert2";
@@ -11,6 +11,8 @@ export default function PricingCard() {
   const [showSignup, setShowSignup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const checkAuth = async () => {
     try {
@@ -34,6 +36,18 @@ export default function PricingCard() {
 
   useEffect(() => {
     checkAuth();
+  }, []);
+
+  // close dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
   const plans = {
@@ -188,29 +202,37 @@ export default function PricingCard() {
     }
   };
 
+  const creditOptions = [
+    { value: "120", label: "120 credits / month" },
+    { value: "250", label: "250 credits / month" },
+    { value: "500", label: "500 credits / month" },
+  ];
+
   return (
     <>
       {/* ================= PRICING CARD ================= */}
 
-      <div className="flex items-center justify-center p-6">
+      <div className="flex items-center justify-center p-3 sm:p-6">
         <div
           className="
             w-full
             max-w-lg
-            rounded-[32px]
+            rounded-2xl
+            sm:rounded-[32px]
             border
             border-white/10
             bg-white/[0.06]
-            p-8
-            sm:p-10
+            p-5
+            sm:p-8
+            md:p-10
             shadow-[0_0_60px_rgba(139,92,246,0.18)]
             backdrop-blur-xl
           "
         >
           {/* HEADER */}
 
-          <div className="flex items-center justify-between">
-            <h3 className="text-3xl font-bold text-white">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-2xl sm:text-3xl font-bold text-white">
               Pro
             </h3>
 
@@ -220,11 +242,14 @@ export default function PricingCard() {
                 border
                 border-purple-400/20
                 bg-purple-500/10
-                px-3
+                px-2.5
+                sm:px-3
                 py-1
-                text-md
+                text-xs
+                sm:text-md
                 font-semibold
                 text-purple-300
+                whitespace-nowrap
               "
             >
               Most Popular
@@ -233,12 +258,12 @@ export default function PricingCard() {
 
           {/* PRICE */}
 
-          <div className="mt-4 flex items-baseline text-white">
-            <span className="text-6xl font-bold tracking-tight">
+          <div className="mt-4 flex flex-wrap items-baseline text-white">
+            <span className="text-4xl sm:text-6xl font-bold tracking-tight">
               ₹{plans[credits]}
             </span>
 
-            <span className="ml-2 text-lg font-medium text-gray-400">
+            <span className="ml-2 text-sm sm:text-lg font-medium text-gray-400">
               per month
             </span>
           </div>
@@ -251,14 +276,16 @@ export default function PricingCard() {
             className="
               mt-6
               w-full
-              rounded-3xl
+              rounded-2xl
+              sm:rounded-3xl
               bg-gradient-to-r
               from-orange-500
               via-pink-500
               to-purple-600
               py-3
               text-center
-              text-base
+              text-sm
+              sm:text-base
               font-semibold
               text-white
               shadow-lg
@@ -278,92 +305,50 @@ export default function PricingCard() {
             {subscribing
               ? "Processing..."
               : isLoggedIn
-                ? "Upgrade"
+                ? "Upgrade Now"
                 : "Login to Upgrade"}
           </button>
 
-          {/* CREDIT SELECT */}
+          {/* ================= CUSTOM CREDIT DROPDOWN ================= */}
 
-          <div className="relative mt-4">
-            <select
-              value={credits}
-              onChange={(e) => setCredits(e.target.value)}
-              className="
+          <div className="relative mt-4" ref={dropdownRef}>
+            {/* Trigger button */}
+            <button
+              type="button"
+              onClick={() => setDropdownOpen((prev) => !prev)}
+              className={`
                 w-full
-                appearance-none
+                flex
+                items-center
+                justify-between
                 rounded-xl
                 border
-                border-white/10
                 bg-white/[0.06]
                 px-4
-                py-3.5
-                pr-10
-                text-base
+                py-3
+                sm:py-3.5
+                text-sm
+                sm:text-base
                 font-medium
                 text-white
                 outline-none
                 transition
-                focus:border-purple-500
-                focus:ring-1
-                focus:ring-purple-500
-              "
+                ${dropdownOpen
+                  ? "border-purple-500 ring-1 ring-purple-500"
+                  : "border-white/10"}
+              `}
             >
-              <option
-                value="120"
-                className="bg-[#111111] text-white"
-              >
-                120 credits / month
-              </option>
-
-              <option
-                value="250"
-                className="bg-[#111111] text-white"
-              >
-                250 credits / month
-              </option>
-
-              <option
-                value="500"
-                className="bg-[#111111] text-white"
-              >
-                500 credits / month
-              </option>
-            </select>
-
-            {/* SELECT ICON */}
-
-            <div
-              className="
-                pointer-events-none
-                absolute
-                inset-y-0
-                right-4
-                flex
-                flex-col
-                justify-center
-                gap-0.5
-                text-gray-400
-              "
-            >
-              <svg
-                className="h-2.5 w-2.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="3"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 15.75l7.5-7.5 7.5 7.5"
-                />
-              </svg>
+              <span>
+                {creditOptions.find((o) => o.value === credits)?.label}
+              </span>
 
               <svg
-                className="h-2.5 w-2.5"
+                className={`h-4 w-4 text-gray-400 transition-transform duration-200 shrink-0 ml-2 ${
+                  dropdownOpen ? "rotate-180" : ""
+                }`}
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth="3"
+                strokeWidth="2.5"
                 stroke="currentColor"
               >
                 <path
@@ -372,12 +357,80 @@ export default function PricingCard() {
                   d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                 />
               </svg>
-            </div>
+            </button>
+
+            {/* Options list */}
+            {dropdownOpen && (
+              <div
+                className="
+                  absolute
+                  left-0
+                  right-0
+                  top-[calc(100%+8px)]
+                  z-50
+                  overflow-hidden
+                  rounded-xl
+                  border
+                  border-white/10
+                  bg-[#111111]
+                  shadow-[0_10px_40px_rgba(0,0,0,0.5)]
+                "
+              >
+                {creditOptions.map((option) => {
+                  const isSelected = option.value === credits;
+
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => {
+                        setCredits(option.value);
+                        setDropdownOpen(false);
+                      }}
+                      className={`
+                        flex
+                        w-full
+                        items-center
+                        justify-between
+                        px-4
+                        py-3
+                        text-left
+                        text-sm
+                        sm:text-base
+                        font-medium
+                        transition
+                        ${isSelected
+                          ? "bg-purple-500/20 text-white"
+                          : "text-gray-300 hover:bg-white/[0.06]"}
+                      `}
+                    >
+                      <span>{option.label}</span>
+
+                      {isSelected && (
+                        <svg
+                          className="h-4 w-4 text-purple-400 shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="3"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4.5 12.75l6 6 9-13.5"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* PAYMENT INFO */}
 
-          <div className="mt-4 text-center text-[13px] text-gray-400">
+          <div className="mt-4 text-center text-xs sm:text-[13px] text-gray-400">
             <p>
               Secured payment • UPI, Cards, Net Banking accepted
             </p>
@@ -396,16 +449,16 @@ export default function PricingCard() {
             </button>
           </div>
 
-          <hr className="my-6 border-white/10" />
+          <hr className="my-5 sm:my-6 border-white/10" />
 
           {/* FEATURES */}
 
           <div>
-            <h4 className="text-md font-bold text-white">
+            <h4 className="text-sm sm:text-md font-bold text-white">
               All features in Free, plus:
             </h4>
 
-            <ul className="mt-4 space-y-3.5">
+            <ul className="mt-4 space-y-3 sm:space-y-3.5">
               {[
                 `${credits} monthly credits`,
                 "3 daily credits (up to 90/month)",
@@ -419,7 +472,8 @@ export default function PricingCard() {
                     flex
                     items-center
                     gap-3
-                    text-md
+                    text-sm
+                    sm:text-md
                     font-medium
                     text-gray-300
                   "
@@ -467,23 +521,27 @@ export default function PricingCard() {
             className="
               w-full
               max-w-md
-              rounded-[32px]
+              rounded-2xl
+              sm:rounded-[32px]
               border
               border-white/10
               bg-[#111111]
-              p-8
+              p-6
+              sm:p-8
               shadow-[0_0_60px_rgba(139,92,246,0.25)]
+              max-h-[90vh]
+              overflow-y-auto
             "
           >
-            <h2 className="text-center text-3xl font-bold text-white">
+            <h2 className="text-center text-2xl sm:text-3xl font-bold text-white">
               Continue to Upgrade
             </h2>
 
-            <p className="mt-2 text-center text-gray-400">
+            <p className="mt-2 text-center text-sm sm:text-base text-gray-400">
               Please sign in or create an account to continue.
             </p>
 
-            <div className="mt-8 space-y-3">
+            <div className="mt-6 sm:mt-8 space-y-3">
               <button
                 onClick={() => {
                   setShowAuth(false);
@@ -496,6 +554,8 @@ export default function PricingCard() {
                   border
                   border-white/10
                   bg-white/[0.04]
+                  text-sm
+                  sm:text-base
                   font-semibold
                   text-white
                   transition
@@ -518,6 +578,8 @@ export default function PricingCard() {
                   from-orange-500
                   via-pink-500
                   to-purple-600
+                  text-sm
+                  sm:text-base
                   font-semibold
                   text-white
                   transition

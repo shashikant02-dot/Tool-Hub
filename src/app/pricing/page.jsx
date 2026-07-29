@@ -3,7 +3,7 @@ import PricingCard from "../components/PricingCard";
 
 export default function Page() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#030303] pt-28 pb-20">
+    <main className="relative min-h-screen overflow-hidden bg-[#030303] pt-24 sm:pt-28 pb-20">
 
       {/* ================= BACKGROUND ================= */}
 
@@ -22,18 +22,18 @@ export default function Page() {
 
       {/* ================= HERO ================= */}
 
-      <section className="relative z-10 px-6 pb-16 text-center">
+      <section className="relative z-10 px-4 sm:px-6 pb-12 sm:pb-16 text-center">
 
         <div className="mx-auto max-w-4xl">
 
           {/* Badge */}
-          <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-sm backdrop-blur-md">
+          <div className="mb-6 sm:mb-8 inline-flex flex-wrap items-center justify-center rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-sm backdrop-blur-md">
 
-            <span className="rounded-full px-4 py-2 text-sm font-semibold text-gray-200">
+            <span className="rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-gray-200">
               ✨ Simple & Flexible Pricing
             </span>
 
-            <span className="border-l border-white/10 px-4 py-2 text-sm text-gray-400">
+            <span className="border-l border-white/10 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-400">
               No hidden fees
             </span>
 
@@ -41,7 +41,7 @@ export default function Page() {
 
 
           {/* Heading */}
-          <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl">
+          <h1 className="text-3xl sm:text-5xl font-extrabold leading-snug sm:leading-[1.05] tracking-tight text-white md:text-7xl">
 
             Choose the plan.
 
@@ -55,7 +55,7 @@ export default function Page() {
 
 
           {/* Description */}
-          <p className="mx-auto mt-7 max-w-2xl text-base leading-8 text-gray-400 sm:text-lg md:text-xl">
+          <p className="mx-auto mt-5 sm:mt-7 max-w-2xl text-sm sm:text-base leading-6 sm:leading-8 text-gray-400 md:text-xl">
 
             Buy credits once and use them across all ToolHub tools.
 
@@ -67,7 +67,7 @@ export default function Page() {
 
 
           {/* Trust Points */}
-          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+          <div className="mt-6 sm:mt-8 flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-500">
 
             <span>✓ Secure payments</span>
 
@@ -91,13 +91,13 @@ export default function Page() {
     <div className="relative mx-auto max-w-xl">
 
       {/* Card Glow */}
-      <div className="pointer-events-none absolute -inset-6 rounded-[40px] bg-gradient-to-r from-orange-500/20 via-pink-500/20 to-purple-600/20 blur-3xl" />
+      <div className="pointer-events-none absolute -inset-3 sm:-inset-6 rounded-3xl sm:rounded-[40px] bg-gradient-to-r from-orange-500/20 via-pink-500/20 to-purple-600/20 blur-2xl sm:blur-3xl" />
 
       {/* Border Glow */}
-      <div className="relative rounded-[34px] bg-gradient-to-r from-orange-400/40 via-pink-500/40 to-purple-600/40 p-[1px]">
+      <div className="relative rounded-2xl sm:rounded-[34px] bg-gradient-to-r from-orange-400/40 via-pink-500/40 to-purple-600/40 p-[1px]">
 
         {/* Pricing Card */}
-        <div className="rounded-[33px] bg-[#080808] p-1 shadow-[0_0_80px_rgba(168,85,247,0.15)]">
+        <div className="rounded-2xl sm:rounded-[33px] bg-[#080808] p-1 shadow-[0_0_80px_rgba(168,85,247,0.15)]">
 
           <PricingCard />
 

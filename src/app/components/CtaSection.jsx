@@ -7,7 +7,7 @@ export default function CTASection() {
   const router = useRouter();
 
   return (
-    <section className="relative overflow-hidden bg-[#030303] px-6 py-32">
+    <section className="relative overflow-hidden bg-[#030303] px-4 sm:px-6 py-16 sm:py-24 md:py-32">
 
       {/* Background Glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(75,35,130,0.25),transparent_65%)]" />
@@ -19,7 +19,7 @@ export default function CTASection() {
 
       <div className="relative mx-auto max-w-7xl">
 
-        <div className="relative overflow-hidden rounded-[38px] border border-white/10 bg-white/[0.04] px-6 py-20 text-center backdrop-blur-xl md:px-10">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-[38px] border border-white/10 bg-white/[0.04] px-5 py-12 sm:px-6 sm:py-20 md:px-10 text-center backdrop-blur-xl">
 
 
           {/* Gradient Background Glow */}
@@ -35,9 +35,9 @@ export default function CTASection() {
 
 
             {/* Badge */}
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-400/20 bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300">
+            <div className="mb-5 sm:mb-6 inline-flex items-center gap-2 rounded-full border border-purple-400/20 bg-purple-500/10 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-purple-300">
 
-              <Sparkles size={16} />
+              <Sparkles size={14} className="sm:size-4" />
 
               Start creating today
 
@@ -45,7 +45,7 @@ export default function CTASection() {
 
 
             {/* Heading */}
-            <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
+            <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl leading-snug">
 
               Get more done
 
@@ -57,7 +57,7 @@ export default function CTASection() {
 
 
             {/* Description */}
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-400">
+            <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-sm sm:text-lg leading-6 sm:leading-8 text-gray-400">
 
               No downloads. No signups. No complexity. Access powerful file
               tools instantly and boost your productivity in seconds.
@@ -66,18 +66,19 @@ export default function CTASection() {
 
 
             {/* Buttons */}
-            <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
 
 
               {/* Explore Tools */}
               <button
                 onClick={() => router.push("/tools")}
-                className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-xl shadow-purple-900/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/50"
+                className="group flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white shadow-xl shadow-purple-900/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/50"
               >
 
                 Explore Tools
 
                 <ArrowRight
+                  size={20}
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 />
 
@@ -87,7 +88,7 @@ export default function CTASection() {
               {/* Pricing */}
               <button
                 onClick={() => router.push("/pricing")}
-                className="rounded-2xl border border-white/15 bg-white/[0.06] px-8 py-4 text-lg font-semibold text-gray-200 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/10"
+                className="rounded-2xl border border-white/15 bg-white/[0.06] px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-gray-200 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/10"
               >
 
                 View Pricing
@@ -98,7 +99,7 @@ export default function CTASection() {
 
 
             {/* Trust */}
-            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+            <div className="mt-6 sm:mt-8 flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-500">
 
               <span>✓ No signup required</span>
 
