@@ -15,27 +15,27 @@ export default function Header() {
   const desktopMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
   useEffect(() => {
-  const loadUser = async () => {
-    try {
-      const res = await fetch("/api/auth/me");
-      const data = await res.json();
-      if (data.user) {
-        setUser(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        return;
+    const loadUser = async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        const data = await res.json();
+        if (data.user) {
+          setUser(data.user);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          return;
+        }
+      } catch (err) {
+        console.error("Failed to load user:", err);
       }
-    } catch (err) {
-      console.error("Failed to load user:", err);
-    }
 
-    // fallback for existing email/password flow
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-  };
+      // fallback for existing email/password flow
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) setUser(JSON.parse(storedUser));
+    };
 
-  loadUser();
-}, []);
-// ✅ NEW: keep the header in sync when login/signup happens elsewhere on
+    loadUser();
+  }, []);
+  // ✅ NEW: keep the header in sync when login/signup happens elsewhere on
   // the site (e.g. from the "free limit reached" popup on a tool page)
   useEffect(() => {
     const syncUser = () => {
@@ -65,20 +65,20 @@ export default function Header() {
     };
   }, []);
   const handleLogout = async () => {
-  console.log("logout clicked");
+    console.log("logout clicked");
 
-  try {
-    await fetch("/api/auth/logout", { method: "POST" });
-  } catch (err) {
-    console.error("Logout failed:", err);
-  }
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
 
-  localStorage.removeItem("user");
-  setUser(null);
-  setShowProfile(false);
-  setMobileMenu(false);
-   window.dispatchEvent(new Event("authchange"));
-};
+    localStorage.removeItem("user");
+    setUser(null);
+    setShowProfile(false);
+    setMobileMenu(false);
+    window.dispatchEvent(new Event("authchange"));
+  };
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Tools", path: "/tools" },
@@ -129,18 +129,27 @@ export default function Header() {
                   </button>
 
                   {showProfile && (
-<div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl overflow-hidden z-[100]">
-<div className="px-4 py-3 border-b">
-                        <h3 className="font-semibold">{user.name}</h3>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                      </div>
+                    <div className="absolute right-0 mt-3 w-56 rounded-xl z-[100] p-[2px] overflow-hidden">
+                      <div
+                        className="absolute inset-[-100%] animate-spin-slow"
+                        style={{
+                          background:
+                            "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1)",
+                        }}
+                      />
+                      <div className="relative bg-gradient-to-br from-slate-900 via-slate-950 to-black rounded-[10px] overflow-hidden backdrop-blur-xl">
+                        <div className="px-4 py-3 border-b border-white/10">
+                          <h3 className="font-semibold text-white">{user.name}</h3>
+                          <p className="text-sm text-gray-400">{user.email}</p>
+                        </div>
 
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-left px-4 py-3 hover:bg-gray-100 text-red-500"
-                      >
-                        Logout
-                      </button>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-3 text-red-400 hover:bg-white/5 transition-colors"
+                        >
+                          Logout
+                        </button>
+                      </div>
                     </div>
                   )}
                 </>
@@ -214,10 +223,7 @@ export default function Header() {
         </div>
 
         {/* Buttons */}
-        <div 
-className="ml-10 relative"
-ref={mobileMenuRef}
->
+        <div className="ml-10 relative" ref={mobileMenuRef}>
           {user ? (
             <>
               <button
@@ -235,27 +241,27 @@ ref={mobileMenuRef}
               </button>
 
               {showProfile && (
-                <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-xl overflow-hidden">
-                  <div className="px-4 py-4 border-b">
-                    <h3 className="font-semibold text-gray-800">{user.name}</h3>
+                <div className="absolute right-0 mt-3 w-56 rounded-xl z-[100] p-[2px] overflow-hidden">
+                  <div
+                    className="absolute inset-[-100%] animate-spin-slow"
+                    style={{
+                      background:
+                        "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1)",
+                    }}
+                  />
+                  <div className="relative bg-gradient-to-br from-slate-900 via-slate-950 to-black rounded-[10px] overflow-hidden backdrop-blur-xl">
+                    <div className="px-4 py-3 border-b border-white/10">
+                      <h3 className="font-semibold text-white">{user.name}</h3>
+                      <p className="text-sm text-gray-400">{user.email}</p>
+                    </div>
 
-                    <p className="text-sm text-gray-500">{user.email}</p>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-3 text-red-400 hover:bg-white/5 transition-colors"
+                    >
+                      Logout
+                    </button>
                   </div>
-
-                  <button className="w-full text-left px-4 py-3 hover:bg-gray-100">
-                    Dashboard
-                  </button>
-
-                  <button className="w-full text-left px-4 py-3 hover:bg-gray-100">
-                    Profile
-                  </button>
-
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50"
-                  >
-                    Logout
-                  </button>
                 </div>
               )}
             </>
