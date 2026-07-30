@@ -85,6 +85,7 @@ export default function Header() {
     { name: "AI Tools", path: "/al-tools" },
     { name: "Calculators", path: "/calculator" },
     { name: "Pricing", path: "/pricing" },
+    { name: "Contact", path: "/contact" },
   ];
 
   return (

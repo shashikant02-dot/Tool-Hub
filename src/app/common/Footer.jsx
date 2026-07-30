@@ -260,7 +260,7 @@ export default function Footer() {
               href="/contact"
               className="text-slate-500 hover:text-white"
             >
-              Contact
+              condition
             </Link>
           </div>
         </div>
