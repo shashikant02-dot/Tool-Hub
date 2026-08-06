@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema(
     isPro: { type: Boolean, default: false }, // true only after a verified payment
     credits: { type: Number, default: 0 }, // total credits purchased (informational)
     proExpiry: { type: Date, default: null }, // plan valid till this date (30 days)
+
+    // ✅ Server-side freemium usage tracking (per tool, resets daily)
+    toolUsage: { type: Map, of: Number, default: {} },
+    toolUsageResetAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
