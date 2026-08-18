@@ -605,6 +605,10 @@ import {
   Text,
   Image,
   StyleSheet,
+  Svg,
+  Path,
+  Circle,
+  Rect,
 } from "@react-pdf/renderer";
 
 /* ---------- Brand color (change this one value to re-theme the whole invoice) ---------- */
@@ -656,21 +660,18 @@ const styles = StyleSheet.create({
   },
 
   logoCircle: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: "#FFFFFF",
+    width: 150,
+    height: 70,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "transparent",
   },
 
   logoImage: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 140,
+    height: 65,
     objectFit: "contain",
   },
-
   logoInitials: {
     fontSize: 16,
     fontWeight: "bold",
@@ -686,10 +687,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
     color: "#FFFFFF",
-    marginBottom: 4,
+    marginBottom: 5,
     textAlign: "right",
   },
-
   headerLine: {
     fontSize: 8.5,
     color: "#E5F3EC",
@@ -711,10 +711,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-
+  footerContact: {
+    flexDirection: "row",
+    alignItems: "center",
+    maxWidth: "32%",
+  },
   footerItem: {
     fontSize: 8.5,
     color: "#FFFFFF",
+    marginLeft: 5,
   },
 
   /* ---------- Title row ---------- */
@@ -804,16 +809,17 @@ const styles = StyleSheet.create({
   /* ---------- Items table ---------- */
 
   table: {
+    width: "100%",
     borderWidth: 1,
-    borderColor: BRAND,
+    borderColor: "#9CA3AF",
     marginBottom: 18,
   },
 
   tableHeader: {
     flexDirection: "row",
     backgroundColor: BRAND,
-    paddingVertical: 7,
-    paddingHorizontal: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#9CA3AF",
   },
 
   tableHeaderText: {
@@ -824,23 +830,56 @@ const styles = StyleSheet.create({
 
   tableRow: {
     flexDirection: "row",
-    paddingVertical: 7,
-    paddingHorizontal: 8,
     borderTopWidth: 1,
     borderTopColor: "#D1D5DB",
+    minHeight: 28,
   },
-
   tableRowText: {
     fontSize: 9,
     color: "#1F2937",
   },
 
-  colSr: { width: "8%" },
-  colDesc: { width: "42%" },
-  colQty: { width: "15%", textAlign: "center" },
-  colPrice: { width: "15%", textAlign: "right" },
-  colTotal: { width: "20%", textAlign: "right", fontWeight: "bold" },
+  colSr: {
+    width: "8%",
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+    borderRightWidth: 1,
+    borderRightColor: "#9CA3AF",
+  },
 
+  colDesc: {
+    width: "42%",
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+    borderRightWidth: 1,
+    borderRightColor: "#9CA3AF",
+  },
+
+  colQty: {
+    width: "15%",
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+    textAlign: "center",
+    borderRightWidth: 1,
+    borderRightColor: "#9CA3AF",
+  },
+
+  colPrice: {
+    width: "15%",
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+    textAlign: "right",
+    borderRightWidth: 1,
+    borderRightColor: "#9CA3AF",
+  },
+
+  colTotal: {
+    width: "20%",
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+    textAlign: "right",
+    fontWeight: "bold",
+  },
   /* ---------- Totals ---------- */
 
   totalsWrap: {
@@ -1008,34 +1047,138 @@ export default function InvoicePDF({ data }) {
         {/* ================= HEADER BANNER (fixed) ================= */}
 
         <View style={styles.headerBanner} fixed>
+          {/* LOGO */}
           <View style={styles.logoCircle}>
             {company.logo ? (
               <Image src={company.logo} style={styles.logoImage} />
             ) : (
-              <InitialsBadge name={company.name} />
+              <InitialsBadge name={company.headerName || company.name} />
             )}
           </View>
 
+          {/* COMPANY HEADER INFORMATION */}
           <View style={styles.headerCompanyBlock}>
-            <Text style={styles.headerCompanyName}>{company.name}</Text>
-            {company.address ? (
+            <Text style={styles.headerCompanyName}>
+              {company.headerName || company.name || "Company Name"}
+            </Text>
+
+            {company.headerAddress ? (
+              <Text style={styles.headerLine}>{company.headerAddress}</Text>
+            ) : company.address ? (
               <Text style={styles.headerLine}>{company.address}</Text>
             ) : null}
-            {(company.phone || company.email) ? (
-              <Text style={styles.headerLine}>
-                {[company.phone, company.email].filter(Boolean).join("   |   ")}
-              </Text>
+
+            {company.headerPhone ? (
+              <Text style={styles.headerLine}>{company.headerPhone}</Text>
+            ) : company.phone ? (
+              <Text style={styles.headerLine}>{company.phone}</Text>
+            ) : null}
+
+            {company.headerEmail ? (
+              <Text style={styles.headerLine}>{company.headerEmail}</Text>
+            ) : company.email ? (
+              <Text style={styles.headerLine}>{company.email}</Text>
             ) : null}
           </View>
         </View>
 
-        {/* ================= FOOTER BANNER (fixed) ================= */}
+      {/* ================= FOOTER BANNER (fixed) ================= */}
 
-        <View style={styles.footerBanner} fixed>
-          <Text style={styles.footerItem}>{company.phone || " "}</Text>
-          <Text style={styles.footerItem}>{company.address || " "}</Text>
-          <Text style={styles.footerItem}>{company.email || " "}</Text>
-        </View>
+<View style={styles.footerBanner} fixed>
+
+  {/* PHONE */}
+  {company.headerPhone || company.phone ? (
+    <View style={styles.footerContact}>
+      <Svg width="11" height="11" viewBox="0 0 24 24">
+        <Path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2
+          19.79 19.79 0 0 1-8.63-3.07
+          19.5 19.5 0 0 1-6-6
+          A19.79 19.79 0 0 1 2.12 4.18
+          2 2 0 0 1 5.11 2h3
+          a2 2 0 0 1 2 1.72
+          12.84 12.84 0 0 0 .7 2.81
+          2 2 0 0 1-.45 2.11L9.09 9.91
+          a16 16 0 0 0 6 6l1.27-1.27
+          a2 2 0 0 1 2.11-.45
+          12.84 12.84 0 0 0 2.81.7
+          A2 2 0 0 1 22 16.92z"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+
+      <Text style={styles.footerItem}>
+        {company.headerPhone || company.phone}
+      </Text>
+    </View>
+  ) : null}
+
+  {/* ADDRESS */}
+  {company.headerAddress || company.address ? (
+    <View style={styles.footerContact}>
+      <Svg width="11" height="11" viewBox="0 0 24 24">
+        <Path
+          d="M21 10c0 7-9 12-9 12S3 17 3 10
+          a9 9 0 1 1 18 0z"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        <Circle
+          cx="12"
+          cy="10"
+          r="3"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="2"
+        />
+      </Svg>
+
+      <Text style={styles.footerItem}>
+        {company.headerAddress || company.address}
+      </Text>
+    </View>
+  ) : null}
+
+  {/* EMAIL */}
+  {company.headerEmail || company.email ? (
+    <View style={styles.footerContact}>
+      <Svg width="11" height="11" viewBox="0 0 24 24">
+        <Rect
+          x="3"
+          y="5"
+          width="18"
+          height="14"
+          rx="2"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="2"
+        />
+
+        <Path
+          d="m3 7 9 6 9-6"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+
+      <Text style={styles.footerItem}>
+        {company.headerEmail || company.email}
+      </Text>
+    </View>
+  ) : null}
+
+</View>
 
         {/* ================= BODY ================= */}
 
@@ -1049,7 +1192,7 @@ export default function InvoicePDF({ data }) {
           </View>
 
           {/* Invoice meta */}
-                    {/* Invoice meta */}
+          {/* Invoice meta */}
           <View style={styles.metaBlock}>
             <Text style={styles.metaLine}>Invoice No: {invoice.number}</Text>
             <Text style={styles.metaLine}>Invoice Date: {invoice.date}</Text>
@@ -1070,14 +1213,45 @@ export default function InvoicePDF({ data }) {
           </View>
           {/* From / To */}
           <View style={styles.fromToRow}>
+            {/* ================= FROM / COMPANY ================= */}
             <View style={styles.fromToBox}>
               <Text style={styles.fromToLabel}>From:</Text>
 
-              <View style={styles.fromToFieldRow}>
-                <Text style={styles.fromToFieldLabel}>Name:</Text>
-                <Text style={styles.fromToFieldValue}>{company.name}</Text>
-              </View>
+              {/* Company Name */}
+              {company.company ? (
+                <View style={styles.fromToFieldRow}>
+                  <Text style={styles.fromToFieldLabel}>Company:</Text>
+                  <Text style={styles.fromToFieldValue}>{company.company}</Text>
+                </View>
+              ) : null}
 
+              {/* Name */}
+              {company.name ? (
+                <View style={styles.fromToFieldRow}>
+                  <Text style={styles.fromToFieldLabel}>Name:</Text>
+                  <Text style={styles.fromToFieldValue}>{company.name}</Text>
+                </View>
+              ) : null}
+
+              {/* Designation */}
+              {company.designation ? (
+                <View style={styles.fromToFieldRow}>
+                  <Text style={styles.fromToFieldLabel}>Designation:</Text>
+                  <Text style={styles.fromToFieldValue}>
+                    {company.designation}
+                  </Text>
+                </View>
+              ) : null}
+
+              {/* Service */}
+              {company.service ? (
+                <View style={styles.fromToFieldRow}>
+                  <Text style={styles.fromToFieldLabel}>Service:</Text>
+                  <Text style={styles.fromToFieldValue}>{company.service}</Text>
+                </View>
+              ) : null}
+
+              {/* Email */}
               {company.email ? (
                 <View style={styles.fromToFieldRow}>
                   <Text style={styles.fromToFieldLabel}>Email:</Text>
@@ -1085,6 +1259,7 @@ export default function InvoicePDF({ data }) {
                 </View>
               ) : null}
 
+              {/* Phone */}
               {company.phone ? (
                 <View style={styles.fromToFieldRow}>
                   <Text style={styles.fromToFieldLabel}>Phone:</Text>
@@ -1092,19 +1267,20 @@ export default function InvoicePDF({ data }) {
                 </View>
               ) : null}
 
+              {/* Address */}
               {company.address ? (
                 <View style={styles.fromToFieldRow}>
                   <Text style={styles.fromToFieldLabel}>Address:</Text>
-                  <Text style={styles.fromToFieldValue}>
-                    {company.address}
-                  </Text>
+                  <Text style={styles.fromToFieldValue}>{company.address}</Text>
                 </View>
               ) : null}
             </View>
 
+            {/* ================= TO / CUSTOMER ================= */}
             <View style={styles.fromToBox}>
               <Text style={styles.fromToLabel}>To:</Text>
 
+              {/* Customer Name */}
               <View style={styles.fromToFieldRow}>
                 <Text style={styles.fromToFieldLabel}>Name:</Text>
                 <Text style={styles.fromToFieldValue}>
@@ -1112,24 +1288,23 @@ export default function InvoicePDF({ data }) {
                 </Text>
               </View>
 
+              {/* Customer Email */}
               {customer.email ? (
                 <View style={styles.fromToFieldRow}>
                   <Text style={styles.fromToFieldLabel}>Email:</Text>
-                  <Text style={styles.fromToFieldValue}>
-                    {customer.email}
-                  </Text>
+                  <Text style={styles.fromToFieldValue}>{customer.email}</Text>
                 </View>
               ) : null}
 
+              {/* Customer Phone */}
               {customer.phone ? (
                 <View style={styles.fromToFieldRow}>
                   <Text style={styles.fromToFieldLabel}>Phone:</Text>
-                  <Text style={styles.fromToFieldValue}>
-                    {customer.phone}
-                  </Text>
+                  <Text style={styles.fromToFieldValue}>{customer.phone}</Text>
                 </View>
               ) : null}
 
+              {/* Customer Address */}
               {customer.address ? (
                 <View style={styles.fromToFieldRow}>
                   <Text style={styles.fromToFieldLabel}>Address:</Text>
@@ -1140,53 +1315,64 @@ export default function InvoicePDF({ data }) {
               ) : null}
             </View>
           </View>
-
           {/* ================= SERVICES / ITEMS TABLE ================= */}
 
-          <Text style={styles.sectionTitle}>Services Details</Text>
+          {/* ================= INVOICE ITEMS TABLE ================= */}
+
+          <Text style={styles.sectionTitle}>Services Details </Text>
 
           <View style={styles.table}>
+            {/* TABLE HEADER */}
             <View style={styles.tableHeader}>
-              <Text style={[styles.tableHeaderText, styles.colSr]}>
-                Sr. No.
-              </Text>
+              <Text style={[styles.tableHeaderText, styles.colSr]}>Sr.No</Text>
+
               <Text style={[styles.tableHeaderText, styles.colDesc]}>
-                Description
+                Item Description
               </Text>
+
               <Text style={[styles.tableHeaderText, styles.colQty]}>Qty</Text>
+
               <Text style={[styles.tableHeaderText, styles.colPrice]}>
                 Price
               </Text>
+
               <Text style={[styles.tableHeaderText, styles.colTotal]}>
-                Amount
+                Total
               </Text>
             </View>
 
+            {/* TABLE ROWS */}
             {items?.length > 0 ? (
               items.map((item, index) => (
                 <View key={index} style={styles.tableRow}>
                   <Text style={[styles.tableRowText, styles.colSr]}>
                     {index + 1}
                   </Text>
+
                   <Text style={[styles.tableRowText, styles.colDesc]}>
-                    {item.description}
+                    {item.description || "-"}
                   </Text>
+
                   <Text style={[styles.tableRowText, styles.colQty]}>
-                    {item.qty}
+                    {item.qty || 0}
                   </Text>
+
                   <Text style={[styles.tableRowText, styles.colPrice]}>
                     {symbol}
-                    {item.price}
+                    {item.price || 0}
                   </Text>
+
                   <Text style={[styles.tableRowText, styles.colTotal]}>
                     {symbol}
-                    {Number(item.qty) * Number(item.price)}
+                    {(Number(item.qty || 0) * Number(item.price || 0)).toFixed(
+                      2,
+                    )}
                   </Text>
                 </View>
               ))
             ) : (
               <View style={styles.tableRow}>
-                <Text style={styles.tableRowText}>No Items Added</Text>
+                <Text style={styles.tableRowText}>No items added</Text>
               </View>
             )}
           </View>

@@ -17,7 +17,15 @@ export default function InvoiceGenerator() {
   const [invoiceData, setInvoiceData] = useState({
     company: {
       logo: "",
+        // Company Header Details
+  headerName: "",
+  headerAddress: "",
+  headerPhone: "",
+  headerEmail: "",
       name: "",
+      designation: "",
+  company: "",
+  service: "",
       address: "",
       email: "",
       phone: "",

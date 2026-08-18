@@ -159,7 +159,72 @@ export default function InvoiceForm({
 </div>
 
   </div>
+{/* ================= COMPANY HEADER DETAILS ================= */}
 
+<div className="relative z-10 mt-10 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+
+  <div className="mb-6">
+    <h2 className="text-2xl font-semibold text-white">
+      Company Details
+    </h2>
+
+    {/* <p className="mt-1 text-sm text-gray-400">
+      These details will appear in the PDF header next to your logo.
+    </p> */}
+  </div>
+
+  <div className="grid gap-5 lg:grid-cols-2">
+
+    {/* Company Name */}
+    <Input
+      label="Company Name"
+      placeholder="KP ITExperts"
+      value={company.headerName}
+      onChange={(e) =>
+        updateCompany("headerName", e.target.value)
+      }
+    />
+
+    {/* Phone */}
+    <Input
+      label="Phone"
+      placeholder="+91-78147-28348"
+      value={company.headerPhone}
+      onChange={(e) =>
+        updateCompany("headerPhone", e.target.value)
+      }
+    />
+
+    {/* Email */}
+    <Input
+      label="Email"
+      placeholder="support@kpitexperts.com"
+      value={company.headerEmail}
+      onChange={(e) =>
+        updateCompany("headerEmail", e.target.value)
+      }
+    />
+
+    {/* Address */}
+    <div className="grid grid-cols-[120px_1fr] items-start gap-4 lg:col-span-2">
+      <label className="pt-3 text-sm font-medium text-gray-300">
+        Address
+      </label>
+
+      <textarea
+        rows={3}
+        placeholder="Plot No. E-203, Industrial Area, Phase-8B, S.A.S Nagar (Mohali), India"
+        value={company.headerAddress}
+        onChange={(e) =>
+          updateCompany("headerAddress", e.target.value)
+        }
+        className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-white outline-none transition-all focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/10 placeholder:text-gray-500"
+      />
+    </div>
+
+  </div>
+
+</div>
   <div className="relative z-10 my-10 border-t border-white/10"></div>
 
   {/* From + Bill To */}
@@ -183,26 +248,34 @@ export default function InvoiceForm({
           onChange={(e)=>updateCompany("name",e.target.value)}
         />
 
-        <Input
-          label="Email"
-          placeholder="name@business.com"
-          value={company.email}
-          onChange={(e)=>updateCompany("email",e.target.value)}
-        />
+       <Input
+      label="Designation"
+      placeholder="e.g. Founder, CEO, Manager"
+      value={company.designation}
+      onChange={(e) =>
+        updateCompany("designation", e.target.value)
+      }
+    />
 
-        <Input
-          label="Address"
-          placeholder="Street Address"
-          value={company.address}
-          onChange={(e)=>updateCompany("address",e.target.value)}
-        />
+    {/* Company */}
+    <Input
+      label="Company"
+      placeholder="Business / Company Name"
+      value={company.company}
+      onChange={(e) =>
+        updateCompany("company", e.target.value)
+      }
+    />
 
-        <Input
-          label="Phone"
-          placeholder="+91 9876543210"
-          value={company.phone}
-          onChange={(e)=>updateCompany("phone",e.target.value)}
-        />
+    {/* Service */}
+    <Input
+      label="Service"
+      placeholder="e.g. Web Development, Digital Marketing"
+      value={company.service}
+      onChange={(e) =>
+        updateCompany("service", e.target.value)
+      }
+    />
 
         <Input
           label="GST"
