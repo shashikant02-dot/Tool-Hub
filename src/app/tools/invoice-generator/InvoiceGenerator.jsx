@@ -45,8 +45,8 @@ export default function InvoiceGenerator() {
     },
     items: [{ description: "", qty: 1, price: 0 }],
     tax: 0,
-    discount: 0,
-    shipping: 0,
+    // discount: 0,
+    // shipping: 0,
     notes: "",
     terms: "",
   });

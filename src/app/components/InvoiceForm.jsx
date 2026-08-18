@@ -360,17 +360,40 @@ export default function InvoiceForm({
           Currency
         </label>
 
-        <select
-          value={invoice.currency}
-          onChange={(e) =>
-            updateInvoice("currency", e.target.value)
-          }
-          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60"
-        >
-          <option className="bg-[#0a0a0a]">INR</option>
-          <option className="bg-[#0a0a0a]">USD</option>
-          <option className="bg-[#0a0a0a]">EUR</option>
-        </select>
+       <div className="relative">
+  <select
+    value={invoice.currency}
+    onChange={(e) => updateInvoice("currency", e.target.value)}
+    className="w-full appearance-none rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 pr-10 outline-none transition-all cursor-pointer focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/10 hover:border-white/20"
+  >
+    <option className="bg-[#0a0a0a]" value="INR">INR</option>
+    <option className="bg-[#0a0a0a]" value="USD">USD</option>
+    <option className="bg-[#0a0a0a]" value="EUR">EUR</option>
+    <option className="bg-[#0a0a0a]" value="GBP">GBP</option>
+    <option className="bg-[#0a0a0a]" value="AUD">AUD</option>
+    <option className="bg-[#0a0a0a]" value="CAD">CAD</option>
+    <option className="bg-[#0a0a0a]" value="AED">AED</option>
+    <option className="bg-[#0a0a0a]" value="SAR">SAR</option>
+    <option className="bg-[#0a0a0a]" value="SGD">SGD</option>
+    <option className="bg-[#0a0a0a]" value="JPY">JPY</option>
+    {/* <option className="bg-[#0a0a0a]" value="CNY">CNY</option>
+    <option className="bg-[#0a0a0a]" value="ZAR">ZAR</option>
+    <option className="bg-[#0a0a0a]" value="PKR">PKR</option>
+    <option className="bg-[#0a0a0a]" value="BDT">BDT</option>
+    <option className="bg-[#0a0a0a]" value="NPR">NPR</option>
+    <option className="bg-[#0a0a0a]" value="LKR">LKR</option> */}
+  </select>
+
+  <svg
+    className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+</div>
       </div>
 
     </div>
@@ -384,10 +407,12 @@ export default function InvoiceForm({
       <div className="group relative overflow-hidden rounded-3xl w-full border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
   <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100 pointer-events-none" />
   <div className="relative z-10">
+    
     <InvoiceItems
       invoiceData={invoiceData}
       setInvoiceData={setInvoiceData}
     />
+    
   </div>
 </div>
 
@@ -397,7 +422,7 @@ export default function InvoiceForm({
   <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
   {/* Header */}
-  <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-8 py-5">
+  {/* <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-8 py-5">
     <div>
       <h2 className="text-2xl font-semibold text-white">
         Charges & Adjustments
@@ -406,39 +431,15 @@ export default function InvoiceForm({
         Tax, discount and shipping charges
       </p>
     </div>
-  </div>
+  </div> */}
 
   {/* Content */}
-  <div className="relative z-10 grid gap-6 p-8 md:grid-cols-3">
+  {/* <div className="relative z-10 grid gap-6 p-8 md:grid-cols-3"> */}
 
-    {/* Tax */}
-    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-      <label className="mb-3 block text-sm font-medium text-gray-300">
-        Tax (%)
-      </label>
-
-      <div className="relative">
-        <input
-          type="number"
-          placeholder="18"
-          value={invoiceData.tax}
-          onChange={(e) =>
-            setInvoiceData({
-              ...invoiceData,
-              tax: e.target.value,
-            })
-          }
-          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-4 pr-10 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
-        />
-
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
-          %
-        </span>
-      </div>
-    </div>
+   
 
     {/* Discount */}
-    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+    {/* <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
       <label className="mb-3 block text-sm font-medium text-gray-300">
         Discount
       </label>
@@ -461,10 +462,10 @@ export default function InvoiceForm({
           className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-9 pr-4 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
         />
       </div>
-    </div>
+    </div> */}
 
     {/* Shipping */}
-    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+    {/* <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
       <label className="mb-3 block text-sm font-medium text-gray-300">
         Shipping
       </label>
@@ -487,9 +488,9 @@ export default function InvoiceForm({
           className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-9 pr-4 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
         />
       </div>
-    </div>
+    </div> */}
 
-  </div>
+  {/* </div> */}
 
   {/* Corner Glow */}
   <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
@@ -611,11 +612,11 @@ export default function InvoiceForm({
         {/* Signature */}
         {/* ================= Signature ================= */}
 
-      <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
+      {/* <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
   <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
   {/* Header */}
-  <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-6 py-4">
+  {/* <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-6 py-4">
 
     <div className="flex items-center gap-3">
       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg">
@@ -633,10 +634,10 @@ export default function InvoiceForm({
       </div>
     </div>
 
-  </div>
+  </div> */} 
 
   {/* Upload */}
-  <div className="relative z-10 p-6">
+  {/* <div className="relative z-10 p-6">
 
     <div className="flex items-center justify-between rounded-xl border border-dashed border-white/15 bg-white/[0.02] p-5">
 
@@ -657,12 +658,12 @@ export default function InvoiceForm({
 
     </div>
 
-  </div>
+  </div> */}
 
   {/* Corner Glow */}
-  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
+  {/* <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
 
-</div>
+</div> */}
 
         {/* Download */}
         {/* ================= Action Bar ================= */}

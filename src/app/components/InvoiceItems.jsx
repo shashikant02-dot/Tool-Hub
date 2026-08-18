@@ -142,8 +142,34 @@ export default function InvoiceItems({ invoiceData, setInvoiceData }) {
           </tbody>
         </table>
       </div>
+      <div className="flex flex-col sm:flex-row justify-between items-stretch gap-4 mt-8 p-5">
+        {/* Tax (%) — far left corner */}
+        <div className="w-full sm:w-64 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+          <label className="mb-3 block text-sm font-medium text-gray-300">
+            Tax (%)
+          </label>
 
-      <div className="flex justify-end mt-8 p-5">
+          <div className="relative">
+            <input
+              type="number"
+              placeholder="18"
+              value={invoiceData.tax}
+              onChange={(e) =>
+                setInvoiceData((prev) => ({
+                  ...prev,
+                  tax: e.target.value,
+                }))
+              }
+              className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-4 pr-10 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
+            />
+
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
+              %
+            </span>
+          </div>
+        </div>
+
+        {/* Subtotal — right corner */}
         <div className="group relative overflow-hidden w-80 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 shadow-sm transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
