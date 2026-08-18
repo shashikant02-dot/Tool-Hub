@@ -1049,14 +1049,25 @@ export default function InvoicePDF({ data }) {
           </View>
 
           {/* Invoice meta */}
+                    {/* Invoice meta */}
           <View style={styles.metaBlock}>
             <Text style={styles.metaLine}>Invoice No: {invoice.number}</Text>
             <Text style={styles.metaLine}>Invoice Date: {invoice.date}</Text>
             {invoice.dueDate ? (
               <Text style={styles.metaLine}>Due Date: {invoice.dueDate}</Text>
             ) : null}
+            {invoice.paymentTerms ? (
+              <Text style={styles.metaLine}>
+                Payment Terms: {invoice.paymentTerms}
+              </Text>
+            ) : null}
+            {invoice.poNumber ? (
+              <Text style={styles.metaLine}>PO Number: {invoice.poNumber}</Text>
+            ) : null}
+            {invoice.currency ? (
+              <Text style={styles.metaLine}>Currency: {invoice.currency}</Text>
+            ) : null}
           </View>
-
           {/* From / To */}
           <View style={styles.fromToRow}>
             <View style={styles.fromToBox}>
