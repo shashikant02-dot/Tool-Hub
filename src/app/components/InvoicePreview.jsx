@@ -4,20 +4,12 @@ import QRCode from "react-qr-code";
 import DownloadPdf from "./DownloadPdf";
 import { useEffect } from "react";
 import DownloadWord from "./DownloadWord";
+import { calculateInvoice, getItemTaxRate, getItemTaxes } from "@/app/utils/calculateInvoice";
 
 export default function InvoicePreview({ invoiceData }) {
-  const { company, customer, invoice, items, tax, discount, shipping } =
-    invoiceData;
+  const computed = calculateInvoice(invoiceData);
+  const { company, customer, invoice, items, subtotal, taxAmount, discountAmount, shippingAmount, grandTotal } = computed;
 
-  const subtotal = items.reduce(
-    (sum, item) => sum + Number(item.qty || 0) * Number(item.price || 0),
-    0,
-  );
-
-  const taxAmount = subtotal * (Number(tax || 0) / 100);
-
-  const grandTotal =
-    subtotal + taxAmount + Number(shipping || 0) - Number(discount || 0);
   useEffect(() => {
     const timer = setTimeout(() => {
       document.getElementById("download-btn")?.click();
@@ -25,6 +17,7 @@ export default function InvoicePreview({ invoiceData }) {
 
     return () => clearTimeout(timer);
   }, []);
+
   return (
     <div
       id="invoice-preview"
@@ -35,7 +28,6 @@ export default function InvoicePreview({ invoiceData }) {
         background: "#fff",
       }}
     >
-      {" "}
       {/* Header */}
       <div className="flex justify-between items-start border-b pb-8">
         <div>
@@ -102,42 +94,58 @@ export default function InvoicePreview({ invoiceData }) {
         </div>
       </div>
       {/* Items */}
-      <table className="w-full mt-10 border border-gray-200">
+      <table className="w-full mt-10 border border-gray-200 text-sm">
         <thead className="bg-blue-600 text-white">
           <tr>
-            <th className="p-4 text-left">Description</th>
-
-            <th className="p-4">Qty</th>
-
-            <th className="p-4">Price</th>
-
-            <th className="p-4">Total</th>
+            <th className="p-3 text-left">Description</th>
+            <th className="p-3 text-center">HSN/SAC</th>
+            <th className="p-3 text-center">Qty</th>
+            <th className="p-3 text-center">Price</th>
+            <th className="p-3 text-right">Amount</th>
+            <th className="p-3 text-center">Taxes</th>
+            <th className="p-3 text-right">Tax Amt</th>
+            <th className="p-3 text-right">Total</th>
           </tr>
         </thead>
 
         <tbody>
           {items.length === 0 ? (
             <tr>
-              <td colSpan={4} className="text-center py-10 text-gray-400">
+              <td colSpan={8} className="text-center py-10 text-gray-400">
                 No Items Added
               </td>
             </tr>
           ) : (
-            items.map((item, index) => (
-              <tr key={index} className="border-b">
-                <td className="p-4">{item.description}</td>
+            items.map((item, index) => {
+              const qty = Number(item.qty || 0);
+              const price = Number(item.price || 0);
+              const amount = qty * price;
+              const taxes = getItemTaxes(item);
 
-                <td className="text-center">{item.qty}</td>
+              const taxLabel = taxes
+                .map((t) => (t.taxType === "No Tax" ? "No Tax" : `${t.taxType} (${t.taxRate}%)`))
+                .join(", ");
 
-                <td className="text-center">
-                  ₹{Number(item.price).toFixed(2)}
-                </td>
+              const itemTaxAmount = taxes.reduce((sum, t) => {
+                const rate = t.taxType === "No Tax" ? 0 : Number(t.taxRate || 0);
+                return sum + amount * (rate / 100);
+              }, 0);
 
-                <td className="text-center font-semibold">
-                  ₹{(Number(item.qty) * Number(item.price)).toFixed(2)}
-                </td>
-              </tr>
-            ))
+              const itemTotal = amount + itemTaxAmount;
+
+              return (
+                <tr key={index} className="border-b">
+                  <td className="p-3 font-medium text-gray-800">{item.description || "-"}</td>
+                  <td className="p-3 text-center text-gray-600">{item.hsn || "-"}</td>
+                  <td className="p-3 text-center">{qty}</td>
+                  <td className="p-3 text-center">₹{price.toFixed(2)}</td>
+                  <td className="p-3 text-right">₹{amount.toFixed(2)}</td>
+                  <td className="p-3 text-center text-xs text-gray-600">{taxLabel}</td>
+                  <td className="p-3 text-right">₹{itemTaxAmount.toFixed(2)}</td>
+                  <td className="p-3 text-right font-semibold text-gray-900">₹{itemTotal.toFixed(2)}</td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
@@ -159,13 +167,13 @@ export default function InvoicePreview({ invoiceData }) {
           <div className="flex justify-between">
             <span>Discount</span>
 
-            <span>₹{Number(discount).toFixed(2)}</span>
+            <span>₹{Number(discountAmount).toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between">
             <span>Shipping</span>
 
-            <span>₹{Number(shipping).toFixed(2)}</span>
+            <span>₹{Number(shippingAmount).toFixed(2)}</span>
           </div>
 
           <div className="border-t pt-4 flex justify-between text-2xl font-bold">
@@ -175,6 +183,7 @@ export default function InvoicePreview({ invoiceData }) {
           </div>
         </div>
       </div>
+
       {/* Footer */}
       <div className="border-t mt-16 pt-8">
         <h3 className="font-bold">Notes</h3>
@@ -237,10 +246,6 @@ export default function InvoicePreview({ invoiceData }) {
           </div>
         </div>
       </div>
-      {/* <div className="mt-12">
-        <DownloadPdf data={invoiceData} />
-        <DownloadWord invoiceData={invoiceData} />
-      </div> */}
     </div>
   );
 }

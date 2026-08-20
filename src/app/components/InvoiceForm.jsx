@@ -12,8 +12,18 @@ export default function InvoiceForm({
   previewInvoice,
   onGeneratePdf,
   isPro,
+  docType = "invoice",
+  docMeta,
+  docTypeOptions,
+  onDocTypeChange,
 }) {
   const { company, customer, invoice } = invoiceData;
+  const meta = docMeta || {
+    title: "INVOICE",
+    partyLabel: "Bill To",
+    secondDateLabel: "Due Date",
+    referenceLabel: "PO Number",
+  };
 
   const updateCompany = (field, value) => {
     setInvoiceData((prev) => ({
@@ -64,6 +74,8 @@ export default function InvoiceForm({
     shippingAmount,
     discountAmount,
     grandTotal,
+    docType,
+    docMeta: meta,
   };
   function Input({ label, className = "", ...props }) {
   return (
@@ -129,6 +141,28 @@ export default function InvoiceForm({
   </div>
 </div>
 
+    {/* ✅ Doc-type tabs — hero ke turant niche, form fields se pehle */}
+    {docTypeOptions && (
+      <div className="max-w-6xl mx-auto mt-10 px-6">
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(docTypeOptions).map(([key, opt]) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => onDocTypeChange && onDocTypeChange(key)}
+              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all border ${
+                docType === key
+                  ? "bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/20"
+                  : "bg-white/[0.03] border-white/10 text-gray-300 hover:bg-white/[0.08] hover:border-white/20"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
     <div className="max-w-6xl mx-auto mt-12">
 
       <div className="space-y-8">
@@ -144,10 +178,12 @@ export default function InvoiceForm({
 
   <div className="relative z-10 flex flex-col lg:flex-row justify-between gap-10">
 
-    <div className="flex-1">
+       <div className="flex-1">
       <input
-        placeholder="Invoice"
-        className="w-full max-w-md text-4xl font-semibold border border-white/10 bg-white/[0.03] text-white rounded-xl px-5 py-4 outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
+        placeholder={meta.title}
+        value={meta.title}
+        readOnly
+        className="w-full max-w-md text-4xl font-semibold border border-white/10 bg-white/[0.03] text-white rounded-xl px-5 py-4 outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500 cursor-default"
       />
     </div>
 
@@ -167,15 +203,10 @@ export default function InvoiceForm({
     <h2 className="text-2xl font-semibold text-white">
       Company Details
     </h2>
-
-    {/* <p className="mt-1 text-sm text-gray-400">
-      These details will appear in the PDF header next to your logo.
-    </p> */}
   </div>
 
   <div className="grid gap-5 lg:grid-cols-2">
 
-    {/* Company Name */}
     <Input
       label="Company Name"
       placeholder="KP ITExperts"
@@ -185,7 +216,6 @@ export default function InvoiceForm({
       }
     />
 
-    {/* Phone */}
     <Input
       label="Phone"
       placeholder="+91-78147-28348"
@@ -195,7 +225,6 @@ export default function InvoiceForm({
       }
     />
 
-    {/* Email */}
     <Input
       label="Email"
       placeholder="support@kpitexperts.com"
@@ -205,7 +234,6 @@ export default function InvoiceForm({
       }
     />
 
-    {/* Address */}
     <div className="grid grid-cols-[120px_1fr] items-start gap-4 lg:col-span-2">
       <label className="pt-3 text-sm font-medium text-gray-300">
         Address
@@ -257,7 +285,6 @@ export default function InvoiceForm({
       }
     />
 
-    {/* Company */}
     <Input
       label="Company"
       placeholder="Business / Company Name"
@@ -267,7 +294,6 @@ export default function InvoiceForm({
       }
     />
 
-    {/* Service */}
     <Input
       label="Service"
       placeholder="e.g. Web Development, Digital Marketing"
@@ -293,7 +319,7 @@ export default function InvoiceForm({
     <div>
 
       <h2 className="text-3xl font-semibold mb-8 text-white">
-        Bill To
+        {meta.partyLabel}
       </h2>
 
       <div className="space-y-5">
@@ -348,8 +374,6 @@ export default function InvoiceForm({
 
   <div className="grid gap-8 lg:grid-cols-2">
 
-    {/* Left */}
-
     <div className="space-y-5">
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
@@ -381,7 +405,7 @@ export default function InvoiceForm({
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
         <label className="font-medium text-gray-300">
-          Due Date
+          {meta.secondDateLabel}
         </label>
 
         <input
@@ -393,8 +417,6 @@ export default function InvoiceForm({
       </div>
 
     </div>
-
-    {/* Right */}
 
     <div className="space-y-5">
 
@@ -415,7 +437,7 @@ export default function InvoiceForm({
 
       <div className="grid grid-cols-[130px_1fr] items-center gap-5">
         <label className="font-medium text-gray-300">
-          PO Number
+          {meta.referenceLabel}
         </label>
 
         <input
@@ -449,12 +471,6 @@ export default function InvoiceForm({
     <option className="bg-[#0a0a0a]" value="SAR">SAR</option>
     <option className="bg-[#0a0a0a]" value="SGD">SGD</option>
     <option className="bg-[#0a0a0a]" value="JPY">JPY</option>
-    {/* <option className="bg-[#0a0a0a]" value="CNY">CNY</option>
-    <option className="bg-[#0a0a0a]" value="ZAR">ZAR</option>
-    <option className="bg-[#0a0a0a]" value="PKR">PKR</option>
-    <option className="bg-[#0a0a0a]" value="BDT">BDT</option>
-    <option className="bg-[#0a0a0a]" value="NPR">NPR</option>
-    <option className="bg-[#0a0a0a]" value="LKR">LKR</option> */}
   </select>
 
   <svg
@@ -493,91 +509,15 @@ export default function InvoiceForm({
 
         <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
   <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
-
-  {/* Header */}
-  {/* <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-8 py-5">
-    <div>
-      <h2 className="text-2xl font-semibold text-white">
-        Charges & Adjustments
-      </h2>
-      <p className="text-sm text-gray-400">
-        Tax, discount and shipping charges
-      </p>
-    </div>
-  </div> */}
-
-  {/* Content */}
-  {/* <div className="relative z-10 grid gap-6 p-8 md:grid-cols-3"> */}
-
-   
-
-    {/* Discount */}
-    {/* <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-      <label className="mb-3 block text-sm font-medium text-gray-300">
-        Discount
-      </label>
-
-      <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
-          ₹
-        </span>
-
-        <input
-          type="number"
-          placeholder="0"
-          value={invoiceData.discount}
-          onChange={(e) =>
-            setInvoiceData({
-              ...invoiceData,
-              discount: e.target.value,
-            })
-          }
-          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-9 pr-4 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
-        />
-      </div>
-    </div> */}
-
-    {/* Shipping */}
-    {/* <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-      <label className="mb-3 block text-sm font-medium text-gray-300">
-        Shipping
-      </label>
-
-      <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
-          ₹
-        </span>
-
-        <input
-          type="number"
-          placeholder="0"
-          value={invoiceData.shipping}
-          onChange={(e) =>
-            setInvoiceData({
-              ...invoiceData,
-              shipping: e.target.value,
-            })
-          }
-          className="w-full rounded-xl border border-white/10 bg-white/[0.03] text-white py-3 pl-9 pr-4 outline-none transition focus:border-indigo-500/60 placeholder:text-gray-500"
-        />
-      </div>
-    </div> */}
-
-  {/* </div> */}
-
-  {/* Corner Glow */}
   <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
-
 </div>
 
         {/* Banking */}
-
         {/* ================= Payment Information ================= */}
 
        <div className="group relative overflow-hidden rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
   <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
 
-  {/* Header */}
   <div className="relative z-10 flex items-center justify-between border-b border-white/10 bg-white/[0.02] px-8 py-6">
     <div className="flex items-center gap-4">
       <div>
@@ -592,11 +532,9 @@ export default function InvoiceForm({
     </span>
   </div>
 
-  {/* Form */}
   <div className="relative z-10 p-8">
     <div className="grid gap-6 md:grid-cols-2">
 
-      {/* Bank Name */}
       <div>
         <label className="mb-2 block text-sm font-medium text-gray-300">
           Bank Name
@@ -611,7 +549,6 @@ export default function InvoiceForm({
         />
       </div>
 
-      {/* Account Holder */}
       <div>
         <label className="mb-2 block text-sm font-medium text-gray-300">
           Account Holder
@@ -626,7 +563,6 @@ export default function InvoiceForm({
         />
       </div>
 
-      {/* Account Number */}
       <div>
         <label className="mb-2 block text-sm font-medium text-gray-300">
           Account Number
@@ -644,7 +580,6 @@ export default function InvoiceForm({
         />
       </div>
 
-      {/* IFSC */}
       <div>
         <label className="mb-2 block text-sm font-medium text-gray-300">
           IFSC Code
@@ -659,7 +594,6 @@ export default function InvoiceForm({
         />
       </div>
 
-      {/* UPI */}
       <div className="md:col-span-2">
         <label className="mb-2 block text-sm font-medium text-gray-300">
           UPI ID
@@ -678,65 +612,9 @@ export default function InvoiceForm({
 
   </div>
 
-  {/* Corner Glow */}
   <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
 
 </div>
-        {/* Signature */}
-        {/* ================= Signature ================= */}
-
-      {/* <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
-  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
-
-  {/* Header */}
-  {/* <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-6 py-4">
-
-    <div className="flex items-center gap-3">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg">
-        ✍️
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold text-white">
-          Signature
-        </h2>
-
-        <p className="text-xs text-gray-400">
-          Optional
-        </p>
-      </div>
-    </div>
-
-  </div> */} 
-
-  {/* Upload */}
-  {/* <div className="relative z-10 p-6">
-
-    <div className="flex items-center justify-between rounded-xl border border-dashed border-white/15 bg-white/[0.02] p-5">
-
-      <div>
-        <p className="font-medium text-gray-200">
-          Upload Signature
-        </p>
-
-        <p className="text-xs text-gray-500 mt-1">
-          PNG/JPG recommended
-        </p>
-      </div>
-
-      <SignatureUpload
-        invoiceData={invoiceData}
-        setInvoiceData={setInvoiceData}
-      />
-
-    </div>
-
-  </div> */}
-
-  {/* Corner Glow */}
-  {/* <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
-
-</div> */}
 
         {/* Download */}
         {/* ================= Action Bar ================= */}
