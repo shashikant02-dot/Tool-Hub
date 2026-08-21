@@ -132,7 +132,22 @@ export default function DownloadWord({ data, onUse, isPro }) {
       grandTotal = 0,
       notes,
       terms,
+      docMeta,
     } = data || {};
+
+    // ✅ Bug fix: pehle yahan "TAX INVOICE", "Invoice No", "Due Date",
+    // "PO Number", "Billing / Shipping To" — sab hardcoded the. Quotation/
+    // Sales Order/Purchase Order download karne par bhi Word file ke andar
+    // "TAX INVOICE" hi likha aata tha. Ab docMeta (jo InvoiceGenerator.jsx
+    // ke DOC_TYPES se aata hai) se dynamic labels use karte hain.
+    const meta = docMeta || {
+      title: "TAX INVOICE",
+      label: "Invoice",
+      partyLabel: "Billing / Shipping To",
+      secondDateLabel: "Due Date",
+      referenceLabel: "PO Number",
+    };
+    const docLabel = meta.label || "Invoice";
 
     const symbol = getCurrencySymbol(invoice?.currency);
     const currencyLabel = invoice?.currency ? invoice.currency.toUpperCase() : "INR";
@@ -235,21 +250,21 @@ export default function DownloadWord({ data, onUse, isPro }) {
                 new Paragraph({
                   alignment: AlignmentType.RIGHT,
                   children: [
-                    new TextRun({ text: "TAX INVOICE", bold: true, size: 34, color: "111111" }),
+                    new TextRun({ text: meta.title || "TAX INVOICE", bold: true, size: 34, color: "111111" }),
                   ],
                 }),
                 new Paragraph({
                   alignment: AlignmentType.RIGHT,
                   spacing: { before: 60 },
                   children: [
-                    new TextRun({ text: `Invoice No: `, bold: true, size: 18 }),
+                    new TextRun({ text: `${docLabel} No: `, bold: true, size: 18 }),
                     new TextRun({ text: `${invoice.number || "-"}`, size: 18 }),
                   ],
                 }),
                 new Paragraph({
                   alignment: AlignmentType.RIGHT,
                   children: [
-                    new TextRun({ text: `Invoice Date: `, bold: true, size: 18 }),
+                    new TextRun({ text: `${docLabel} Date: `, bold: true, size: 18 }),
                     new TextRun({ text: `${invoice.date || "-"}`, size: 18 }),
                   ],
                 }),
@@ -258,7 +273,7 @@ export default function DownloadWord({ data, onUse, isPro }) {
                       new Paragraph({
                         alignment: AlignmentType.RIGHT,
                         children: [
-                          new TextRun({ text: `Due Date: `, bold: true, size: 18 }),
+                          new TextRun({ text: `${meta.secondDateLabel || "Due Date"}: `, bold: true, size: 18 }),
                           new TextRun({ text: `${invoice.dueDate}`, size: 18 }),
                         ],
                       }),
@@ -280,7 +295,7 @@ export default function DownloadWord({ data, onUse, isPro }) {
                       new Paragraph({
                         alignment: AlignmentType.RIGHT,
                         children: [
-                          new TextRun({ text: `PO Number: `, bold: true, size: 18 }),
+                          new TextRun({ text: `${meta.referenceLabel || "PO Number"}: `, bold: true, size: 18 }),
                           new TextRun({ text: `${invoice.poNumber}`, size: 18 }),
                         ],
                       }),
@@ -339,7 +354,7 @@ export default function DownloadWord({ data, onUse, isPro }) {
     const billToChildren = [
       new Paragraph({
         spacing: { after: 80 },
-        children: [new TextRun({ text: "Billing / Shipping To", bold: true, size: 19 })],
+        children: [new TextRun({ text: meta.partyLabel || "Billing / Shipping To", bold: true, size: 19 })],
       }),
       fieldLine("Name", customer.name || "Customer Name", true),
       fieldLine("Email", customer.email),

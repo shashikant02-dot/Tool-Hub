@@ -409,11 +409,14 @@ export default function InvoiceItems({ invoiceData, setInvoiceData }) {
             )}
 
             <div className="flex justify-between text-lg text-white border-t border-white/10 pt-3">
-              <span>Grand Total</span>
+              <span>Items Total</span>
               <span className="font-bold bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
                 ₹{grandTotal.toFixed(2)}
               </span>
             </div>
+            <p className="text-[11px] text-gray-500 -mt-1">
+              Discount &amp; shipping added below, in the final Grand Total.
+            </p>
           </div>
 
           <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />

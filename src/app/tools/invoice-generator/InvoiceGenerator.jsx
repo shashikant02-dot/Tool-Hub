@@ -4,6 +4,7 @@ import InvoiceForm from "@/app/components/InvoiceForm";
 import InvoicePreview from "@/app/components/InvoicePreview";
 import SubscriptionPopup from "@/app/components/SubscriptionPopup";
 import { useFreeUsage } from "@/app/context/FreeUsageContext";
+import { calculateInvoice } from "@/app/utils/calculateInvoice";
 import { useState } from "react";
 
 export const DOC_TYPES = {
@@ -79,14 +80,29 @@ function makeBlankData(type) {
       poNumber: "",
       currency: "INR",
     },
-    items: [{ description: "", hsn: "", qty: 1, price: 0, taxRate: 18 }],    tax: 0,
+    items: [
+      {
+        description: "",
+        hsn: "",
+        qty: 1,
+        price: 0,
+        taxes: [{ taxType: "CGST", taxRate: 9 }],
+      },
+    ],
+    discount: 0,
+    shipping: 0,
     notes: "",
     terms: "",
   };
 }
 
-export default function InvoiceGenerator() {
-  const [docType, setDocType] = useState("invoice");
+export default function InvoiceGenerator({ docType: initialDocType = "invoice" }) {
+  // ✅ Bug fix: docType prop (jo page.jsx se aata hai, e.g. "quotation")
+  // ab seed ke roop me use hota hai — pehle yeh prop poori tarah ignore
+  // ho raha tha aur hamesha "invoice" hi default rehta tha.
+  const [docType, setDocType] = useState(
+    DOC_TYPES[initialDocType] ? initialDocType : "invoice",
+  );
   const docMeta = DOC_TYPES[docType] || DOC_TYPES.invoice;
   const TOOL_NAME = `${docType}-generator`;
   const [showPreview, setShowPreview] = useState(false);
@@ -117,28 +133,16 @@ export default function InvoiceGenerator() {
     setDocType(newType);
   };
 
-    const subtotal = invoiceData.items.reduce(
-    (sum, item) => sum + Number(item.qty || 0) * Number(item.price || 0),
-    0,
-  );
-
-  // ✅ Ab tax flat % nahi — har item ka apna taxRate hai
-  const taxAmount = invoiceData.items.reduce((sum, item) => {
-    const amount = Number(item.qty || 0) * Number(item.price || 0);
-    return sum + amount * (Number(item.taxRate || 0) / 100);
-  }, 0);
-
-  const discountAmount = Number(invoiceData.discount || 0);
-  const shippingAmount = Number(invoiceData.shipping || 0);
-  const grandTotal = subtotal + taxAmount + shippingAmount - discountAmount;
+  // ✅ Bug fix: pehle yahan manually item.taxRate (purana single-tax field)
+  // se hisaab hota tha — naye items InvoiceItems.jsx se item.taxes[] array
+  // banate hain, isliye unka tax hamesha 0 aata tha (khaaskar Word export mein,
+  // jo seedha yeh computedInvoice use karta hai bina dobara calculate kiye).
+  // Ab calculateInvoice() — jo already multi-tax + discount + shipping sahi
+  // handle karta hai — use karte hain, taaki PDF/Word/screen sab sync rahen.
+  const computed = calculateInvoice(invoiceData);
 
   const computedInvoice = {
-    ...invoiceData,
-    subtotal,
-    taxAmount,
-    discountAmount,
-    shippingAmount,
-    grandTotal,
+    ...computed,
     docType,
     docMeta,
   };

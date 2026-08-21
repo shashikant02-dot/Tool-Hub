@@ -5,6 +5,7 @@ import DownloadWord from "./DownloadWord";
 import InvoiceItems from "./InvoiceItems";
 import LogoUpload from "./LogoUpload";
 import SignatureUpload from "./SignatureUpload";
+import { getDocSeo } from "@/app/utils/docSeoConfig";
 
 export default function InvoiceForm({
   invoiceData,
@@ -24,6 +25,11 @@ export default function InvoiceForm({
     secondDateLabel: "Due Date",
     referenceLabel: "PO Number",
   };
+  // ✅ Bug fix: hero heading/subheading pehle sabhi 4 doc-type pages pe
+  // hardcoded "Create Professional Invoices in Seconds" hi dikhata tha —
+  // Google isko duplicate content maanta hai. Ab docType ke hisaab se
+  // (docSeoConfig.js se) unique text aata hai.
+  const seo = getDocSeo(docType);
 
   const updateCompany = (field, value) => {
     setInvoiceData((prev) => ({
@@ -54,26 +60,22 @@ export default function InvoiceForm({
       },
     }));
   };
-  const subtotal = invoiceData.items.reduce(
-    (sum, item) => sum + Number(item.qty || 0) * Number(item.price || 0),
-    0,
-  );
-
-  const taxAmount = subtotal * (Number(invoiceData.tax || 0) / 100);
-
-  const shippingAmount = Number(invoiceData.shipping || 0);
-
-  const discountAmount = Number(invoiceData.discount || 0);
-
-  const grandTotal = subtotal + taxAmount + shippingAmount - discountAmount;
-
-  const pdfData = {
-    ...invoiceData,
+  // ✅ Bug fix: pehle yahan ek dobara (aur galat) subtotal/tax/discount/shipping
+  // calculation hoti thi — jo `invoiceData.tax` (ek field jo kabhi set hi nahi
+  // hoti) use karti thi, isliye tax/discount/shipping downloaded file mein
+  // hamesha ₹0.00 aata tha. `invoiceData` (InvoiceGenerator se aane wala
+  // computedInvoice) already calculateInvoice() se sahi calculate hai —
+  // ab seedha wahi values PDF/Word ko pass karte hain.
+  const {
     subtotal,
     taxAmount,
     shippingAmount,
     discountAmount,
     grandTotal,
+  } = invoiceData;
+
+  const pdfData = {
+    ...invoiceData,
     docType,
     docMeta: meta,
   };
@@ -107,13 +109,12 @@ export default function InvoiceForm({
       
 
       <h1 className="mt-5 text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
-        Create <span className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">Professional</span><br />
-        Invoices in Seconds
+        Create <span className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">{seo.heading}</span><br />
+        {seo.headingLine2}
       </h1>
 
       <p className="mt-6 text-lg text-gray-400 max-w-lg leading-relaxed">
-        Generate beautiful invoices with automatic calculations, branding support,
-        and instant PDF export — no complexity, just speed.
+        {seo.subheading}
       </p>
 
       {/* FEATURES */}
@@ -506,9 +507,104 @@ export default function InvoiceForm({
 </div>
 
         {/* ================= Invoice Summary ================= */}
+        {/* ✅ Bug fix: yeh card pehle poori tarah khaali tha — Discount,
+            Shipping, Notes, Terms bharne ka koi input hi nahi tha, isliye
+            yeh values kabhi set hi nahi hoti thi aur PDF/Word mein hamesha
+            ₹0.00 / blank aata tha. */}
 
         <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(99,102,241,.2)]">
   <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-pink-500/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+
+  <div className="relative z-10 border-b border-white/10 px-8 py-6">
+    <h2 className="text-2xl font-semibold text-white">Additional Details</h2>
+    <p className="text-sm text-gray-400">Discount, shipping, notes & terms</p>
+  </div>
+
+  <div className="relative z-10 grid gap-8 p-8 lg:grid-cols-2">
+    <div className="space-y-5">
+      <div className="grid grid-cols-[130px_1fr] items-center gap-5">
+        <label className="font-medium text-gray-300">Discount ({invoiceData.invoice?.currency || "INR"})</label>
+        <input
+          type="number"
+          min={0}
+          placeholder="0"
+          value={invoiceData.discount || ""}
+          onChange={(e) =>
+            setInvoiceData((prev) => ({ ...prev, discount: e.target.value }))
+          }
+          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
+        />
+      </div>
+
+      <div className="grid grid-cols-[130px_1fr] items-center gap-5">
+        <label className="font-medium text-gray-300">Shipping ({invoiceData.invoice?.currency || "INR"})</label>
+        <input
+          type="number"
+          min={0}
+          placeholder="0"
+          value={invoiceData.shipping || ""}
+          onChange={(e) =>
+            setInvoiceData((prev) => ({ ...prev, shipping: e.target.value }))
+          }
+          className="rounded-lg border border-white/10 bg-white/[0.03] text-white px-4 py-3 outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+
+    <div className="space-y-5">
+      <div className="grid grid-cols-[130px_1fr] items-start gap-5">
+        <label className="pt-3 font-medium text-gray-300">Notes</label>
+        <textarea
+          rows={2}
+          placeholder="Thank you for your business."
+          value={invoiceData.notes || ""}
+          onChange={(e) =>
+            setInvoiceData((prev) => ({ ...prev, notes: e.target.value }))
+          }
+          className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-white outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
+        />
+      </div>
+
+      <div className="grid grid-cols-[130px_1fr] items-start gap-5">
+        <label className="pt-3 font-medium text-gray-300">Terms</label>
+        <textarea
+          rows={2}
+          placeholder="Payment is due within the due date mentioned above."
+          value={invoiceData.terms || ""}
+          onChange={(e) =>
+            setInvoiceData((prev) => ({ ...prev, terms: e.target.value }))
+          }
+          className="w-full resize-none rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-white outline-none transition-all focus:border-indigo-500/60 placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div className="relative z-10 flex justify-end gap-8 border-t border-white/10 px-8 py-6 text-gray-300">
+    <div className="space-y-1 text-right">
+      <div className="flex justify-between gap-8 text-sm">
+        <span>Subtotal</span>
+        <span>{Number(subtotal || 0).toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between gap-8 text-sm">
+        <span>Tax</span>
+        <span>{Number(taxAmount || 0).toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between gap-8 text-sm">
+        <span>Shipping</span>
+        <span>{Number(shippingAmount || 0).toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between gap-8 text-sm">
+        <span>Discount</span>
+        <span>-{Number(discountAmount || 0).toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between gap-8 border-t border-white/10 pt-2 text-lg font-bold text-white">
+        <span>Grand Total</span>
+        <span>{Number(grandTotal || 0).toFixed(2)}</span>
+      </div>
+    </div>
+  </div>
+
   <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl transition group-hover:bg-purple-500/20" />
 </div>
 
